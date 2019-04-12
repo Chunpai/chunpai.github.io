@@ -13,10 +13,15 @@
 
 .site-title {
   @include relative-font-size(1.625);
-  font-weight: 300;
+  font-weight: 800;
   letter-spacing: -1px;
   margin-bottom: 0;
   float: left;
+  color: darkgreen;
+  &:hover {
+    cursor: pointer;
+    text-decoration: none;
+  }
 
   @include media-query($on-palm) {
     padding-right: 45px;
@@ -36,6 +41,7 @@
   border: 1px solid $grey-color-light;
   border-radius: 5px;
   text-align: right;
+
 
   .nav-trigger {
       display: none;
@@ -78,6 +84,11 @@
     line-height: $base-line-height;
     display: block;
     padding: 5px 10px;
+    font-weight: 700;
+    &:hover {
+      text-decoration: none;
+      cursor: pointer;
+    }
 
     // Gaps between nav items, but not on the last one
     &:not(:last-child) {
@@ -123,12 +134,12 @@
  */
 .site-footer {
   border-top: 1px solid $grey-color-light;
-  padding: $spacing-unit 0;
+  padding: $spacing-unit / 5;
 }
 
 .footer-heading {
   @include relative-font-size(1.125);
-  margin-bottom: $spacing-unit / 2;
+  margin-bottom: $spacing-unit / 4;
 }
 
 .contact-list,
@@ -198,6 +209,7 @@
 
 .page-heading {
   @include relative-font-size(2);
+
 }
 
 .post-list-heading {
@@ -209,20 +221,58 @@
   list-style: none;
 
   > li {
-    margin-bottom: $spacing-unit;
+    //border-radius: 5px;
+    //border: 1px dotted $grey-color;
+    margin-bottom: $spacing-unit ;
   }
 }
 
 .post-meta {
   font-size: $small-font-size;
   color: $grey-color;
+    a.post-tag {
+    border-radius: 5px;
+    border: 1px solid $grey-color;
+    color: $grey-color;
+    padding: 1px 5px;
+    margin-left: 5px;
+    &:hover {
+      border: 1px solid $brand-color;
+      text-decoration: none;
+      color: #ffffff;
+      background: $brand-color;
+    }
+  }
 }
 
 .post-link {
   display: block;
   @include relative-font-size(1.5);
+  font-weight: 600;
+  border-bottom: 0 dotted #bbb;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  color: green;
+  &:hover {
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
 
+.post-excerpt {
+  font-size: 14px;
+  font-style: italic;
+  color: #111111;
+  margin-top: $spacing-unit * -0.5;
+  //margin-bottom: $spacing-unit * -0.5;
+  a.post-excerpt {
+    color: grey;
+  }
+  &:hover {
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
 
 
 /**

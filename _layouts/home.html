@@ -15,16 +15,30 @@ layout: default
       {%- for post in site.posts -%}
       <li>
         {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
-        <h3>
+        <span class="post-meta">
+          {{ post.date | date: date_format }}
+
+        {% for tag in post.tags %}
+        {% capture tag_name %}{{ tag }}{% endcapture %}
+          <a class="post-tag" href="/tags/{{ tag_name }}"><nobr>{{ tag_name }}</nobr></code>&nbsp;</a>
+        {% endfor %}
+        </span>
+
+        <h2>
           <a class="post-link" href="{{ post.url | relative_url }}">
             {{ post.title | escape }}
           </a>
-        </h3>
+        </h2>
+
+        <h3 class="post-excerpt">
         {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
+          <a class="post-excerpt" href="{{ post.url | relative_url }}">
+            {{ post.excerpt }}</a>
         {%- endif -%}
+        </h3>
+
       </li>
+
       {%- endfor -%}
     </ul>
 
