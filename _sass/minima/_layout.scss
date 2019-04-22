@@ -341,6 +341,16 @@
 }
 
 
+.table-of-content {
+  li {
+    font-size: 96%;
+    color: $brand-color;
+    list-style-type: disc;
+  }
+}
+
+
+
 /**
  * Grid helpers
  */

@@ -1,27 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e84d6650-1e7a-48f8-8a47-4192994bb5ae" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/_includes/tags.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_layouts/archive.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/_layouts/tagpage.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tags/energy-based-model.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tags/generative-model.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tags/reinforcement-learning.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tags/structure-learning.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tags/tensorflow.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/_config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_includes/disqus_comments.html" beforeDir="false" afterPath="$PROJECT_DIR$/_includes/disqus_comments.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_includes/head.html" beforeDir="false" afterPath="$PROJECT_DIR$/_includes/head.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_includes/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/_includes/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_layouts/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/_layouts/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_layouts/post.html" beforeDir="false" afterPath="$PROJECT_DIR$/_layouts/post.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/2016-05-20-welcome-to-jekyll.md" beforeDir="false" afterPath="$PROJECT_DIR$/_posts/2016-05-21-welcome-to-my-blog.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_sass/minima/_base.scss" beforeDir="false" afterPath="$PROJECT_DIR$/_sass/minima/_base.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_sass/minima/_layout.scss" beforeDir="false" afterPath="$PROJECT_DIR$/_sass/minima/_layout.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/about.md" beforeDir="false" afterPath="$PROJECT_DIR$/about.md" afterDir="false" />
-    </list>
+    <list default="true" id="e84d6650-1e7a-48f8-8a47-4192994bb5ae" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +12,7 @@
     <session id="819037245">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.18" value="1" />
           <entry key="project.open.time.2" value="1" />
@@ -63,17 +43,17 @@
           <entry key="Gemfile" value="2" />
           <entry key="gitignore" value="10" />
           <entry key="html" value="1216" />
-          <entry key="md" value="386" />
-          <entry key="scss" value="1482" />
+          <entry key="md" value="394" />
+          <entry key="scss" value="1507" />
           <entry key="yml" value="197" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="1216" />
-          <entry key="Markdown" value="386" />
+          <entry key="Markdown" value="394" />
           <entry key="PLAIN_TEXT" value="12" />
-          <entry key="SCSS" value="1482" />
+          <entry key="SCSS" value="1507" />
           <entry key="YAML" value="197" />
         </counts>
       </usages-collector>
@@ -102,11 +82,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_sass/minima/_layout.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="284" column="6" selection-start-line="284" selection-start-column="6" selection-end-line="284" selection-end-column="6" />
+            <state relative-caret-position="-822">
+              <caret line="254" column="13" selection-start-line="254" selection-start-column="13" selection-end-line="254" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -123,8 +103,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_sass/minima/_base.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="-1572">
+              <caret line="105" column="4" selection-start-line="105" selection-start-column="4" selection-end-line="105" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -138,12 +118,12 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_posts/2016-05-21-welcome-to-my-blog.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="30">
-                <caret line="2" selection-start-line="2" selection-end-line="2" />
+              <first_editor relative-caret-position="360">
+                <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
               </first_editor>
               <second_editor />
             </state>
@@ -210,12 +190,12 @@
         <option value="$PROJECT_DIR$/_layouts/archive.html" />
         <option value="$PROJECT_DIR$/_layouts/tagpage.html" />
         <option value="$PROJECT_DIR$/_layouts/home.html" />
-        <option value="$PROJECT_DIR$/_sass/minima/_layout.scss" />
         <option value="$PROJECT_DIR$/_sass/minima/_base.scss" />
         <option value="$PROJECT_DIR$/_posts/2016-05-20-welcome-to-jekyll.md" />
         <option value="$PROJECT_DIR$/_config.yml" />
         <option value="$PROJECT_DIR$/_includes/disqus_comments.html" />
         <option value="$PROJECT_DIR$/_layouts/post.html" />
+        <option value="$PROJECT_DIR$/_sass/minima/_layout.scss" />
         <option value="$PROJECT_DIR$/_posts/2016-05-21-welcome-to-my-blog.md" />
       </list>
     </option>
@@ -542,20 +522,6 @@
         <state relative-caret-position="-157" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_sass/minima/_layout.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="284" column="6" selection-start-line="284" selection-start-column="6" selection-end-line="284" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_sass/minima/_base.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/_layouts/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="363">
@@ -600,10 +566,24 @@
     <entry file="file://$PROJECT_DIR$/_posts/2016-05-21-welcome-to-my-blog.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="30">
-            <caret line="2" selection-start-line="2" selection-end-line="2" />
+          <first_editor relative-caret-position="360">
+            <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_sass/minima/_base.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1572">
+          <caret line="105" column="4" selection-start-line="105" selection-start-column="4" selection-end-line="105" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_sass/minima/_layout.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-822">
+          <caret line="254" column="13" selection-start-line="254" selection-start-column="13" selection-end-line="254" selection-end-column="13" />
         </state>
       </provider>
     </entry>
