@@ -4,7 +4,7 @@ tags: reinforcement-learning
 author: Chunpai
 ---
 
-In this post, I will summarize some concepts about policy gradient. 
+> In this post, I will summarize some concepts about policy gradient. 
 
 
 
@@ -109,6 +109,10 @@ $$
 
 
 where $$ \nabla \bar{R}_{\theta}$$ is *a stochastic estimate whose expectation approximates the gradient of the performance measure with respect to its argument* $\theta$ . 
+
+![REINFORCE algorithm, a on-policy policy gradient method](/assets/img/REINFOCE_algo.png)
+
+
 
 #### Relationship between Policy Gradient and MLE
 
@@ -318,49 +322,41 @@ The precision of these estimates depend on the variances of $R(\tau)$ and $\frac
 $$
 \begin{align}
 \operatorname{Var}\left[ \hat{E}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right] \right] 
-&= \operatorname{Var}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right] \\
-&= \operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau)^2 \right] - \left(\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right]\right)^2 \\
+&= \frac{\operatorname{Var}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right]}{N} \\
+&= \frac{\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau)^2 \right] - \left(\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right]\right)^2}{N} \\
 \operatorname{Var}\left[ \hat{E}_{\tau \sim p_{\omega}(\tau)}\left[\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right] \right]
-&=\operatorname{Var}_{\tau \sim p_{\omega} (\tau)}\left[\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right]\\
-&= \operatorname{E}_{\tau \sim p_{\omega}(\tau)} \left[ \left( \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right)^2 \right] - \left( \operatorname{E}_{\tau \sim p_{\omega}(\tau)} \left[ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau) \right]\right)^2 \\
-&= \operatorname{E}_{\tau \sim p_{\omega}(\tau)} \left[ \left( \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)}\right)^2 R(\tau)^2 \right] - \left(\operatorname{E}_{\tau \sim \color{red}{p_{\theta}(\tau)}} \left[R(\tau) \right]\right)^2 \\
-&= \operatorname{E}_{\tau \sim \color{red}{p_{\theta}(\tau)}} \left[ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)^2 \right] - \left(\operatorname{E}_{\tau \sim \color{red}{p_{\theta}(\tau)}} \left[R(\tau) \right]\right)^2
+&= \frac{\operatorname{Var}_{\tau \sim p_{\omega} (\tau)}\left[\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right]}{N}\\
+&= \frac{\operatorname{E}_{\tau \sim p_{\omega}(\tau)} \left[ \left( \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right)^2 \right] - \left( \operatorname{E}_{\tau \sim p_{\omega}(\tau)} \left[ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau) \right]\right)^2}{N} \\
+&= \frac{\operatorname{E}_{\tau \sim p_{\omega}(\tau)} \left[ \left( \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)}\right)^2 R(\tau)^2 \right] - \left(\operatorname{E}_{\tau \sim \color{red}{p_{\theta}(\tau)}} \left[R(\tau) \right]\right)^2}{N} \\
+&= \frac{\operatorname{E}_{\tau \sim \color{red}{p_{\theta}(\tau)}} \left[ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)^2 \right] - \left(\operatorname{E}_{\tau \sim \color{red}{p_{\theta}(\tau)}} \left[R(\tau) \right]\right)^2}{N}
 \end{align}
 $$
 
 
-If the distribution $p_{\theta}(\tau)$ is very different from the $p_{\omega}(\tau)$ , the precision of two different estimates would be very different. 
-
-
-
-
-
-Despite the different variances, we also need to think deeper on its effect. Is it good or bad ?
-
-
-### Actor-Critic
-
-Again, $G_t^n$ is collected via sampled trajectories. For same state and action, the variance of $G_t^n$ may be very high if we do not have sufficient samples, which results in very unstable training. Therefore, we can replace the $G_t^n$ with $E[G_t^n]$ . Recall that $E[G_t^n]$ is just the Q-value $Q(s_t^n, a_t^n)$. We can also assign the value of baseline as $b = V(s_t^n)​$, and we derive the so-called advantage function:
+If the distribution $p_{\theta}(\tau)$ is very different from the $p_{\omega}(\tau)​$ , the precision of two different estimates would be very different. It is worth noting that importance sampling provides a way for variance reduction by restricting 
 
 
 $$
-A(s_t^n, a_t^n) = Q(s_t^n, a_t^n) - V(s_t^n)
+\operatorname{Var}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right] - \operatorname{Var}_{\tau \sim p_{\omega} (\tau)}\left[\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right] > 0
 $$
 
 
-which basically describe the advantage of current action $a_t^n$ at state $s_t^n$ compared with the average performance of other actions relatively. Now, we have 
+that is 
 
 
 $$
-\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N} \sum_{t}^{T_n} [Q_{t}^{n}(s_t^n, a_t^n) - V(s_t^n)] \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right)
+\begin{align}
+\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau)^2 \right] - \operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)^2 \right] &> 0 \\
+\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ \left( 1- \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} \right)R(\tau)^2 \right] &> 0
+\end{align}
 $$
 
 
-The most exciting thing here is we combine the value based method with policy-based method. Here policy-based method can be viewed as an actor that try to generate a good action, and value-based method can be viewed as a critic to evaluate how good is the action. If the critic says it is a good action, then the actor will increase the probability of this action; otherwise decrease. An actor adjusts the parameter $\theta​$ of the stochastic policy $\pi_{\theta}(a \mid  s)​$ by stochastic gradient ascent. A critic parameterized by $w​$ estimates the action-value function $Q^{w}(s, a) \approx Q^{\pi}(s, a)​$ using an appropriate policy evaluation algorithm such as temporal-difference learning. 
+### Summary
 
-
-
-
+- The policy gradient has high variance, and the gradient will be very noisy. 
+- We can reduce the variance by sampling more trajectories or using much larger batches. It would be very difficult to tweak learning rate, and adaptive step size rules like ADAM could be helpful, but not perfect. 
+- The key point of improving the policy gradient methods is to reduce the variance of the policy gradient. 
 
 
 
@@ -369,11 +365,15 @@ The most exciting thing here is we combine the value based method with policy-ba
 [1] Chapter 13: Policy Gradient Methods, [Reinforcement Learning:
 An Introduction](http://incompleteideas.net/book/bookdraft2017nov5.pdf)
 
-[2] Sutton, R. S., McAllester, D. A., Singh, S. P., and Mansour, Y. (1999). Policy gradient methods for reinforcement learning with function approximation. In Neural Information Processing Systems 12, pages 1057–1063.
+[2] Sutton, R. S., McAllester, D. A., Singh, S. P., and Mansour, Y. (1999). [Policy gradient methods for reinforcement learning with function approximation](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf). NeurIPS. 
 
 [3] [Lecture of Berkeley DRL course](https://www.youtube.com/watch?v=XGmd3wcyDg8&list=PLkFD6_40KJIxJMR-j5A1mkxK26gh_qg37&index=21)
 
 [4] [Importance Sampling for Reinforcement Learning](https://timvieira.github.io/blog/post/2014/12/21/importance-sampling/)
+
+[5] [Variance Reduction with Importance Sampling](https://web.archive.org/web/20170401030417/http://www.columbia.edu/~mh2078/MCS04/MCS_var_red2.pdf)
+
+
 
 
 
