@@ -8,6 +8,11 @@ copyright: >
 show_excerpts: true # set to true to show excerpts on the homepage
 #disqus.shortname: true
 
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: true
+
 # Minima date format
 # refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
 minima:

@@ -4,8 +4,12 @@ tags: reinforcement-learning
 author: Chunpai
 ---
 
-> In this post, I will summarize some concepts about policy gradient. 
+In this post, I will summarize some concepts about policy gradient, off-policy gradient, and importance sampling. 
 
+
+
+* TOC
+{: toc}
 
 
 ### Goal of Reinforcement Learning
@@ -18,7 +22,7 @@ $$
 $$
 
 
-We can view the policy $$\pi$$ as a neural network which parameterized by $$\theta$$, which are denoted by $ \pi(a \mid s, \theta) $ or $\pi_{\theta} (a \mid  s)$.  The goal of reinforcement learning is to find a policy $$\pi$$ that achieve a lot reward over the long run. For example, in episodic tasks, the probability of occurrence of one specific episode $\tau$ under policy $\pi​$ is 
+We can view the policy $$\pi$$ as a neural network which parameterized by $$\theta$$, which are denoted by $ \pi(a \mid s, \theta) $ or $\pi_{\theta} (a \mid  s)$.  The goal of reinforcement learning is to find a policy $$\pi$$ that achieve a lot reward over the long run. For example, in episodic tasks, the probability of occurrence of one specific episode $\tau$ under policy $\pi$ is 
 
 
 $$
@@ -38,7 +42,7 @@ $$
 \end{align}
 $$
 
-First, we can do sampling and averaging to derive an unbiased estimate of our objective $J(\theta)$ :
+First, we can do sampling and averaging to derive an unbiased estimate of our objective $J(\theta)​$ :
 
 
 $$
@@ -64,7 +68,7 @@ Then the expected total reward of a trajectory under $ \theta​$ is
 
 
 $$
-\bar{R}_{\theta}=\sum_{\tau} R(\tau) p_{\theta}(\tau)=E_{\tau \sim p_{\theta}(\tau)}[R(\tau)]
+J(\theta) = \bar{R}_{\theta}=\sum_{\tau} R(\tau) p_{\theta}(\tau)=E_{\tau \sim p_{\theta}(\tau)}[R(\tau)]
 $$
 
 
@@ -98,7 +102,7 @@ $$
 
 The prove above is related to the *policy gradient theorem* [1], which provides us an analytic expression for the gradient of performance w.r.t the policy parameter that *does not* involve the derivative of the state distribution (model dynamic). 
 
-Now given a policy $ \pi_{\theta}$ , we need to 1.) first collect many trajectories with current policy, 2.) accumulate or estimate the return, 3.)  compute $$\nabla \bar{R}_{\theta}​$$ and apply gradient descent [REINFORCE algo.]:
+Now given a policy $ \pi_{\theta}​$ , we need to 1.) first collect many trajectories with current policy, 2.) accumulate or estimate the return, 3.)  compute $$\nabla \bar{R}_{\theta}​$$ and apply gradient descent [REINFORCE algo.]:
 
 
 
@@ -108,7 +112,7 @@ $$
 
 
 
-where $$ \nabla \bar{R}_{\theta}$$ is *a stochastic estimate whose expectation approximates the gradient of the performance measure with respect to its argument* $\theta$ . 
+where $$ \nabla \bar{R}_{\theta}​$$ is *a stochastic estimate whose expectation approximates the gradient of the performance measure with respect to its argument* $\theta​$ . 
 
 ![REINFORCE algorithm, a on-policy policy gradient method](/assets/img/REINFOCE_algo.png)
 
@@ -154,7 +158,7 @@ Since the policy at time $t'$ cannot affect reward at time $t$ when $t < t'$ , w
 $$
 \begin{align}
 \nabla \bar{R}_{\theta} &\approx \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=1}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{\color{red}{t'=t}}^{T_n} r(s_{t'}, a_{t'}) \right] \\
-&= \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=1}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot \color{red}{Q_{t}^{n}} \right]
+&= \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=1}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot \color{red}{\hat{Q}_{t}^{n}} \right]
 \end{align}
 $$
 
@@ -168,11 +172,11 @@ We can also understand in the following way: the original gradient $ \nabla \log
 
 Sometimes, the total rewards of all trajectories are always positive, then the gradient update will always increase the probability of all $\pi_{\theta} ( a_{t}^{n} \mid s_{t}^{n} )​$, since $$\nabla \bar{R}_{\theta}​$$  is positive. Although the increasing magnitude are different among different actions, we need to ensure the $\sum_{j} \pi_{\theta} ( a_{tj}^{n} \mid  s_{t}^{n} ) = 1.0 ​$ with normalization, which may actually decrease the probability of good actions. Notice that, we are doing sampling to approximate the expectation, and at the worse case, some good actions may not be sampled ever, then the probabilities of all other (including bad) actions are increased. After normalization, it results in low probabilities of good actions which were not sampled, and the good actions may not be sampled ever since then.
 
-We may want to assign negative rewards to bad actions so that the gradient update will decrease the probability. We can modify the $ \nabla \bar{R}_{\theta}$ as below:
+We may want to assign negative rewards to bad actions so that the gradient update will decrease the probability. We can modify the $ \nabla \bar{R}_{\theta}​$ as below:
 
 
 $$
-\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N} \sum_{t}^{T_n} \left\{ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot [Q_t^n - b] \right\}
+\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N} \sum_{t}^{T_n} \left\{ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot [\hat{Q}_t^n - b] \right\}
 $$
 
 
@@ -233,7 +237,7 @@ which is just expected reward, but weighted by gradient magnitudes. The computat
 
 ### Off-Policy Gradient
 
-Policy gradient, for example REINFORCE algorithm, is an on-policy method. It is inefficient to iteratively update the model $ \pi_{\theta} $ and then generate new trajectories. Off-policy method is to train the policy $\pi_{\theta}$ by using the sampled trajectories generated by another policy $ \pi_{\omega}$. In this way, we can reuse the sample trajectories. 
+Policy gradient, for example REINFORCE algorithm, is an on-policy method. It is inefficient to iteratively update the model $ \pi_{\theta} $ and then generate new trajectories. Off-policy method is to train the policy $\pi_{\theta}$, called *target policy*, by using the sampled trajectories generated by another policy $ \pi_{\omega}​$, called *behavior policy*. In this way, we can reuse the sample trajectories. 
 
 Off-policy method has different form of objective function:
 
@@ -266,8 +270,9 @@ $$
 \end{align}
 $$
 
-
 where we use the fact that different policies do not effect the transition probabilities of the environment, that is $$ p_{\theta}(\mathbf{s}_{1}) = p_{\omega}(\mathbf{s}_{1})$$.
+
+
 
 
 
@@ -286,11 +291,11 @@ $$
 $$
 
 
-if $\theta = \omega$ , then we can remove $\frac{p_{\theta}(\tau)  }{p_{\omega}(\tau)} $ at 3rd step, and $$\nabla_{\theta} J(\theta) = E_{\tau \sim p_{\omega}(\tau)} \left[ \nabla \log p_{\theta}(\tau) R(\tau)\right]​$$.  We can also do more analysis on last equation and try to reduce the variance. But we omit it here. 
+if $\theta = \omega$ , then we can remove $\frac{p_{\theta}(\tau)  }{p_{\omega}(\tau)} $ at 3rd step, and $$\nabla_{\theta} J(\theta) = E_{\tau \sim p_{\omega}(\tau)} \left[ \nabla \log p_{\theta}(\tau) R(\tau)\right]$$.  We can also do more analysis on last equation and try to reduce the variance. But we omit it here [6, 7, 8]. 
 
 
 
-#### Issue of Importance Sampling [4]
+#### Issue of Importance Sampling 
 
 Using importance sampling, we can derive unbiased policy gradient, that is 
 
@@ -333,7 +338,7 @@ $$
 $$
 
 
-If the distribution $p_{\theta}(\tau)$ is very different from the $p_{\omega}(\tau)​$ , the precision of two different estimates would be very different. It is worth noting that importance sampling provides a way for variance reduction by restricting 
+If the distribution $p_{\theta}(\tau)$ is very different from the $p_{\omega}(\tau)​$ , the precision of two different estimates would be very different. It is worth noting that importance sampling provides a way for variance reduction [4, 5] by restricting 
 
 
 $$
@@ -373,7 +378,11 @@ An Introduction](http://incompleteideas.net/book/bookdraft2017nov5.pdf)
 
 [5] [Variance Reduction with Importance Sampling](https://web.archive.org/web/20170401030417/http://www.columbia.edu/~mh2078/MCS04/MCS_var_red2.pdf)
 
+[6] Jie, Tang, and Pieter Abbeel. "[On a connection between importance sampling and the likelihood ratio policy gradient.](http://rll.berkeley.edu/~jietang/pubs/nips10_Tang.pdf)" NeurIPS. 2010.]
 
+[7] Levine, Sergey, and Vladlen Koltun. "[Guided policy search.](https://graphics.stanford.edu/projects/gpspaper/gps_full.pdf)" *International Conference on Machine Learning*. 2013.
+
+[8] Schulman, John, et al. "[Proximal policy optimization algorithms](https://arxiv.org/pdf/1707.06347.pdf)." *arXiv preprint arXiv:1707.06347* (2017).
 
 
 

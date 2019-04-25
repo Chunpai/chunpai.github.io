@@ -4,9 +4,15 @@ tags: reinforcement-learning
 author: Chunpai
 ---
 
+* TOC
+{: toc}
+### Variance on Policy Gradient
+
+
+
 ### Actor-Critic
 
-Again, $G_t^n$ is collected via sampled trajectories. For same state and action, the variance of $G_t^n$ may be very high if we do not have sufficient samples, which results in very unstable training. Therefore, we can replace the $G_t^n$ with $E[G_t^n]$ . Recall that $E[G_t^n]$ is just the Q-value $Q(s_t^n, a_t^n)$. We can also assign the value of baseline as $b = V(s_t^n)​$, and we derive the so-called advantage function:
+Again, $G_t^n$ is collected via sampled trajectories. For same state and action, the variance of $G_t^n$ may be very high if we do not have sufficient samples, which results in very unstable training. Therefore, we can replace the $G_t^n$ with $E[G_t^n]$ . Recall that $E[G_t^n]$ is just the Q-value $Q(s_t^n, a_t^n)$. We can also assign the value of baseline as $b = V(s_t^n)$, and we derive the so-called advantage function:
 
 
 $$
