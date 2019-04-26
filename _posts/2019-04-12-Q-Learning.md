@@ -8,6 +8,7 @@ This is my first post on reinforcement learning, which will cover the foundation
 
 * TOC
 {: toc}
+
 ## Notations
 
 | Symbol | Definition  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
@@ -266,13 +267,8 @@ which represents how good is a specific action compared with average performance
 
 
 
-<<<<<<< HEAD
-### Bellman Equations
-=======
 ### Bellman Expectation Equation for $v_{\pi}(s)$
->>>>>>> 8680f674bf63fa67608a8f597f30cd4340385394
 
-#### Bellman Expectation Equation for $v_{\pi}(s)$
 
 $$
 \begin{aligned} v_{\pi}(s) &=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right]=\mathbb{E}_{\pi}\left[\prod_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s\right] \quad \forall s \in S \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} | S_{t}=s\right] \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) | S_{t}=s\right] \\ &=\sum_{a} \pi(a | s) \sum_{r, s^{\prime}} p\left(s^{\prime}, r | s, a\right)\left[r + \gamma v_{\pi}\left(s^{\prime}\right)\right] \\ &=\sum_{a} \pi(a | s) \cdot q_{\pi}(s, a) \end{aligned}
@@ -549,7 +545,7 @@ which is called expected-SARSA. Q-Learning can be viewed as Max-SARSA.
 
 
 
-### Reference
+## Reference
 
 [1] [David Silver's Lecture on MDP](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/MDP.pdf) 
 
