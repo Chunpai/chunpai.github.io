@@ -4,7 +4,7 @@ tags: reinforcement-learning
 author: Chunpai
 ---
 
-This is my first post on reinforcement learning, which will cover the foundation of value-based methods in reinforcement learning, such as MDP, Bellman equations, generalized policy iteration, MC, TD, and DQN. This post is highly based to Sutton's book and  [David Silver's lectures](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html) , which are the best lectures on value-based methods I believe. 
+This is my first post on reinforcement learning, which will cover the foundation of value-based methods in reinforcement learning, such as MDP, Bellman equations, generalized policy iteration, MC, TD, and DQN. This post is based to Sutton's book and  [David Silver's lectures](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html), which are the best lectures on value-based methods I believe. 
 
 * TOC
 {: toc}
@@ -19,7 +19,7 @@ This is my first post on reinforcement learning, which will cover the foundation
 |$\mathcal{S}$| set of nonterminal states|
 |$\mathcal{S}^+$| set of all states, including the terminal states|
 |$\mathcal{A}$| set of all actions or action space|
-|$\mathcal{R}$| set of all possible rewards, a finite subset of $\mathbb{R}$|
+|$\mathcal{R}$| set of all possible rewards, a finite subset of $\mathbb{R}$ |
 |$t$| discrete time step|
 |$T$| final time step of episode|
 |$A_t$| action at time $t$|
@@ -38,7 +38,7 @@ This is my first post on reinforcement learning, which will cover the foundation
   
 
 $$
-p(s', r | s, a) = Pr(S_t = s', R_t=r |S_{t-1}=s, A_{t-1}=a) 
+p(s', r | s, a) = Pr(S_t = s', R_t=r |S_{t-1}=s, A_{t-1}=a)
 $$
 
 
@@ -49,13 +49,17 @@ $$
 
 
 
-* $p(s' \mid s, a):$ probability of transition to state $s'$, from state $s$ and action $a$  
+* $p(s' \mid s, a)$ or $\mathcal{P}_{ss'}^{a}$:  probability of transition to state $s'$, from state $s$ and action $a$  
+
+  
 
 
 $$
 p(s'| s, a) = Pr(S_t = s'|S_{t-1}=s, A_{t-1}=a) = \sum_{r\in \mathcal{R}} p(s', r | s, a)
 $$
-* $r(s, a, s'):$ *expected* immediate reward on transition from $s$ to $s'$ under action $a$ 
+
+
+* $r(s, a, s')​$ or $\mathcal{R}_{ss'}^{a} ​$ : *expected* immediate reward on transition from $s​$ to $s'​$ under action $a​$ 
 
   
 
@@ -65,7 +69,7 @@ $$
 
 
 
-* $r(s, a):$ *expected* reward for state-action pairs 
+* $r(s, a)$ or $\mathcal{R}_{s}^{a}$:  *expected* reward for state-action pairs 
 
   
 
@@ -213,7 +217,7 @@ $$
 
 It means over the long run, no matter what the starting state was, the proportion of time the chain spends in state $s$ is approximately $d(s)$, where $\sum_{s \in \mathcal{S} } d(s)$ = 1.0 .
 
-An MDP is ergodic if the Markov chain induced by any policy is ergodic. For any policy $\pi$ , an ergodic MDP has an average reward per time-step $\rho^{\pi}$ that is independent of start state 
+An MDP is ergodic if the Markov chain induced by any policy is ergodic. For any policy $\pi$ , an ergodic MDP has an average reward per time-step $\rho^{\pi}$ that is *independent* of start state 
 
 $$
 \rho^{\pi}=\lim _{T \rightarrow \infty} \frac{1}{T} \mathbb{E}\left[\sum_{t=1}^{T} R_{t}\right]
@@ -224,7 +228,7 @@ $$
 
 
 ## Goal of an Agent
-The goal of an agent is to maximize the expected value of the cumulative sum of a reward, which an agent receives in the long run.  In general, we seek to maximize the expected return, which is denoted by $\mathbb{E}[G_t]$. In episodic tasks, which means there exists finite steps of agent-environment interaction, the return can be generally expressed as
+The goal of an agent is to maximize the expected value of the cumulative sum of a reward, which an agent receives in the long run.  In general, the agent seeks to maximize the expected return, which is denoted by $\mathbb{E}[G_t]$. In episodic tasks, which means there exists finite steps of agent-environment interaction, the return can be generally expressed as
 
 $$
 G_1 = R_{1} + R_{2} + \cdots + R_{T} = R_{1} + G_{2}
@@ -246,17 +250,20 @@ $$
 v_{\pi}(s)=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right]=\mathbb{E}_{\pi}\left[\prod_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s\right] \quad \forall s \in S
 $$
 
-which denotes by the expected return of state $s$ under policy $\pi$ . If $s$ is a terminated state, then $v_{\pi}(s) = 0$.  
+which denotes by the expected return of state $s​$ under policy $\pi​$ . If $s​$ is a terminated state, then $v_{\pi}(s) = 0​$.  
 
 **Action-value Function:** the value of a state-action pair action under policy $\pi$ is defined as 
+
+
 $$
 q_{\pi}(s, a) = \mathbb{E}_{\pi}[G_{t} | S_t = s, A_t = a] = \mathbb{E}_{\pi} [\prod_{k=0}^{\infty} \gamma^k R_{t+k+1} |S_t =s , A_t=a] \ \ \ \  \forall s \in \mathcal{S},a \in \mathcal{A}
 $$
 
+
+
 which denotes by the expected return of state $s$ with action $a$ committed under policy $\pi$. 
 
 **Advantage Function:** the difference between action-value and state value, 
-
 
 $$
 A_{\pi}(s, a) = q_{\pi}(s, a) - v_{\pi}(s, a) 
@@ -314,7 +321,8 @@ $$
 v_{*}(s)=\max _{a} q_{*}(s, a) \quad \forall s \in \mathcal{S}
 $$
 
-that means the value of a state under an optimal policy must equal the expected return for the best action from that state.
+that means the value of a state under an optimal policy must equal the expected return for the best action from that state. If it is deterministic action, all actions except the optimal action have $q_{\star}(s, a) = 0$ , since $\pi^{\star}(a \mid s) = 1.0$ for optimal action $a$ . 
+
 
 $$
 \begin{align}
@@ -323,7 +331,6 @@ v_{*}(s) &= \max_{a} q_{*}(s,a) \\
 &= \max_{a} \mathbb{E}_{\pi^*}[R_{t+1} + \gamma G_{t+1} | S_t = s, A_t = a] \\
 &= \max_{a} \mathbb{E}_{\pi^*}[R_{t+1} + \gamma v_{*}(S_{t+1}) | S_t = s, A_t = a] \\
 &= \max_{a}\sum_{r,s'} p(s', r |s, a) [r + \gamma v_{\pi^{*}}(s')] \\
-&= \max_{a} \sum_{r,s'} p(s', r |s, a) [r + \gamma v_{\pi^{*}}(s')] \\
 &= \pi^{*}(a|s) \sum_{r,s'} p(s', r |s, a) [r + \gamma v_{\pi^{*}}(s')]
 \end{align}
 $$
@@ -350,7 +357,9 @@ $$
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![bellman_opt_q_backup_diagram](/assets/img/bellman_opt_q_backup_diagram.png) | ![bellman_opt_q_backup_diagram2](/assets/img/bellman_opt_q_backup_diagram2.png) |
 
-The way to evaluate the optimal policy is to check if the Bellman optimality equation holds. 
+The way to check if it is an optimal policy is simply to evaluate if the Bellman optimality equation holds. 
+
+
 
 ## Generalized Policy Iteration
 
@@ -384,7 +393,7 @@ q_{\pi} (s, \pi^{\prime}(s)) \geq v_{\pi}(s) \ \ \ \ \ \ \forall s \in \mathcal{
 $$
 
 
-where $\pi'(s) = \arg\max_{a} q_{\pi} (s, a)$ . We can tweak the policy by choosing the best action for each state based on derived value function for current policy $ \pi$. Then the policy $ \pi'$ must be as good as or better than $ \pi$ , under our current value function, that is 
+where $\pi'(s) = \arg\max_{a} q_{\pi} (s, a)$ . We can tweak the policy by choosing the best action for each state based on derived value function for current policy $ \pi$, and ***we can view it as an optimization of action-value function w.r.t action space under current fixed policy $\pi$.***  Then the policy $ \pi'$ must be as good as or better than $ \pi​$ , under our current value function, that is 
 
 
 $$
@@ -392,7 +401,7 @@ v_{\pi'}(s) \geq v_{\pi}(s)
 $$
 
 
-Since the policy improvement is based on the policy evaluation on current policy which requires model dynamic and finite MDP for exact evaluation, we only can approximately improve the policy based on approximated policy evaluation with model-free methods if we do not know them. 
+Since the policy improvement is based on the policy evaluation on current policy which requires model dynamic and finite MDP for exact evaluation, we only can approximately improve the policy based on approximated policy evaluation with model-free methods if we do not know them. *The question here is how can we guarantee to improve the policy based on approximated policy evaluation ?* 
 
 
 
@@ -413,7 +422,10 @@ $$
 
 
 
-For completing the policy evaluation, it may require several sweeps over all states. 
+For completing the policy evaluation, it may require several sweeps over all states.  Making
+the policy greedy with respect to the value function typically makes the value function incorrect for the
+changed policy, and making the value function consistent with the policy typically causes that policy
+no longer to be greedy. 
 
 ### Value Iteration 
 
@@ -425,7 +437,7 @@ $$
 $$
 
 
-As we can see in the operation above, we do not observe the exact policy improvement step, however we can see that the value function is *updated to evaluate the improved policy*. This operation can be viewed as an update rule derived from the *Bellman optimality equation*. 
+As we can see in the operation above, we do not observe the exact policy improvement step, however we can see that the value function is *updated to evaluate the improved policy*. This operation also can be viewed as an update rule derived from the *Bellman optimality equation*. 
 
 
 
@@ -435,15 +447,16 @@ As we can see in the operation above, we do not observe the exact policy improve
 
 ## Model Free Approach
 
-We can utilize the state-value function with dynamic programming to find the optimal policy if we know the state transition probability. However, it is often that we do not have the known MDP, and we have to seek the help of model-free methods, which leverage the action-value function instead. There are two major classes of model-free methods: *Monte-Carlo method* for episodic tasks and *temporal-difference method* for continuous tasks. Both MC and TD methods can estimate the state-value function $V_{\pi}(s) $ without a model, however, state-value alone is not sufficient to determine a policy. Therefore, we only study the MC and TD method for policy evaluation and improvement with action-value function $Q_{\pi}(s, a)$ here.  Once we find the optimal action-value function $Q_{*}(s, a)$, we can recover an optimal policy by 
+We can utilize the state-value function with dynamic programming to find the optimal policy if we know the state transition probability. However, it is often that we do not have the known MDP, and we have to seek the help of model-free methods, which leverage the action-value function instead. There are two major classes of model-free methods: *Monte-Carlo method* for episodic tasks and *temporal-difference method* for continuous tasks. Both MC and TD methods can estimate the state-value function $V_{\pi}(s) $ without a model, however, state-value alone is not sufficient to determine a policy. Therefore, we only study the MC and TD methods for policy evaluation and improvement with action-value function $Q_{\pi}(s, a)$ here.  Once we find the optimal action-value function $Q_{*}(s, a)​$, we can recover an optimal policy by 
 
 
 $$
 \pi_{*}(s)=\arg \max _{a} Q_{*}(s, a)
 $$
 
+One drawback of model-free methods is we need many samples of trajectories. *One question here is how many samples are sufficient ? Can we do smart sampling ?*  
 
-One drawback of model-free methods is we need many samples of trajectories. 
+We refer to TD and Monte Carlo updates as *sample updates* because they involve looking ahead to a sample successor state (or state-action pair), using the value of the successor and the reward along the way to compute a backed-up value, and then updating the value of the original state (or state-action pair) accordingly. ***Sample updates*** differ from the ***expected updates*** of DP methods in that they are based on a single sample successor rather than on a complete distribution of all possible successors.
 
 
 
@@ -453,10 +466,11 @@ MC methods are used in episodic tasks that we can sample the full episodes.
 
 ![MC](/assets/img/MC.png)
 
-By the law of large numbers, $Q(s,a) \longleftarrow Q_{\pi}(s, a)$ as $N(s,a) \longrightarrow \infty$, and thus $\pi \approx \pi_*$. (Step 7 - Step 12) is policy evaluation, and (Step 13 - Step 15) is policy improvement, which follows value iteration (also the generalized policy iteration). We use the exploring starts to ensure every pair of state and action has probability $>0$ to be visited. 
 
-​    In the algorithm above, we need to keep track of the counter and returns. However, we cannot remember everything in real life, especially when state space and action space is very large. We can replace the (Step 9 - Step 11) with a running mean update:
 
+By the law of large numbers, $ Q_{\star} (s,a) \longleftarrow Q_{\pi}(s, a)$ as $N(s,a) \longrightarrow \infty$, and thus $\pi \approx \pi_*$. (Step 7 - Step 12) is policy evaluation, and (Step 13 - Step 15) is policy improvement, which follows value iteration (also the generalized policy iteration). We use the exploring starts to ensure every pair of state and action has probability $>0$ to be visited. 
+
+In the algorithm above, we need to keep track of the counter and returns. However, we cannot remember everything in real life, especially when state space and action space is very large. We can replace the (Step 9 - Step 11) with a running mean update:
 
 $$
 Q(s, a) = Q(s, a) + \alpha (G - Q(s, a))
@@ -486,22 +500,19 @@ N(s,a) &\longleftarrow N(s,a) + 1 \\
 \end{align}
 $$
 
-
-​    In addition, we can further avoid tracking the $N(s,a)$ by replacing it with $\alpha$. Thus, we can totally forget about the old episodes.
-
-
+In addition, we can further avoid tracking the $N(s,a)$ by replacing it with $\alpha​$. Thus, we can totally forget about the old episodes.
 
 ![MC2](/assets/img/MC2-1556298863798.png)
 
 
 
-The reason we use the equation (25) is because it still guarantees policy improvement towards optimum, at the meantime, it ensures the exploration to avoid some states are not visited ever in the sampled episode. After we improve the policy, we also use the improved policy to generate next episode, that is the meaning of on-policy. If the episode is generated by another policy which is different from the policy we are trying to learn, then it is called off-policy. Typically, we leverage importance sampling to help off-policy MC methods, and we will discuss it later in off-policy policy-based method. However, the Q-Learning is a special off-policy method that does not require important sampling.
+The reason we use the equation (25) is because it still guarantees policy improvement towards optimum, at the meantime, it ensures the exploration to avoid some states are not visited ever in the sampled episodes. After we improve the policy, we also use the improved policy to generate next episode, that is the meaning of ***on-policy***. If the episode is generated by another policy which is different from the policy we are trying to learn, then it is called ***off-policy***. Typically, we leverage importance sampling to help off-policy MC methods, and we will discuss it later in off-policy gradient methods. However, the Q-Learning is a special off-policy method that does not require important sampling.
 
- For every-visit Monte-Carlo policy evaluation, it is same as the first-visit MC prediction, except increment the counter $N(s,a)$ and $Returns(s,a)$ when every visit of state-action pair (s,a). 
+For *every-visit Monte-Carlo* policy evaluation, it is same as the first-visit MC prediction, except increment the counter $N(s,a)$ and $Returns(s,a)​$ when every visit of state-action pair (s,a). 
 
 ### Temporal-Difference Prediction and Control
 
-In many scenarios, we need to handle the continuing tasks that do not have a terminated step. We have to learn from the incomplete episodes by bootstrapping, which means to update a guess of state-action value function towards a guess of $G$. 
+In many scenarios, we need to handle the continuing tasks that do not have a terminated step. We have to learn from the incomplete episodes by bootstrapping, which means to update a guess of action value function towards a guess of $G​$. 
 
 ![SARSA](/assets/img/SARSA.png) 
 
@@ -509,8 +520,8 @@ In many scenarios, we need to handle the continuing tasks that do not have a ter
 
 We can see that the main difference between general update in MC methods and in SARSA, is 
 
-- MC methods wait until the return $G$ following the visit of $(s,a)$ is known, then use that return as a target for $Q(s,a)$. Whereas Monte Carlo methods must wait until the end of the episode to determine the increment to $Q(s,a)$ (only then is $G$ known). 
-- TD methods need to wait only until the next time step. At next step on visit of $(s',a')$, they immediately form a target and make a useful update using the observed reward $r$ and the estimate $Q(s',a')$. 
+- MC methods wait until the return $G$ following the visit of $(s,a)$ is known, then use that return as a target for $Q(s,a)$. 
+- Whereas Monte Carlo methods must wait until the end of the episode to determine the increment to $Q(s,a)$ (only then is $G$ known).  TD methods need to wait only until the next time step. At next step on visit of $(s',a')$, they immediately form a target and make a useful update using the observed reward $r$ and the estimate $Q(s',a')$. In effect, the target for MC is G, whereas the target for *TD(0)* is $r + \gamma Q(s', a')$ .
 - In addition, if we are estimating the $V \approx V_{*}$, the updating rule is similar: 
 
 
@@ -525,16 +536,15 @@ The main difference of SARSA and Q-Learning are:
 
 - SARSA is an on-policy method, and Q-Learning is a off-policy method.
 - Q-Learning chooses action at state $s$ following the behavior policy, whereas it updates the Q function assuming we are taking action that maximize $Q(s',a)$. 
-- Another way of understanding Q-Learning is by reference to the Bellman optimality equation. The learned state-action value function, $Q$, directly approximates the optimal state-action value function $Q_*$, independent of the policy being followed. 
+- Another way of understanding Q-Learning is by reference to the *Bellman optimality equation*. The learned action-value function, $Q$, directly approximates the optimal action-value function $Q_*​$, independent of the policy being followed. 
 - Q-Learning learns the optimal policy (by greedy policy) even when actions are selected according to a more exploratory or even random policy. 
-- If we change the update rule in Q-Learning to following:
+- If we change the update rule in Q-Learning to following, we get method call expected-SARSA. 
 
 $$
 Q(s,a) = Q(s,a) + \alpha[r + \gamma \sum_{a'} \pi(a'|s') Q(s', a') - Q(s,a)]
 $$
 
-which is called expected-SARSA. Q-Learning can be viewed as Max-SARSA.
-
+- Q-Learning can be viewed as Max-SARSA.
 
 
 
