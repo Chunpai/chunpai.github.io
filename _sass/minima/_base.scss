@@ -14,7 +14,8 @@ dl, dd, ol, ul, figure {
  * Basic styling
  */
 body {
-  font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
+  font: $base-font-weight #{$base-font-size}/#{$base-line-height}, $base-font-family;
+  //font-family: sans-serif;
   color: $text-color;
   background-color: $background-color;
   -webkit-text-size-adjust: 100%;
@@ -26,6 +27,7 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  text-align: justify-all;
 }
 
 
@@ -109,12 +111,14 @@ h1, h2, h3, h4, h5, h6 {
  * Links
  */
 a {
-  color: $brand-color;
+  //color: $brand-color;
+  color: blue;
   //color: #009926;
   text-decoration: none;
 
   &:visited {
-    color: darken($brand-color, 15%);
+    //color: darken($brand-color, 15%);
+    color: #2a7ae2;
   }
 
   &:hover {
@@ -136,13 +140,13 @@ a {
  * Blockquotes
  */
 blockquote {
-  color: $grey-color;
+  color: darkred;
   border-left: 2px solid $grey-color-light;
   padding-left: $spacing-unit / 2 ;
-  @include relative-font-size(1.125);
+  @include relative-font-size(1.0);
   letter-spacing: -1px;
-  font-style: italic;
-  font-family: sans-serif;
+  //font-style: italic;
+  //font-family: sans-serif;
 
   > :last-child {
     margin-bottom: 0;
