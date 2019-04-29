@@ -59,7 +59,7 @@ p(s'| s, a) = Pr(S_t = s'|S_{t-1}=s, A_{t-1}=a) = \sum_{r\in \mathcal{R}} p(s', 
 $$
 
 
-* $r(s, a, s')​$ or $\mathcal{R}_{ss'}^{a} ​$ : *expected* immediate reward on transition from $s​$ to $s'​$ under action $a​$ 
+* $r(s, a, s')$ or $\mathcal{R}_{ss'}^{a} $ : *expected* immediate reward on transition from $s$ to $s'$ under action $a$ 
 
   
 
@@ -217,7 +217,7 @@ $$
 
 It means over the long run, no matter what the starting state was, the proportion of time the chain spends in state $s$ is approximately $d(s)$, where $\sum_{s \in \mathcal{S} } d(s)$ = 1.0 .
 
-An MDP is ergodic if the Markov chain induced by any policy is ergodic. For any policy $\pi$ , an ergodic MDP has an average reward per time-step $\rho^{\pi}$ that is *independent* of start state 
+An MDP is ergodic if the Markov chain induced by any policy is ergodic. For any policy $\pi$ , an ergodic MDP has an ***average reward per time-step*** $\rho^{\pi}$ that is *independent* of start state 
 
 $$
 \rho^{\pi}=\lim _{T \rightarrow \infty} \frac{1}{T} \mathbb{E}\left[\sum_{t=1}^{T} R_{t}\right]
@@ -250,7 +250,7 @@ $$
 v_{\pi}(s)=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right]=\mathbb{E}_{\pi}\left[\prod_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s\right] \quad \forall s \in S
 $$
 
-which denotes by the expected return of state $s​$ under policy $\pi​$ . If $s​$ is a terminated state, then $v_{\pi}(s) = 0​$.  
+which denotes by the expected return of state $s$ under policy $\pi$ . If $s$ is a terminated state, then $v_{\pi}(s) = 0$.  
 
 **Action-value Function:** the value of a state-action pair action under policy $\pi$ is defined as 
 
@@ -393,7 +393,7 @@ q_{\pi} (s, \pi^{\prime}(s)) \geq v_{\pi}(s) \ \ \ \ \ \ \forall s \in \mathcal{
 $$
 
 
-where $\pi'(s) = \arg\max_{a} q_{\pi} (s, a)$ . We can tweak the policy by choosing the best action for each state based on derived value function for current policy $ \pi$, and ***we can view it as an optimization of action-value function w.r.t action space under current fixed policy $\pi$.***  Then the policy $ \pi'$ must be as good as or better than $ \pi​$ , under our current value function, that is 
+where $\pi'(s) = \arg\max_{a} q_{\pi} (s, a)$ . We can tweak the policy by choosing the best action for each state based on derived value function for current policy $ \pi$, and ***we can view it as an optimization of action-value function w.r.t action space under current fixed policy $\pi$.***  Then the policy $ \pi'$ must be as good as or better than $ \pi$ , under our current value function, that is 
 
 
 $$
@@ -447,7 +447,7 @@ As we can see in the operation above, we do not observe the exact policy improve
 
 ## Model Free Approach
 
-We can utilize the state-value function with dynamic programming to find the optimal policy if we know the state transition probability. However, it is often that we do not have the known MDP, and we have to seek the help of model-free methods, which leverage the action-value function instead. There are two major classes of model-free methods: *Monte-Carlo method* for episodic tasks and *temporal-difference method* for continuous tasks. Both MC and TD methods can estimate the state-value function $V_{\pi}(s) $ without a model, however, state-value alone is not sufficient to determine a policy. Therefore, we only study the MC and TD methods for policy evaluation and improvement with action-value function $Q_{\pi}(s, a)$ here.  Once we find the optimal action-value function $Q_{*}(s, a)​$, we can recover an optimal policy by 
+We can utilize the state-value function with dynamic programming to find the optimal policy if we know the state transition probability. However, it is often that we do not have the known MDP, and we have to seek the help of model-free methods, which leverage the action-value function instead. There are two major classes of model-free methods: *Monte-Carlo method* for episodic tasks and *temporal-difference method* for continuous tasks. Both MC and TD methods can estimate the state-value function $V_{\pi}(s) $ without a model, however, state-value alone is not sufficient to determine a policy. Therefore, we only study the MC and TD methods for policy evaluation and improvement with action-value function $Q_{\pi}(s, a)$ here.  Once we find the optimal action-value function $Q_{*}(s, a)$, we can recover an optimal policy by 
 
 
 $$
@@ -500,7 +500,7 @@ N(s,a) &\longleftarrow N(s,a) + 1 \\
 \end{align}
 $$
 
-In addition, we can further avoid tracking the $N(s,a)$ by replacing it with $\alpha​$. Thus, we can totally forget about the old episodes.
+In addition, we can further avoid tracking the $N(s,a)$ by replacing it with $\alpha$. Thus, we can totally forget about the old episodes.
 
 ![MC2](/assets/img/MC2-1556298863798.png)
 
@@ -530,7 +530,7 @@ The reason we use the equation (25) is because it still guarantees policy improv
 
 After we improve the policy, we also use the improved policy to generate next episode, that is the meaning of ***on-policy***. If the episode is generated by another policy which is different from the policy we are trying to learn, then it is called ***off-policy***. Typically, we leverage importance sampling to help off-policy MC methods, and we will discuss it later in off-policy gradient methods. However, the Q-Learning is a special off-policy method that does not require important sampling.
 
-For *every-visit Monte-Carlo* policy evaluation, it is same as the first-visit MC prediction, except increment the counter $N(s,a)$ and $Returns(s,a)​$ when every visit of state-action pair (s,a). 
+For *every-visit Monte-Carlo* policy evaluation, it is same as the first-visit MC prediction, except increment the counter $N(s,a)$ and $Returns(s,a)$ when every visit of state-action pair (s,a). 
 
 ### Temporal-Difference Prediction and Control
 
@@ -543,8 +543,8 @@ In many scenarios, we need to handle the continuing tasks that do not have a ter
 We can see that the main difference between general update in MC methods and in SARSA, is 
 
 - MC methods wait until the return (final outcome) $G$ following the visit of $(s,a)$ is known, then use that return as a target for $Q(s,a)$. TD can learn without the final outcome. 
-- Whereas Monte Carlo methods must wait until the end of the episode to determine the increment to $Q(s,a)​$ (only then is $G​$ known).  TD methods need to wait only until the next time step. At next step on visit of $(s',a')​$, they immediately form a target and make a useful update using the observed reward $r​$ and the estimate $Q(s',a')​$. In effect, the target for MC is G, whereas the target for *TD(0)* is $r + \gamma Q(s', a')​$ .
-- In addition, if we are estimating the $V \approx V_{*}​$, the updating rule is similar: 
+- Whereas Monte Carlo methods must wait until the end of the episode to determine the increment to $Q(s,a)$ (only then is $G$ known).  TD methods need to wait only until the next time step. At next step on visit of $(s',a')$, they immediately form a target and make a useful update using the observed reward $r$ and the estimate $Q(s',a')$. In effect, the target for MC is G, whereas the target for *TD(0)* is $r + \gamma Q(s', a')$ .
+- In addition, if we are estimating the $V \approx V_{*}$, the updating rule is similar: 
 
 
 $$
@@ -563,7 +563,7 @@ The main difference of SARSA and Q-Learning are:
 
 - SARSA is an on-policy method, and Q-Learning is a off-policy method.
 - Q-Learning chooses action at state $s$ following the behavior policy, whereas it updates the Q function assuming we are taking action that maximize $Q(s',a)$. 
-- Another way of understanding Q-Learning is by reference to the *Bellman optimality equation*. The learned action-value function, $Q$, directly approximates the optimal action-value function $Q_*​$, independent of the policy being followed. 
+- Another way of understanding Q-Learning is by reference to the *Bellman optimality equation*. The learned action-value function, $Q$, directly approximates the optimal action-value function $Q_*$, independent of the policy being followed. 
 - Q-Learning learns the optimal policy (by greedy policy) even when actions are selected according to a more exploratory or even random policy. 
 - If we change the update rule in Q-Learning to following, we get method call expected-SARSA. 
 

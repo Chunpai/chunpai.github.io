@@ -32,21 +32,21 @@ p_{\theta}(\tau)
 $$
 
 
-The objective is to find the optimal policy $\pi​$ which is parameterized by $$\theta​$$ such that have maximum expected return:
+The objective is to find the optimal policy $\pi$ which is parameterized by $$\theta$$ such that have maximum expected return:
 
 
 $$
 \begin{align}
 \theta^{*} &= \arg\max_{\theta} J(\theta) \\
-&= \arg \max _{\theta} \mathbb{E}_{\tau \sim p_{\theta}(\tau)}\left[\sum_{t}^{T} r\left(s_{t}, a_{t}\right)\right] 
+&= \arg \max _{\theta} \mathbb{E}_{\tau \sim p_{\theta}(\tau)}\left[\sum_{t=1}^{T} R_{t} \right]
 \end{align}
 $$
 
-First, we can do sampling and averaging to derive an unbiased estimate of our objective $J(\theta)​$ :
+First, we can do sampling and averaging to derive an unbiased estimate of our objective $J(\theta)$ :
 
 
 $$
-J(\theta) \approx \frac{1}{N} \sum_{n}^{N} \sum_{t}^{T}r\left(s_{t}, a_{t} \right)
+J(\theta) \approx \frac{1}{N} \sum_{n}^{N} \sum_{t}^{T} R_t
 $$
 
 
@@ -54,15 +54,22 @@ Then, we try to improve it based on gradient ascent. Once we obtain the optimal 
 
 ### Policy Gradient
 
-For each trajectory $ \tau$, there is a total reward $R$ associate with it, 
+For each trajectory $ \tau$, 
 
 
 $$
-R(\tau) = \sum_{t=1}^{T} r(s_t, a_t)
+\tau = \{S_0, A_0, R_1, \cdots, S_{T-1}, A_{T-1}, R_{T}, S_{T}\}
 $$
 
 
-Then the expected total reward of a trajectory under $ \theta​$ is 
+there is a total reward $R(\tau)$ associate with it, 
+
+$$
+R(\tau) = \sum_{t=1}^{T} R_t = \sum_{t=0}^{T} R(s_t, a_t) = G_{0}
+$$
+
+
+Then the expected total reward of a trajectory under $ \theta$ is 
 
 
 
@@ -74,7 +81,7 @@ $$
 
 
 
-We can maximize the $$ \bar{R}_{\theta}$$ w.r.t  $\theta$ with gradient descent. We firstly compute the $\nabla_{\theta} \bar{R}_{\theta}$ 
+We can maximize the $$ \bar{R}_{\theta}$$ w.G.t  $\theta$ with gradient descent. We firstly compute the $\nabla_{\theta} \bar{R}_{\theta}$ 
 
 
 $$
@@ -84,11 +91,11 @@ $$
 &= \sum_{\tau} R(\tau) p_{\theta}(\tau) \nabla \log p_{\theta}(\tau)\\
 &= E_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla \log p_{\theta}(\tau) \right] \\
 &\color{red}{\approx} \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \nabla \log p_{\theta}(\tau^n) \\
-&= \frac{1}{N} \sum_{n=1}^{N} R(\tau^n) \nabla \log \left\{ p\left(s_{1}^{n} \right) \prod_{t}\left[\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot p\left(s_{t+1}^{n} | s_{t}^{n}, a_{t}^{n}\right)\right]\right\} \\
+&= \frac{1}{N} \sum_{n=1}^{N} R(\tau^n) \nabla \log \left\{ p\left(s_{0}^{n} \right) \prod_{t}\left[\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot p\left(s_{t+1}^{n} | s_{t}^{n}, a_{t}^{n}\right)\right]\right\} \\
 &= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \nabla \log \left[  \prod_{t}\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
 &= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \sum_{t} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n} \right) \\
 &=\frac{1}{N} \sum_{n=1}^{N} \sum_{t}^{T_n} R(\tau^n) \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \\
-&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t}^{T_n} r(s_t, a_t) \right] \left[\sum_{t}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right]
+&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t}^{T_n} R(s_t, a_t) \right] \left[\sum_{t}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right]
 \end{align}
 $$
 
@@ -102,7 +109,7 @@ $$
 
 The prove above is related to the *policy gradient theorem* [1], which provides us an analytic expression for the gradient of performance w.r.t the policy parameter that *does not* involve the derivative of the state distribution (model dynamic). 
 
-Now given a policy $ \pi_{\theta}​$ , we need to 1.) first collect many trajectories with current policy, 2.) accumulate or estimate the return, 3.)  compute $$\nabla \bar{R}_{\theta}​$$ and apply gradient descent [REINFORCE algo.]:
+Now given a policy $ \pi_{\theta}$ , we need to 1.) first collect many trajectories with current policy, 2.) accumulate or estimate the return, 3.)  compute $$\nabla \bar{R}_{\theta}$$ and apply gradient descent [REINFORCE algo.]:
 
 
 
@@ -112,7 +119,7 @@ $$
 
 
 
-where $$ \nabla \bar{R}_{\theta}​$$ is *a stochastic estimate whose expectation approximates the gradient of the performance measure with respect to its argument* $\theta​$ . 
+where $$ \nabla \bar{R}_{\theta}$$ is *a stochastic estimate whose expectation approximates the gradient of the performance measure with respect to its argument* $\theta$ . 
 
 ![REINFORCE algorithm, a on-policy policy gradient method](/assets/img/REINFOCE_algo.png)
 
@@ -120,7 +127,7 @@ where $$ \nabla \bar{R}_{\theta}​$$ is *a stochastic estimate whose expectatio
 
 #### Relationship between Policy Gradient and MLE
 
-If we try to maximize the log-likelihood of a trajectory of $T$ state-action pairs $(s_t, a_t)​$ with gradient ascent, then we need to compute the gradient of log-likelihood as
+If we try to maximize the log-likelihood of a trajectory of $T$ state-action pairs $(s_t, a_t)$ with gradient ascent, then we need to compute the gradient of log-likelihood as
 
 
 $$
@@ -128,7 +135,7 @@ $$
 $$
 
 
-It is the $$ \nabla \bar{R}_{\theta}$$ without multiplying the return term $ \sum_{t}^{T_n} r(s_t, a_t) $. We can see that policy gradient ascent update is a formalization of trial-and-error: if current $\pi_{\theta} ( a_{t}^{n} \mid s_{t}^{n} )$ leads to positive total reward, then the gradient update will increase the probability $\pi_{\theta} ( a_{t}^{n} \mid  s_{t}^{n} )$. If negative total reward, then it will decrease the probability.
+It is the $$ \nabla \bar{R }_{\theta}$$ without multiplying the return term $ \sum_{t}^{T_n} R_t $. We can see that policy gradient ascent update is a formalization of trial-and-error: if current $\pi_{\theta} ( a_{t}^{n} \mid s_{t}^{n} )$ leads to positive total reward, then the gradient update will increase the probability $\pi_{\theta} ( a_{t}^{n} \mid  s_{t}^{n} )$. If negative total reward, then it will decrease the probability.
 
 
 
@@ -140,7 +147,7 @@ Recall that,
 
 
 $$
-\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N}  \left[\sum_{t=1}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \left[ \sum_{t=1}^{T_n} r(s_t, a_t) \right]
+\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N}  \left[\sum_{t=0}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \left[ \sum_{t=0}^{T_n} R(s_t, a_t) \right]
 $$
 
 
@@ -148,7 +155,7 @@ Simply use the distribution law, we have
 
 
 $$
-\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=1}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{t=1}^{T_n} r(s_t, a_t) \right]
+\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=0}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{t=0}^{T_n} R(s_t, a_t) \right]
 $$
 
 
@@ -157,26 +164,26 @@ Since the policy at time $t'$ cannot affect reward at time $t$ when $t < t'$ , w
 
 $$
 \begin{align}
-\nabla \bar{R}_{\theta} &\approx \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=1}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{\color{red}{t'=t}}^{T_n} r(s_{t'}, a_{t'}) \right] \\
-&= \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=1}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot \color{red}{\hat{Q}_{t}^{n}} \right]
+\nabla \bar{R}_{\theta} &\approx \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=0}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{\color{red}{t'=t}}^{T_n} R(s',a')\right] \\
+&= \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=0}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot \color{red}{\hat{Q}_{t}^{n}} \right]
 \end{align}
 $$
 
-where it is not unbiased estimator anymore. **Here we add some bias and reduce some variance ?**. Recall the definition of variance is MSE between estimated reward multiplier and true reward multiplier. Here, since we reduce the reward multiplicity from $\sum_{t=1}^{T_n} r(s_t, a_t)$ to $\sum_{t'=t}^{T_n} r(s_{t'}, a_{t'})$ , the estimated reward multiplier is reduced to a more accurate one, thus the variance of our estimated policy gradient reduced. Am I right ?
+where it is not unbiased estimator anymore. **Here we add some bias and reduce some variance ?**. Recall the definition of variance is MSE between estimated reward multiplier and true reward multiplier. Here, since we reduce the reward multiplicity from $\sum_{t=0}^{T_n} R(s_t, a_t)$ to $\sum_{t'=t}^{T_n} R(s_{t'}, a_{t'})$ , the estimated reward multiplier is reduced to a more accurate one, thus the variance of our estimated policy gradient reduced. Am I right ?
 
-We can also understand in the following way: the original gradient $ \nabla \log \pi_{\theta}(a_{t}^{n} \mid  s_{t}^{n} )​$  of all actions in the same trajectory always multiply same value $R(\tau^n) ​$ , and intuitively it would be more reasonable to assign high value to $\pi_{\theta}(a_{t}^{n} \mid  s_{t}^{n} ) ​$ which action leads to high return in the following steps. 
+We can also understand in the following way: the original gradient $ \nabla \log \pi_{\theta}(a_{t}^{n} \mid  s_{t}^{n} )$  of all actions in the same trajectory always multiply same value $R(\tau^n) $ , and intuitively it would be more reasonable to assign high value to $\pi_{\theta}(a_{t}^{n} \mid  s_{t}^{n} ) $ which action leads to high return in the following steps. 
 
 
 
 #### Tip 1: Add a Baseline
 
-Sometimes, the total rewards of all trajectories are always positive, then the gradient update will always increase the probability of all $\pi_{\theta} ( a_{t}^{n} \mid s_{t}^{n} )​$, since $$\nabla \bar{R}_{\theta}​$$  is positive. Although the increasing magnitude are different among different actions, we need to ensure the $\sum_{j} \pi_{\theta} ( a_{tj}^{n} \mid  s_{t}^{n} ) = 1.0 ​$ with normalization, which may actually decrease the probability of good actions. Notice that, we are doing sampling to approximate the expectation, and at the worse case, some good actions may not be sampled ever, then the probabilities of all other (including bad) actions are increased. After normalization, it results in low probabilities of good actions which were not sampled, and the good actions may not be sampled ever since then.
+Sometimes, the total rewards of all trajectories are always positive, then the gradient update will always increase the probability of all $\pi_{\theta} ( a_{t}^{n} \mid s_{t}^{n} )$, since $$\nabla \bar{R}_{\theta}$$  is positive. Although the increasing magnitude are different among different actions, we need to ensure the $\sum_{j} \pi_{\theta} ( a_{tj}^{n} \mid  s_{t}^{n} ) = 1.0 $ with normalization, which may actually decrease the probability of good actions. Notice that, we are doing sampling to approximate the expectation, and at the worse case, some good actions may not be sampled ever, then the probabilities of all other (including bad) actions are increased. After normalization, it results in low probabilities of good actions which were not sampled, and the good actions may not be sampled ever since then.
 
-We may want to assign negative rewards to bad actions so that the gradient update will decrease the probability. We can modify the $ \nabla \bar{R}_{\theta}​$ as below:
+We may want to assign negative rewards to bad actions so that the gradient update will decrease the probability. We can modify the $ \nabla \bar{R}_{\theta}$ as below:
 
 
 $$
-\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N} \sum_{t}^{T_n} \left\{ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot [\hat{Q}_t^n - b] \right\}
+\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N} \sum_{t=0}^{T_n} \left\{ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot [\hat{Q}_t^n - b] \right\}
 $$
 
 
@@ -237,7 +244,7 @@ which is just expected reward, but weighted by gradient magnitudes. The computat
 
 ### Off-Policy Gradient
 
-Policy gradient, for example REINFORCE algorithm, is an on-policy method. It is inefficient to iteratively update the model $ \pi_{\theta} $ and then generate new trajectories. Off-policy method is to train the policy $\pi_{\theta}$, called *target policy*, by using the sampled trajectories generated by another policy $ \pi_{\omega}​$, called *behavior policy*. In this way, we can reuse the sample trajectories. 
+Policy gradient, for example REINFORCE algorithm, is an on-policy method. It is inefficient to iteratively update the model $ \pi_{\theta} $ and then generate new trajectories. Off-policy method is to train the policy $\pi_{\theta}$, called *target policy*, by using the sampled trajectories generated by another policy $ \pi_{\omega}$, called *behavior policy*. In this way, we can reuse the sample trajectories. 
 
 Off-policy method has different form of objective function:
 
@@ -259,7 +266,7 @@ $$
 $$
 
 
-We can compute the ratio $ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)}​$ 
+We can compute the ratio $ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)}$ 
 
 
 $$
@@ -278,7 +285,7 @@ where we use the fact that different policies do not effect the transition proba
 
 #### Policy Gradient with Important Sampling
 
-We can derive the policy gradient w.r.t to parameter $\theta$ as:
+We can derive the policy gradient w.G.t to parameter $\theta$ as:
 
 
 $$
@@ -291,7 +298,7 @@ $$
 $$
 
 
-if $\theta = \omega$ , then we can remove $\frac{p_{\theta}(\tau)  }{p_{\omega}(\tau)} $ at 3rd step, and $$\nabla_{\theta} J(\theta) = E_{\tau \sim p_{\omega}(\tau)} \left[ \nabla \log p_{\theta}(\tau) R(\tau)\right]$$.  We can also do more analysis on last equation and try to reduce the variance. But we omit it here [6, 7, 8]. 
+if $\theta = \omega$ , then we can remove $\frac{p_{\theta}(\tau)  }{p_{\omega}(\tau)} $ at 3rd step, and $$\nabla_{\theta} J(\theta) = E_{\tau \sim p_{\omega}(\tau)} \left[ \nabla \log p_{\theta}(\tau) G(\tau)\right]$$.  We can also do more analysis on last equation and try to reduce the variance. But we omit it here [6, 7, 8]. 
 
 
 
@@ -321,7 +328,7 @@ $$
 
 
 
-The precision of these estimates depend on the variances of $R(\tau)$ and $\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)$ respectively. 
+The precision of these estimates depend on the variances of $G(\tau)$ and $\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} G(\tau)$ respectively. 
 
 
 $$
@@ -338,7 +345,7 @@ $$
 $$
 
 
-If the distribution $p_{\theta}(\tau)$ is very different from the $p_{\omega}(\tau)​$ , the precision of two different estimates would be very different. It is worth noting that importance sampling provides a way for variance reduction [4, 5] by restricting 
+If the distribution $p_{\theta}(\tau)$ is very different from the $p_{\omega}(\tau)$ , the precision of two different estimates would be very different. It is worth noting that importance sampling provides a way for variance reduction [4, 5] by restricting 
 
 
 $$
@@ -370,7 +377,7 @@ $$
 [1] Chapter 13: Policy Gradient Methods, [Reinforcement Learning:
 An Introduction](http://incompleteideas.net/book/bookdraft2017nov5.pdf)
 
-[2] Sutton, R. S., McAllester, D. A., Singh, S. P., and Mansour, Y. (1999). [Policy gradient methods for reinforcement learning with function approximation](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf). NeurIPS. 
+[2] Sutton, G. S., McAllester, D. A., Singh, S. P., and Mansour, Y. (1999). [Policy gradient methods for reinforcement learning with function approximation](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf). NeurIPS. 
 
 [3] [Lecture of Berkeley DRL course](https://www.youtube.com/watch?v=XGmd3wcyDg8&list=PLkFD6_40KJIxJMR-j5A1mkxK26gh_qg37&index=21)
 

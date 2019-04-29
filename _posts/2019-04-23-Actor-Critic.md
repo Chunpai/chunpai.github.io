@@ -4,8 +4,14 @@ tags: reinforcement-learning
 author: Chunpai
 ---
 
+
+
+
+
 * TOC
 {: toc}
+
+
 ### Variance on Policy Gradient
 
 
@@ -28,7 +34,7 @@ $$
 $$
 
 
-The most exciting thing here is we combine the value based method with policy-based method. Here policy-based method can be viewed as an actor that try to generate a good action, and value-based method can be viewed as a critic to evaluate how good is the action. If the critic says it is a good action, then the actor will increase the probability of this action; otherwise decrease. An actor adjusts the parameter $\theta​$ of the stochastic policy $\pi_{\theta}(a \mid  s)​$ by stochastic gradient ascent. A critic parameterized by $w​$ estimates the action-value function $Q^{w}(s, a) \approx Q^{\pi}(s, a)​$ using an appropriate policy evaluation algorithm such as temporal-difference learning. 
+The most exciting thing here is we combine the value based method with policy-based method. Here policy-based method can be viewed as an actor that try to generate a good action, and value-based method can be viewed as a critic to evaluate how good is the action. If the critic says it is a good action, then the actor will increase the probability of this action; otherwise decrease. An actor adjusts the parameter $\theta$ of the stochastic policy $\pi_{\theta}(a \mid  s)$ by stochastic gradient ascent. A critic parameterized by $w$ estimates the action-value function $Q^{w}(s, a) \approx Q^{\pi}(s, a)$ using an appropriate policy evaluation algorithm such as temporal-difference learning. 
 
 
 
