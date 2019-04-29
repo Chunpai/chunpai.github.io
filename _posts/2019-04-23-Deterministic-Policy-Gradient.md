@@ -25,11 +25,11 @@ The objective above can also be viewed as ***maximum expected start value*** in 
 
 
 $$
-J_{0}(\theta)=\mathbb{E}_{\pi_{\theta}}\left[G_{0} \right] = \sum_{s_0 \in \mathcal{S}} p_{1}(s_0) \cdot V^{\pi_{\theta}}(s_0)
+J_{0}(\theta)=\mathbb{E}_{\pi_{\theta}}\left[G_{0} \mid \pi  \right] = \sum_{s_0 \in \mathcal{S}}p_{1}(s_0) \cdot V^{\pi_{\theta}}(s_0)
 $$
 
 
-where $p_{1}$ denotes the starting probability and $G_0 = R_1 + \cdots + R_{T}$, which is independent of the policy $ \pi$. However, in continuous tasks, we use the ***average state value*** as objective function:
+where $p_{1}​$ denotes the starting probability and $G_0 = R_1 + \cdots + R_{T}​$, which is independent of the policy $ \pi​$. However, in continuous tasks, we use the ***average state value*** as objective function:
 
 
 $$
@@ -45,7 +45,7 @@ J_{a v R}(\theta)=\sum_{s} d^{\pi_{\theta}}(s) \sum_{a} \pi_{\theta}(s, a) r(s, 
 $$
 
 
-where $d^{\pi_{\theta}}(s)$ is *stationary distribution of Markov chain* for $\pi_{\theta}$. We also have 
+where $d^{\pi_{\theta}}(s)​$ is *stationary distribution of Markov chain* for $\pi_{\theta}​$. We also have 
 
 
 $$
@@ -54,7 +54,7 @@ d^{\pi_{\theta}}(s) &= \sum_{s^{\prime} \in \mathcal{S}} d^{\pi_{\theta}} \left(
 &= \sum_{s^{\prime} \in \mathcal{S}}\sum_{t=1}^{\infty} p_{1}(s') p(s' \rightarrow s, t, \pi_{\theta}) 
 \end{align}
 $$
-where $p(s' \rightarrow s, t, \pi_{\theta}) $ denotes the probability from state $s'$ to state $s$ with $t$ steps transition. In addition, we sometimes introduce the discount factor $\gamma \in (0, 1)$ into MDP, that is every state transition probability times $\gamma$, 
+where $p(s' \rightarrow s, t, \pi_{\theta}) ​$ denotes the probability from state $s'​$ to state $s​$ with $t​$ steps transition. In addition, we sometimes introduce the discount factor $\gamma \in (0, 1)​$ into MDP, that is every state transition probability times $\gamma​$, 
 
 
 $$
@@ -62,7 +62,7 @@ $$
 $$
 
 
-and since $\sum_{s'} p(s' \rightarrow s, t, \pi_{\theta}) = 1.0$, the discount factor in fact changes the MDP and add one extra terminate state *implicitly* with probability $ 1-\gamma$, which guarantees that $\sum_{s'} \tilde{p}(s' \rightarrow s, t, \pi_{\theta}) = 1.0$ ; Thus, we also have discounted state distribution as: 
+and since $\sum_{s'} p(s' \rightarrow s, t, \pi_{\theta}) = 1.0​$, the discount factor in fact changes the MDP and add one extra terminate state *implicitly* with probability $ 1-\gamma​$, which guarantees that $\sum_{s'} \tilde{p}(s' \rightarrow s, t, \pi_{\theta}) = 1.0​$ ; Thus, we also have discounted state distribution as: 
 
 
 $$
@@ -72,30 +72,73 @@ $$
 
 ## Policy Gradient Theorem
 
-The [policy gradient theorem](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf) [4] states that the policy gradient is not dependent on *the gradient of state distribution* $\nabla_{\theta} d^{\pi_{\theta}}(s)$, despite the state distribution depends on the policy parameter $\theta$. This theorem makes computing policy gradient possible. We will show the proof in terms of the state-value function at below.
+The [policy gradient theorem](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf) [4] states that the policy gradient is not dependent on *the gradient of state distribution* $\nabla_{\theta} d^{\pi_{\theta}}(s)​$, despite the state distribution depends on the policy parameter $\theta​$. This theorem makes computing policy gradient possible. We will show the proof in terms of the state-value function at below.
 
 > $$
-> \nabla J(\theta) \propto \sum_{s\in \mathcal{S}} d(s) \sum_{a} \nabla \pi(a \mid s) Q_{\pi}(s, a)
+> \nabla J(\theta) \propto \sum_{s\in \mathcal{S}} d(s) \sum_{a} \nabla_{\theta} \pi_{\theta}(a \mid s) Q_{\pi}(s, a)
 > $$
 >
 > 
 >
 > Proof. First we show the gradient of state-value function
 >
-> 
+>
 > $$
 > \begin{aligned} \nabla V_{\pi}(s) 
-> &=\nabla\left[\sum_{a} \pi(a | s) Q_{\pi}(s, a)\right], \quad \text { for all } s \in \delta \\ &=\sum_{a}\left[\nabla \pi(a | s) Q_{\pi}(s, a)+\pi(a | s) \nabla Q_{\pi}(s, a)\right] \\ &=\sum_{a}\left[\nabla \pi(a | s) Q_{\pi}(s, a)+\pi(a | s) \nabla \sum_{s^{\prime} r} p\left(s^{\prime}, r | s, a\right)\left(r+V_{\pi}\left(s^{\prime}\right)\right)\right] \\
-> &=\sum_{a}\left[\nabla \pi(a | s) Q_{\pi}(s, a)+\pi(a | s) \sum_{s^{\prime}} p\left(s^{\prime} | s, a\right) \nabla V_{\pi}\left(s^{\prime}\right)\right] \\ 
-> &=\sum_{a}\left[\nabla \pi(a | s) Q_{\pi}(s, a)+\pi(a | s) \sum_{s^{\prime}} p\left(s^{\prime} | s, a\right) \sum_{a^{\prime}} [\nabla \pi\left(a^{\prime} | s^{\prime}\right) Q_{\pi}\left(s^{\prime}, a^{\prime}\right)+\pi\left(a^{\prime} | s^{\prime}\right) \sum_{s^{\prime \prime}} p\left(s^{\prime \prime} | s^{\prime}, a^{\prime}\right) \nabla v_{\pi}\left(s^{\prime \prime}\right) ] \right] \\
-> &= \sum_{x \in S} \sum_{k=0}^{\infty} \operatorname{Pr}(s \rightarrow x, k, \pi) \sum_{a} \nabla \pi(a | x) Q_{\pi}(x, a) 
+> &=\nabla\left[\sum_{a} \pi(a | s) Q_{\pi}(s, a)\right], \quad \text { for all } s \in \mathcal{S} \\ &=\sum_{a}\left[\nabla \pi(a | s) Q_{\pi}(s, a)+\pi(a | s) \nabla Q_{\pi}(s, a)\right] \\ &=\sum_{a}\left[\nabla \pi(a | s) Q_{\pi}(s, a)+\pi(a | s) \nabla \sum_{s^{\prime} r} p\left(s^{\prime}, r | s, a\right)\left(r+V_{\pi}\left(s^{\prime}\right)\right)\right] \\
+> &=\sum_{a}\left[\nabla \pi(a | s) Q_{\pi}(s, a)+\pi(a | s) \sum_{s^{\prime}} p\left(s^{\prime} | s, a\right) \color{blue}{\nabla V_{\pi}\left(s^{\prime}\right)} \right] \\ 
+> &= \sum_{a} \nabla \pi(a | s) Q_{\pi}(s, a)+ \sum_{a} \left[ \pi(a | s) \sum_{s^{\prime}} p\left(s^{\prime} | s, a\right) \color{blue}{\nabla V_{\pi}\left(s^{\prime}\right)} \right] \\
+> &= \sum_{a} \nabla \pi(a | s) Q_{\pi}(s, a)+ \sum_{s^{\prime}} \color{green}{\sum_{a}  \pi(a | s) p\left(s^{\prime} | s, a\right)} \color{blue}{\nabla V_{\pi}\left(s^{\prime}\right)}  \\
+> &= \sum_{a} \nabla \pi(a | s) Q_{\pi}(s, a)+ \sum_{s^{\prime}} \color{green}{p(s' \mid s)} \color{blue}{\nabla V_{\pi}\left(s^{\prime}\right)}  \\
+> &= \sum_{a} \nabla \pi(a | s) Q_{\pi}(s, a)+ \sum_{s^{\prime}} \color{green}{p(s\rightarrow s', t=1,\pi)} \color{blue}{\nabla V_{\pi}\left(s^{\prime}\right)}  \\
+> &=\sum_{a} \nabla \pi(a | s) Q_{\pi}(s, a)+ \sum_{s^{\prime}} \color{green}{p(s\rightarrow s', t=1,\pi)} \color{blue}{\sum_{a^{\prime}} [\nabla \pi\left(a^{\prime} | s^{\prime}\right) Q_{\pi}\left(s^{\prime}, a^{\prime}\right)+\pi\left(a^{\prime} | s^{\prime}\right) \sum_{s^{\prime \prime}} p\left(s^{\prime \prime} | s^{\prime}, a^{\prime}\right) \nabla V_{\pi}\left(s^{\prime \prime}\right)]}  \\
+> &=\sum_{a} \nabla \pi(a | s) Q_{\pi}(s, a)+ \sum_{s^{\prime}} \color{green}{ p(s\rightarrow s', t=1,\pi)} \color{blue}{ \sum_{a^{\prime}} \nabla \pi\left(a^{\prime} | s^{\prime}\right) Q_{\pi}\left(s^{\prime}, a^{\prime}\right)}+ \sum_{s^{\prime}} \color{green}{ p(s\rightarrow s', t=1,\pi)} \color{blue}{ \sum_{a^{\prime}} \pi\left(a^{\prime} | s^{\prime}\right) \sum_{s^{\prime \prime}} p\left(s^{\prime \prime} | s^{\prime}, a^{\prime}\right) \nabla V_{\pi}\left(s^{\prime \prime}\right)}  \\
+> &= \sum_{a} \nabla \pi(a | s) Q_{\pi}(s, a)+ \sum_{s^{\prime}}  p\left(s \rightarrow s^{\prime}, t=1, \pi\right) \sum_{a^{\prime}}\nabla \pi\left(a^{\prime} | s^{\prime}\right) Q_{\pi}\left(s^{\prime}, a^{\prime}\right)+ \color{blue}{\sum_{s^{\prime\prime}}  p\left(s \rightarrow s^{\prime\prime }, t=2, \pi\right) \nabla V_{\pi}\left(s^{\prime \prime}\right)} \\
+> &= \underbrace{\sum_{s}  p(s\rightarrow s, t = 0, \pi)}_{=1.0} \sum_{a}\nabla \pi(a | s) Q_{\pi}(s, a)+ \sum_{s^{\prime}}  p\left(s \rightarrow s^{\prime}, t=1, \pi\right) \sum_{a^{\prime}}\nabla \pi\left(a^{\prime} | s^{\prime}\right) Q_{\pi}\left(s^{\prime}, a^{\prime}\right)+ \color{blue}{\sum_{s^{\prime\prime}}  p\left(s \rightarrow s^{\prime\prime }, t=2, \pi\right) \nabla V_{\pi}\left(s^{\prime \prime}\right)} \\
+> &= \text{recursively unrolling the formula . . .} \\
+> &= \sum_{x \in S} \sum_{t=0}^{\infty} \operatorname{Pr}(s \rightarrow x, t, \pi) \sum_{a} \nabla \pi(a | x) Q_{\pi}(x, a) 
 > \end{aligned}
 > $$
->  
+>
+> Now, we can compute the gradient of objective function:
+>
+> 
+>
+> $$
+> \begin{aligned} 
+> \nabla_{\theta} J(\theta) 
+> &= \sum_{s_0 \in \mathcal{S}} p_1(s_0) \nabla_{\theta} V^{\pi}\left(s_{0}\right) \\ 
+> &= \sum_{s_0 \in \mathcal{S}} p_1(s_0) \sum_{s \in \mathcal{S}} \sum_{t=0}^{\infty} p\left(s_{0} \rightarrow s, t, \pi\right) \sum_{a} \nabla \pi(a | s) Q_{\pi}(s, a)  \\ 
+> &= \sum_{s \in \mathcal{S}} \left[ \sum_{s_0 \in \mathcal{S}}  \sum_{t=0}^{\infty} p_1(s_0) p\left(s_{0} \rightarrow s, t, \pi\right)\right] \sum_{a} \nabla \pi(a | s) Q_{\pi}(s, a)  \\
+> &=  \sum_{s \in \mathcal{S}} d^{\pi}(s) \sum_{a} \nabla_{\theta} \pi_{\theta}(a | s) Q^{\pi}(s, a) \\
+> &= \sum_{s \in \mathcal{S}} d^{\pi}(s) \sum_{a} \pi_{\theta}(a | s)  \frac{\nabla_{\theta} \pi_{\theta}(a | s)}{\pi_{\theta}(a | s) } Q^{\pi}(s, a) \\
+> &= \sum_{s \in \mathcal{S}} d^{\pi}(s) \sum_{a} \pi_{\theta}(a | s)  \nabla_{\theta} \log \pi_{\theta}(a | s)Q^{\pi}(s, a) \\
+> &= \sum_{s \in \mathcal{S}} \sum_{a} \left[ d^{\pi}(s)  \pi_{\theta}(a | s) \right] \nabla_{\theta} \log \pi_{\theta}(a | s)Q^{\pi}(s, a) \\
+> &= \operatorname{E}_{s \sim d^{\pi}, a \sim A(s)} \left[ \nabla_{\theta} \log \pi_{\theta}(a | s)Q^{\pi}(s, a) \right]
+> \end{aligned}
+> $$
+>
+> 
+>
+> The last equation above can be interpreted as the expected value of $  \nabla_{\theta} \log \pi_{\theta}(a \mid s)Q^{\pi}(s, a) $ for a state and an action pair with stationary distribution. However, the equation above depends on the state stationary distribution, which depends on the transition probability, and in most case we do not know the transition probability, and we have to sample a lot trajectories to estimate it ? How can we change the last equation to the generalized advantage estimation [6] ?? 
+>
+> 
+>
+> 
+
+
+
+
 
 ## Deterministic Policy Gradient (DPG)
 
-You can see that the $$\nabla_{\theta} J(\theta)$$ derived in stochastic policy gradient becomes 0 if it is deterministic policy. 
+You can see that the $$\nabla_{\theta} J(\theta)$$ derived in stochastic policy gradient becomes 0 if it is deterministic policy. We have to prove the policy gradient theorem in the deterministic way. 
+
+
+$$
+
+$$
+
 
 
 
@@ -119,6 +162,8 @@ You can see that the $$\nabla_{\theta} J(\theta)$$ derived in stochastic policy 
 
 [4] [Policy Gradient Methods for Reinforcement Learning with FunctionApproximation](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf) 
 
+[5] [Policy Gradient Algorithms](https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html#dpg) 
 
+[6] [Notes on the Generalized Advantage Estimation Paper](https://danieltakeshi.github.io/2017/04/02/notes-on-the-generalized-advantage-estimation-paper/) 
 
 

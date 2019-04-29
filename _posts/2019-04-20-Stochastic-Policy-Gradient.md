@@ -94,8 +94,9 @@ $$
 &= \frac{1}{N} \sum_{n=1}^{N} R(\tau^n) \nabla \log \left\{ p\left(s_{0}^{n} \right) \prod_{t}\left[\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot p\left(s_{t+1}^{n} | s_{t}^{n}, a_{t}^{n}\right)\right]\right\} \\
 &= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \nabla \log \left[  \prod_{t}\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
 &= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \sum_{t} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n} \right) \\
-&=\frac{1}{N} \sum_{n=1}^{N} \sum_{t}^{T_n} R(\tau^n) \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \\
-&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t}^{T_n} R(s_t, a_t) \right] \left[\sum_{t}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right]
+&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t}^{T_n} R(s_t, a_t) \right] \left[\sum_{t}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
+&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t}^{T_n} \left( \sum_{t}^{T_n} R(s_t, a_t) \right)  \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
+& \approx \operatorname{E}\left[\sum_{t}^{T_n} \left( \sum_{t}^{T_n} R(s_t, a_t) \right)  \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right]
 \end{align}
 $$
 
@@ -107,7 +108,7 @@ $$
 \nabla \log f(x) = \frac{\nabla f(x)}{f(x)}
 $$
 
-The prove above is related to the *policy gradient theorem* [1], which provides us an analytic expression for the gradient of performance w.r.t the policy parameter that *does not* involve the derivative of the state distribution (model dynamic). 
+The proof above is related to the *policy gradient theorem* [1], which provides us an analytic expression for the gradient of performance w.r.t the policy parameter that *does not* involve the **derivative** *of the state distribution* (model dynamic). 
 
 Now given a policy $ \pi_{\theta}$ , we need to 1.) first collect many trajectories with current policy, 2.) accumulate or estimate the return, 3.)  compute $$\nabla \bar{R}_{\theta}$$ and apply gradient descent [REINFORCE algo.]:
 
@@ -169,7 +170,7 @@ $$
 \end{align}
 $$
 
-where it is not unbiased estimator anymore. **Here we add some bias and reduce some variance ?**. Recall the definition of variance is MSE between estimated reward multiplier and true reward multiplier. Here, since we reduce the reward multiplicity from $\sum_{t=0}^{T_n} R(s_t, a_t)$ to $\sum_{t'=t}^{T_n} R(s_{t'}, a_{t'})$ , the estimated reward multiplier is reduced to a more accurate one, thus the variance of our estimated policy gradient reduced. Am I right ?
+where it is not unbiased estimator anymore. **Here we add some bias and reduce some variance ?** Recall the definition of variance is MSE between estimated reward multiplier and true reward multiplier. Here, since we reduce the reward multiplicity from $\sum_{t=0}^{T_n} R(s_t, a_t)$ to $\sum_{t'=t}^{T_n} R(s_{t'}, a_{t'})$ , the estimated reward multiplier is reduced to a more accurate one, thus the variance of our estimated policy gradient reduced. Am I right ?
 
 We can also understand in the following way: the original gradient $ \nabla \log \pi_{\theta}(a_{t}^{n} \mid  s_{t}^{n} )$  of all actions in the same trajectory always multiply same value $R(\tau^n) $ , and intuitively it would be more reasonable to assign high value to $\pi_{\theta}(a_{t}^{n} \mid  s_{t}^{n} ) $ which action leads to high return in the following steps. 
 
@@ -236,6 +237,7 @@ where $g(\tau) = \nabla_{\theta} \log p_{\theta}(\tau)$. From above, we can deri
 $$
 b=\frac{E\left[g(\tau)^{2} r(\tau)\right]}{E\left[g(\tau)^{2}\right]} = \frac{E\left[(\nabla_{\theta} \log p_{\theta}(\tau))^{2} r(\tau)\right]}{E\left[ (\nabla_{\theta} \log p_{\theta}(\tau))^{2}\right]}
 $$
+
 
 
 which is just expected reward, but weighted by gradient magnitudes. The computation cost on gradient magnitudes offsets the benefit of reduced variance, so we typically use the average reward as baseline.
