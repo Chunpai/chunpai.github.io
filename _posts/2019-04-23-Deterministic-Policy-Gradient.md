@@ -150,6 +150,10 @@ $$
 
 
 
+## Input Convex Neural Networks (ICNN)
+
+
+
 
 
 ## Reference

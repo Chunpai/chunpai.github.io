@@ -16,7 +16,7 @@ author: Chunpai
 
 
 
-### Actor-Critic
+## Actor-Critic
 
 Again, $G_t^n$ is collected via sampled trajectories. For same state and action, the variance of $G_t^n$ may be very high if we do not have sufficient samples, which results in very unstable training. Therefore, we can replace the $G_t^n$ with $E[G_t^n]$ . Recall that $E[G_t^n]$ is just the Q-value $Q(s_t^n, a_t^n)$. We can also assign the value of baseline as $b = V(s_t^n)$, and we derive the so-called advantage function:
 
@@ -35,6 +35,22 @@ $$
 
 
 The most exciting thing here is we combine the value based method with policy-based method. Here policy-based method can be viewed as an actor that try to generate a good action, and value-based method can be viewed as a critic to evaluate how good is the action. If the critic says it is a good action, then the actor will increase the probability of this action; otherwise decrease. An actor adjusts the parameter $\theta$ of the stochastic policy $\pi_{\theta}(a \mid  s)$ by stochastic gradient ascent. A critic parameterized by $w$ estimates the action-value function $Q^{w}(s, a) \approx Q^{\pi}(s, a)$ using an appropriate policy evaluation algorithm such as temporal-difference learning. 
+
+
+
+### Batch and Online Actor-Critic Algorithm
+
+
+
+### Discount Factors for Policy Gradients
+
+
+
+## Critics as State-Dependent Baseline
+
+
+
+## Control Variates: Action-Dependent Baseline: Q-Prop
 
 
 
