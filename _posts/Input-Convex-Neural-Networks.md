@@ -39,7 +39,7 @@ This paper first introduce the fully input convexity for applications such as da
 
 Two approximate inference methods can be applied: *1.) the gradient descent based inference; 2.) the bundle entropy method*. The gradient descent based method uses the updating rule: 
 
- 
+
 $$
 \hat{y} \leftarrow \mathcal{P}_{\mathcal{Y}}\left(\hat{y}-\alpha \nabla_{y} f(x, \hat{y} ; \theta)\right)
 $$
@@ -53,9 +53,13 @@ which is appealing simple, but have to use projected sub-gradient descent for no
 
 Bundle entropy method is an extension of bundle method [2], which is known as the epigraph cutting plane approach.  [3] is a good tutorial about cutting plane method. One trivial example of cutting plane method is bisection on $\mathbb{R}$. Cutting plane methods is to find constraints (cutting plane) based on first order condition that separating the optimal solution sets and  the current solution (query point) $x$. First, we need to check if current query solution is optimal or feasible, if not, then we can define a constraint or cut that optimal solution must satisfy based on current query. The difficult part of cutting plane method is how to choose the query points effectively to boost the convergence rate.
 
-For epigraph cutting plane method, 
+For epigraph cutting plane method, it not only adds the constraints on $x$, but also adds the constraints on $y$. In this paper, the authors propose the bundle entropy method for this inference problem, where $\mathcal{Y}$ is bounded, which we assume to be $\mathcal{Y} = [0,1]^n$.  
 
-In this paper, the authors propose the bundle entropy method for this inference problem specifically. 
+
+
+
+
+
 
 ## Reference
 

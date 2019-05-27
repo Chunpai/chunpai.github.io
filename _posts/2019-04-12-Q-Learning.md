@@ -236,7 +236,7 @@ $$
 However, if the agent continually interacts with the environment without limit, which is called continuing tasks, we need another form of return 
 
 $$
-G_1 = R_{1} + \gamma R_{2} + \gamma^2 R_{3} + \cdots = \prod_{t=0}^{\infty} \gamma^{t} R_{t+1} = R_{1} + \gamma \cdot G_{2}
+G_1 = R_{1} + \gamma R_{2} + \gamma^2 R_{3} + \cdots = \sum_{t=0}^{\infty} \gamma^{t} R_{t+1} = R_{1} + \gamma \cdot G_{2}
 $$
 
 The intermediate reward usually is designed by human, and keep in mind that, the reward signal is your way of communicating to the robot or agent what you want it to achieve, not how you want it achieved. If you want to give prior knowledge about how we want it to achieve, we might impact the initial policy or initial value function.
@@ -247,16 +247,15 @@ The intermediate reward usually is designed by human, and keep in mind that, the
 **State-value Function:** the value of a state $s$ under policy $\pi$ is defined as
 
 $$
-v_{\pi}(s)=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right]=\mathbb{E}_{\pi}\left[\prod_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s\right] \quad \forall s \in S
+v_{\pi}(s)=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right]=\mathbb{E}_{\pi}\left[\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s\right] \quad \forall s \in S
 $$
 
 which denotes by the expected return of state $s$ under policy $\pi$ . If $s$ is a terminated state, then $v_{\pi}(s) = 0$.  
 
-**Action-value Function:** the value of a state-action pair action under policy $\pi$ is defined as 
-
+**Action-value Function:** the value of a state-action pair under policy $\pi$ is defined as 
 
 $$
-q_{\pi}(s, a) = \mathbb{E}_{\pi}[G_{t} | S_t = s, A_t = a] = \mathbb{E}_{\pi} [\prod_{k=0}^{\infty} \gamma^k R_{t+k+1} |S_t =s , A_t=a] \ \ \ \  \forall s \in \mathcal{S},a \in \mathcal{A}
+q_{\pi}(s, a) = \mathbb{E}_{\pi}[G_{t} | S_t = s, A_t = a] = \mathbb{E}_{\pi} [\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} |S_t =s , A_t=a] \ \ \ \  \forall s \in \mathcal{S},a \in \mathcal{A}
 $$
 
 
@@ -278,7 +277,7 @@ which represents how good is a specific action compared with average performance
 
 
 $$
-\begin{aligned} v_{\pi}(s) &=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right]=\mathbb{E}_{\pi}\left[\prod_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s\right] \quad \forall s \in S \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} | S_{t}=s\right] \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) | S_{t}=s\right] \\ &=\sum_{a} \pi(a | s) \sum_{r, s^{\prime}} p\left(s^{\prime}, r | s, a\right)\left[r + \gamma v_{\pi}\left(s^{\prime}\right)\right] \\ &=\sum_{a} \pi(a | s) \cdot q_{\pi}(s, a) \end{aligned}
+\begin{aligned} v_{\pi}(s) &=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right]=\mathbb{E}_{\pi}\left[\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s\right] \quad \forall s \in S \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} | S_{t}=s\right] \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) | S_{t}=s\right] \\ &=\sum_{a} \pi(a | s) \sum_{r, s^{\prime}} p\left(s^{\prime}, r | s, a\right)\left[r + \gamma v_{\pi}\left(s^{\prime}\right)\right] \\ &=\sum_{a} \pi(a | s) \cdot q_{\pi}(s, a) \end{aligned}
 $$
 
 The inner summation is to compute the expected return of state $s$ with a specific action $a$. The outer summation is to compute the expected return of state $s$ with all possible actions. We can use two backup diagrams to represent it:
@@ -294,7 +293,7 @@ The inner summation is to compute the expected return of state $s$ with a specif
 ### Bellman Expectation Equation for $ q_{\pi}(s, a)$ 
 
 $$
-\begin{aligned} q_{\pi}(s, a) &=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s, A_{t}=a\right]=\mathbb{E}_{\pi}\left[\prod_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s, A_{t}=a\right] \quad \forall s \in \mathcal{S}, a \in \mathcal{A} \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) | S_{t}=s, A_{t}=a\right] \\ &=\sum_{r, s^{\prime}} p\left(s^{\prime}, r | s, a\right)\left[r+ \gamma v_{\pi}\left(s^{\prime}\right)\right] \end{aligned}
+\begin{aligned} q_{\pi}(s, a) &=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s, A_{t}=a\right]=\mathbb{E}_{\pi}\left[\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s, A_{t}=a\right] \quad \forall s \in \mathcal{S}, a \in \mathcal{A} \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) | S_{t}=s, A_{t}=a\right] \\ &=\sum_{r, s^{\prime}} p\left(s^{\prime}, r | s, a\right)\left[r+ \gamma v_{\pi}\left(s^{\prime}\right)\right] \end{aligned}
 $$
 
 We can also use two backup diagrams to represent it:
@@ -365,7 +364,7 @@ The way to check if it is an optimal policy is simply to evaluate if the Bellman
 
 The generalized policy iteration refers to the general idea of interleaving policy evaluation and policy improvement, where the policy is always being improved w.r.t the current value function and the current value function is always being driven toward a better value function for the policy.  
 
-![](../assets/img/GPI-1556293722416.png)
+![](/assets/img/GPI-1556293722416.png)
 
 
 

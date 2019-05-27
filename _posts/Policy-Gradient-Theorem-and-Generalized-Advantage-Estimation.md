@@ -4,7 +4,7 @@ tags: reinforcement-learning
 author: Chunpai
 ---
 
-This post is about two methods related to deep Q learning in continuous action space, which are DDPG and NAF. 
+This post is about policy gradient theorem, generalized advantaged estimation, and two methods related to deep Q learning in continuous action space, which are DDPG and NAF. 
 
 
 * TOC
@@ -29,7 +29,7 @@ J_{0}(\theta)=\mathbb{E}_{\pi_{\theta}}\left[G_{0} \mid \pi  \right] = \sum_{s_0
 $$
 
 
-where $p_{1}​$ denotes the starting probability and $G_0 = R_1 + \cdots + R_{T}​$, which is independent of the policy $ \pi​$. However, in continuous tasks, we use the ***average state value*** as objective function:
+where $p_{1}$ denotes the starting probability and $G_0 = R_1 + \cdots + R_{T}$, which is independent of the policy $ \pi$. However, in continuous tasks, we use the ***average state value*** as objective function:
 
 
 $$
@@ -45,7 +45,7 @@ J_{a v R}(\theta)=\sum_{s} d^{\pi_{\theta}}(s) \sum_{a} \pi_{\theta}(s, a) r(s, 
 $$
 
 
-where $d^{\pi_{\theta}}(s)​$ is *stationary distribution of Markov chain* for $\pi_{\theta}​$. We also have 
+where $d^{\pi_{\theta}}(s)$ is *stationary distribution of Markov chain* for $\pi_{\theta}$. We also have 
 
 
 $$
@@ -54,7 +54,7 @@ d^{\pi_{\theta}}(s) &= \sum_{s^{\prime} \in \mathcal{S}} d^{\pi_{\theta}} \left(
 &= \sum_{s^{\prime} \in \mathcal{S}}\sum_{t=1}^{\infty} p_{1}(s') p(s' \rightarrow s, t, \pi_{\theta}) 
 \end{align}
 $$
-where $p(s' \rightarrow s, t, \pi_{\theta}) ​$ denotes the probability from state $s'​$ to state $s​$ with $t​$ steps transition. In addition, we sometimes introduce the discount factor $\gamma \in (0, 1)​$ into MDP, that is every state transition probability times $\gamma​$, 
+where $p(s' \rightarrow s, t, \pi_{\theta}) $ denotes the probability from state $s'$ to state $s$ with $t$ steps transition. In addition, we sometimes introduce the discount factor $\gamma \in (0, 1)$ into MDP, that is every state transition probability times $\gamma$, 
 
 
 $$
@@ -62,7 +62,7 @@ $$
 $$
 
 
-and since $\sum_{s'} p(s' \rightarrow s, t, \pi_{\theta}) = 1.0​$, the discount factor in fact changes the MDP and add one extra terminate state *implicitly* with probability $ 1-\gamma​$, which guarantees that $\sum_{s'} \tilde{p}(s' \rightarrow s, t, \pi_{\theta}) = 1.0​$ ; Thus, we also have discounted state distribution as: 
+and since $\sum_{s'} p(s' \rightarrow s, t, \pi_{\theta}) = 1.0$, the discount factor in fact changes the MDP and add one extra terminate state *implicitly* with probability $ 1-\gamma$, which guarantees that $\sum_{s'} \tilde{p}(s' \rightarrow s, t, \pi_{\theta}) = 1.0$ ; Thus, we also have discounted state distribution as: 
 
 
 $$
@@ -72,7 +72,7 @@ $$
 
 ## Policy Gradient Theorem
 
-The [policy gradient theorem](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf) [4] states that the policy gradient is not dependent on *the gradient of state distribution* $\nabla_{\theta} d^{\pi_{\theta}}(s)​$, despite the state distribution depends on the policy parameter $\theta​$. This theorem makes computing policy gradient possible. We will show the proof in terms of the state-value function at below.
+The [policy gradient theorem](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf) [4] states that **the policy gradient is not dependent on the gradient of state distribution $\nabla_{\theta} d^{\pi_{\theta}}(s)$, despite the state distribution depends on the policy parameter $\theta$ **. This theorem makes computing policy gradient possible. We will show the proof in terms of the state-value function at below.
 
 > $$
 > \nabla J(\theta) \propto \sum_{s\in \mathcal{S}} d(s) \sum_{a} \nabla_{\theta} \pi_{\theta}(a \mid s) Q_{\pi}(s, a)
@@ -124,7 +124,10 @@ The [policy gradient theorem](https://papers.nips.cc/paper/1713-policy-gradient-
 >
 > 
 >
-> 
+
+
+
+## Generalized Advantage Estimation
 
 
 
@@ -132,12 +135,19 @@ The [policy gradient theorem](https://papers.nips.cc/paper/1713-policy-gradient-
 
 ## Deterministic Policy Gradient (DPG)
 
-You can see that the $$\nabla_{\theta} J(\theta)$$ derived in stochastic policy gradient becomes 0 if it is deterministic policy. We have to prove the policy gradient theorem in the deterministic way. 
+In stochastic policy gradient, the policy function $\pi(\cdot \mid s)$ is modeled as a probability distribution over actions. In contrast, the deterministic policy gradient method makes more bold decision with policy function that outputs deterministic action $a = \mu(s)$ . DPG has a great advantage over SPG in high-dimensional action spaces. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space. As a result, computing the stochastic policy gradient may require more samples, especially if the action space has many dimensions. On the other hand, deterministic policy will limit the exploration of full state and action space, therefore DPG exploits the *off-policy actor-critic* algorithm, which choose actions according to a stochastic behavior policy (to ensure adequate **exploration**), but to learn about a deterministic target policy (**exploiting** the efficiency of the deterministic policy gradient).  
 
+We will discuss the actor-critic algorithm in next post, here we only extend the stochastic policy gradient theorem to the deterministic policy gradient theorem. 
 
-$$
-
-$$
+> Suppose that the MDP satisfies conditions that: $p\left(s^{\prime} \mid s, a\right), \nabla_{a} p\left(s^{\prime} \mid s, a\right), \mu_{\theta}(s), \nabla_{\theta} \mu_{\theta}(s), r(s, a), \nabla_{a} r(s, a), p_{1}(s)$  are continuous in all parameters and variables $s, a, s'$ and $x$, which imply that $\nabla_{\theta} \mu_{\theta}(s) \text { and } \nabla_{a} Q^{\mu}(s, a)$ exist and that the deterministic policy gradient exists. Then 
+>
+> 
+> $$
+> \nabla_{\theta} J\left(\mu_{\theta}\right) = \mathbb{E}_{s \sim d^{\mu}}\left[\nabla_{\theta} \mu_{\theta}(s) \nabla_{a} Q^{\mu}\left.(s, a)\right|_{a=\mu_{\theta}(s)}\right]
+> $$
+> 
+>
+> Proof. The proof is provided in supplementary material in [1].
 
 
 

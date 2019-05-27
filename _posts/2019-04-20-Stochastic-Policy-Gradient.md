@@ -81,7 +81,7 @@ $$
 
 
 
-We can maximize the $$ \bar{R}_{\theta}$$ w.G.t  $\theta$ with gradient descent. We firstly compute the $\nabla_{\theta} \bar{R}_{\theta}$ 
+We can maximize the $$ \bar{R}_{\theta}$$ w.r.t  $\theta$ with gradient descent. We firstly compute the $\nabla_{\theta} \bar{R}_{\theta}$ 
 
 
 $$
@@ -93,10 +93,10 @@ $$
 &\color{red}{\approx} \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \nabla \log p_{\theta}(\tau^n) \\
 &= \frac{1}{N} \sum_{n=1}^{N} R(\tau^n) \nabla \log \left\{ p\left(s_{0}^{n} \right) \prod_{t}\left[\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot p\left(s_{t+1}^{n} | s_{t}^{n}, a_{t}^{n}\right)\right]\right\} \\
 &= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \nabla \log \left[  \prod_{t}\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
-&= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \sum_{t} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n} \right) \\
-&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t}^{T_n} R(s_t, a_t) \right] \left[\sum_{t}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
-&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t}^{T_n} \left( \sum_{t}^{T_n} R(s_t, a_t) \right)  \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
-& \approx \operatorname{E}\left[\sum_{t}^{T_n} \left( \sum_{t}^{T_n} R(s_t, a_t) \right)  \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right]
+&= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \sum_{t=0} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n} \right) \\
+&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t=0}^{T_n} R(s_t, a_t) \right] \left[\sum_{t}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
+&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t=0}^{T_n} \left( \sum_{t=0}^{T_n} R(s_t, a_t) \right)  \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
+& \approx \operatorname{E}\left[\sum_{t=0}^{T_n} \left( \sum_{t=0}^{T_n} R(s_t, a_t) \right)  \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right]
 \end{align}
 $$
 
@@ -110,7 +110,7 @@ $$
 
 The proof above is related to the *policy gradient theorem* [1], which provides us an analytic expression for the gradient of performance w.r.t the policy parameter that *does not* involve the **derivative** *of the state distribution* (model dynamic). 
 
-Now given a policy $ \pi_{\theta}$ , we need to 1.) first collect many trajectories with current policy, 2.) accumulate or estimate the return, 3.)  compute $$\nabla \bar{R}_{\theta}$$ and apply gradient descent [REINFORCE algo.]:
+Now given a policy $ \pi_{\theta}$ , we need to 1) first collect many trajectories with current policy $\pi_{\theta}(a_t \mid s_t)$, 2) accumulate or estimate the return for each trajectory, 3)  compute $$\nabla \bar{R}_{\theta}$$ and apply gradient descent [REINFORCE algo.]:
 
 
 
@@ -347,7 +347,7 @@ $$
 $$
 
 
-If the distribution $p_{\theta}(\tau)$ is very different from the $p_{\omega}(\tau)$ , the precision of two different estimates would be very different. It is worth noting that importance sampling provides a way for variance reduction [4, 5] by restricting 
+If the distribution $p_{\theta}(\tau)$ is very different from the $p_{\omega}(\tau)$ , the precision of two different estimates would be very different. It is worth noting that importance sampling provides a way for **variance reduction** [4, 5] by restricting 
 
 
 $$
