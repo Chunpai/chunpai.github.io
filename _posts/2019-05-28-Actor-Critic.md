@@ -168,25 +168,39 @@ y_{i, t} \approx r\left(\mathbf{s}_{i, t}, \mathbf{a}_{i, t}\right) + \gamma \ha
 $$
 
 
-and the critic with discount factor as: 
+and policy gradient with critic and discount factor as: 
 
 
+$$
+{\nabla_{\theta} J(\theta) \approx \frac{1}{N} \sum_{i=1}^{N} \sum_{t=1}^{T} \nabla_{\theta} \log \pi_{\theta}\left(\mathbf{a}_{i, t} | \mathbf{s}_{i, t}\right)\left(r\left(\mathbf{s}_{i, t}, \mathbf{a}_{i, t}\right)+\gamma \hat{V}_{\phi}^{\pi}\left(\mathbf{s}_{i, t+1}\right)-\hat{V}_{\phi}^{\pi}\left(\mathbf{s}_{i, t}\right)\right)}
+$$
 
 
+Thus, we have the batch actor-critic algorithms with discount as
 
- 
+![](/assets/img/batch_discount.png)
 
 
 
 ### Online Actor-Critic Algorithm
 
-
-
-## Critics as State-Dependent Baseline
+Instead of simulating the full trajectory with $\pi$, the online mode only needs to take the action at one step. 
 
 
 
-## Control Variates: Action-Dependent Baseline: Q-Prop
+ ![](/assets/img/online_discount.png)
+
+
+
+One benefit of online mode is we can simulate the action to get $(s, a, s', r)$ and compute policy gradient in parallel to speed up the computation. 
+
+
+
+![](/assets/img/parallel_actor_critic.png)
+
+
+
+
 
 
 
