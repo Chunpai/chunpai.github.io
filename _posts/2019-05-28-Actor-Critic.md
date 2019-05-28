@@ -4,9 +4,7 @@ tags: reinforcement-learning
 author: Chunpai
 ---
 
-
-
-
+This post is about basic foundation of the actor-critic algorithm, which combines the value function and policy gradient. More advanced techniques on actor-critic will be discussed in next post. 
 
 * TOC
 {: toc}
