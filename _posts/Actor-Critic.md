@@ -93,12 +93,15 @@ but it avoids the requirement of a lot sampling to get state-values for all stat
 We can train the value function as the supervised learning, where training data is a set of state and state-value from some sampled trajectories with current policy $\pi$:
 
 
+
 $$
 \left\{\left(\mathbf{s}_{i, t}, \sum_{t^{\prime}=t}^{T} r\left(\mathbf{s}_{i, t^{\prime}}, \mathbf{a}_{i, t^{\prime}}\right)  \right) \right\}
 $$
 
 
+
 where denote $y_{i,t} = \sum_{t^{\prime}=t}^{T} r\left(\mathbf{s}_{i, t^{\prime}}, \mathbf{a}_{i, t^{\prime}}\right)  $ as the Monte Carlo target, and apply the supervised regression to minimize the mean square loss:
+
 
 
 $$
@@ -106,8 +109,10 @@ $$
 $$
 
 
-However, we use the sampled MC target, and the ideal target should be 
 
+However, we use the sampled MC target, and the ideal target should be
+
+ 
 
 $$
 \begin{align}
@@ -118,7 +123,9 @@ y_{i, t}=\sum_{t^{\prime}=t}^{T} E_{\pi_{\theta}}\left[ r\left(\mathbf{s}_{t^{\p
 $$
 
 
+
 Note that, util we have fitted the value function, we do not have a good estimate of $V^{\pi}(\mathbf{s}_{i, t+1})$ . Instead, what we can do is to use the previous fitted value function $\hat{V}^{\pi}$ which is slightly incorrect value function. One advantage of doing this is in practice this incorrect value function has a lower variance target, which is better than a unbiased target with high variance. Therefore, we can obtain better training data as 
+
 
 
 $$
@@ -126,13 +133,12 @@ $$
 $$
 
 
+
 and this kind of supervised training is known as *bootstrapped estimate*. What we can learn from here is, we would rather use the biased but low noised samples than the unbiased but high variance samples as training data, when the size of sampled training data is small. 
-
-
 
 ### Batch Actor-Critic Algorithm
 
-The general actor-critic algorithm can be understood as the figure below:
+The general actor-critic algorithm can be understood as the figure below: 
 
 
 
@@ -153,6 +159,22 @@ where we can also (red line) use the bootstrapped estimate on reward sum to gene
 
 
 ### Discount Factors for Policy Gradients
+
+It is better to get rewards sooner than later, and we use the discounted estimated target with $\gamma \in [0, 1]$:
+
+
+$$
+y_{i, t} \approx r\left(\mathbf{s}_{i, t}, \mathbf{a}_{i, t}\right) + \gamma \hat{V}^{\pi}_{\phi}(\mathbf{s}_{i, t+1})
+$$
+
+
+and the critic with discount factor as: 
+
+
+
+
+
+ 
 
 
 
