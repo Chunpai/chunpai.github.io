@@ -6,7 +6,7 @@ permalink: /notes/
 
 
 
-**Disclaimer:** These notes are only for personal reference, which are incompletely informal and not checked for correctness. 
+**Disclaimer:** These notes are only for personal reference, which are informal and not checked for correctness. 
 
 
 
