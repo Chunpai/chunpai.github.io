@@ -94,7 +94,7 @@ $$
 &= \frac{1}{N} \sum_{n=1}^{N} R(\tau^n) \nabla \log \left\{ p\left(s_{0}^{n} \right) \prod_{t}\left[\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot p\left(s_{t+1}^{n} | s_{t}^{n}, a_{t}^{n}\right)\right]\right\} \\
 &= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \nabla \log \left[  \prod_{t}\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
 &= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \sum_{t=0} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n} \right) \\
-&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t=0}^{T_n} R(s_t, a_t) \right] \left[\sum_{t}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
+&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t=0}^{T_n} R(s_t, a_t) \right] \left[\sum_{t=0}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
 &=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t=0}^{T_n} \left( \sum_{t=0}^{T_n} R(s_t, a_t) \right)  \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
 & \approx \operatorname{E}\left[\sum_{t=0}^{T_n} \left( \sum_{t=0}^{T_n} R(s_t, a_t) \right)  \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right]
 \end{align}
@@ -437,5 +437,5 @@ An Introduction](http://incompleteideas.net/book/bookdraft2017nov5.pdf)
 
 [9] Thomas, Philip. "[Bias in natural actor-critic algorithms](http://proceedings.mlr.press/v32/thomas14.html)." *International Conference on Machine Learning*. 2014.
 
-
+[10] [Going Deeper Into Reinforcement Learning: Fundamentals of Policy Gradients](https://danieltakeshi.github.io/2017/03/28/going-deeper-into-reinforcement-learning-fundamentals-of-policy-gradients/)
 

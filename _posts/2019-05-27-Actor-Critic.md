@@ -4,7 +4,7 @@ tags: reinforcement-learning
 author: Chunpai
 ---
 
-This post is about basic foundation of the actor-critic algorithm, which combines the value function and policy gradient. More advanced techniques on actor-critic will be discussed in next post. 
+This post is about fundamentals of the actor-critic algorithm, which combines the state-value function and policy gradient. More advanced techniques and variants on actor-critic will be discussed in next post. 
 
 * TOC
 {: toc}
@@ -61,8 +61,7 @@ $$
 A^{\pi}(s_t^n, a_t^n) \approx r(s_t, a_t) + V^{\pi}(s_{t+1}) - V^{\pi}(s_t)
 $$
 
-
-Most of actor-critic algorithms fit the value function $V^{\pi}(s)$, but it is not the only solution, and we can also fit the Q-function when it is off-policy actor-critic with some advantages.
+*Most of actor-critic algorithms fit the value function $V^{\pi}(s)$, but it is not the only solution, and we can also fit the Q-function when it is off-policy actor-critic with some advantages.* In this post, we will mainly cover the actor-critic with state-value function.
 
 
 
@@ -182,15 +181,15 @@ Thus, we have the batch actor-critic algorithms with discount as
 
 ### Online Actor-Critic Algorithm
 
-Instead of simulating the full trajectory with $\pi$, the online mode only needs to take the action at one step. 
+Instead of simulating the full trajectory with $\pi$ to get total reward, the online mode only needs to take the action at one step and update the parameters along the full trajectory. 
 
 
 
- ![](/assets/img/online_discount.png)
+ ![](../assets/img/online_discount.png)
 
 
 
-One benefit of online mode is we can simulate the action to get $(s, a, s', r)$ and compute policy gradient in parallel to speed up the computation. 
+One benefit of online mode is we can simulate the action to get $(s, a, s', r)$ and compute policy gradient in parallel to speed up the computation. The second step is just applying regression. 
 
 
 
@@ -198,17 +197,35 @@ One benefit of online mode is we can simulate the action to get $(s, a, s', r)$ 
 
 
 
+## Other Baselines
+
+### State-Dependent Baselines
+
+
+
+### Control Variates: Action-Dependent Baseline: Q-Prop
+
+
+
+### Eligibility Traces & n-Step Returns
 
 
 
 
-## Off-Policy Actor Critic
+
+
+
+
 
 
 
 ## Reference
 
 [1] [Berkeley Reinforcement Learning Course on Actor-Critic](https://www.youtube.com/watch?v=Tol_jw5hWnI&list=PLLiwQX_Zp55SViaiVo2qzH5SqClB41AgO&index=11&t=2739s) 
+
+[2] [Policy Gradient Algorithms](https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html#off-policy-policy-gradient)
+
+[3] [Understanding Actor Critic Methods and A2C](https://towardsdatascience.com/understanding-actor-critic-methods-931b97b6df3f)
 
 
 

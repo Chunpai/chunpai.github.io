@@ -6,6 +6,10 @@ permalink: /notes/
 
 
 
+**Disclaimer:** These notes are only for personal reference, which are incompletely informal and not checked for correctness. 
+
+
+
 - [f-GAN](/assets/note/f_GAN.pdf)
 - [Generative Adversarial Networks](/assets/note/Generative_Adversary_Network.pdf)
 - [Structured SVM](/assets/note/structure-learning-structured.pdf)

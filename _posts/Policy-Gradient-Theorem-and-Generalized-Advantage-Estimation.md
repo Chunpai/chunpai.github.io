@@ -70,6 +70,7 @@ d^{\pi_{\theta}}(s) = \sum_{s^{\prime} \in \mathcal{S}}\sum_{t=1}^{\infty} \gamm
 $$
 
 
+
 ## Policy Gradient Theorem
 
 The [policy gradient theorem](https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf) [4] states that **the policy gradient is not dependent on the gradient of state distribution $\nabla_{\theta} d^{\pi_{\theta}}(s)$, despite the state distribution depends on the policy parameter $\theta$ **. This theorem makes computing policy gradient possible. We will show the proof in terms of the state-value function at below.
@@ -127,12 +128,6 @@ The [policy gradient theorem](https://papers.nips.cc/paper/1713-policy-gradient-
 
 
 
-## Generalized Advantage Estimation
-
-
-
-
-
 ## Deterministic Policy Gradient (DPG)
 
 In stochastic policy gradient, the policy function $\pi(\cdot \mid s)$ is modeled as a probability distribution over actions. In contrast, the deterministic policy gradient method makes more bold decision with policy function that outputs deterministic action $a = \mu(s)$ . DPG has a great advantage over SPG in high-dimensional action spaces. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space. As a result, computing the stochastic policy gradient may require more samples, especially if the action space has many dimensions. On the other hand, deterministic policy will limit the exploration of full state and action space, therefore DPG exploits the *off-policy actor-critic* algorithm, which choose actions according to a stochastic behavior policy (to ensure adequate **exploration**), but to learn about a deterministic target policy (**exploiting** the efficiency of the deterministic policy gradient).  
@@ -148,6 +143,10 @@ We will discuss the actor-critic algorithm in next post, here we only extend the
 > 
 >
 > Proof. The proof is provided in supplementary material in [1].
+
+
+
+### Relationship with Exact Probabilistic Inference
 
 
 
