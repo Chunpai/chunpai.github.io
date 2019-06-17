@@ -185,7 +185,7 @@ Instead of simulating the full trajectory with $\pi$ to get total reward, the on
 
 
 
- ![](../assets/img/online_discount.png)
+ ![](/assets/img/online_discount.png)
 
 
 

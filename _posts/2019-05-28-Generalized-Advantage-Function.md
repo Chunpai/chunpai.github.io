@@ -60,11 +60,3 @@ Among all those above, the choice $\Psi_t = A^{\pi}(s_t, a_t)$ yields almost the
 
 ## Reference
 
-
-[1] 
-
-[2]
-
-[3]
-
-
