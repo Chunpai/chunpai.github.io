@@ -45,7 +45,7 @@ author: Chunpai
 
 - how to encode the tree structure with structured svm
 
-- what is unary potential and pairwise potential, how can we use them in the inference ?
+- what is unary potential and pairwise potential, how can we use them in the inference ? we can also add higher order potential, global potential.
 
 - do we find the most violated the constraints with fixed parameters ? yes. refers to Yisong Yue's tutorial
 
@@ -63,7 +63,7 @@ author: Chunpai
 
 - [Generalized IOU vs IOU](<https://giou.stanford.edu/GIoU.pdf>), may need to check the theory behind. 
 
-- we may still use the energy function that encode the structured dependency, since the IoU or f-measure does not use the structured compatibility score.
+- we may still use the energy function that encode the structured dependency rather than the pure IoU score, since the IoU or f-measure does not use the structured compatibility score.
 
 - We can train the dvn to output the predicted IoU and energy, but should be regularized by the difference of the energies
 
@@ -75,10 +75,31 @@ author: Chunpai
 
   
 
+`2019-07-03`
 
-​    
+- the structured svm program will output the "inf" value for P matrix when regularizing QP.
 
   
+
+`2019-07-08`
+
+- how to avoid the 0 cost augmented inference
+  - remove the structured projection
+  - change the sparsity to enforce to get different output 
+
+## Computer Vision  
+
+- [9 Applications of Deep Learning for Computer Vision](https://machinelearningmastery.com/applications-of-deep-learning-for-computer-vision/)
+- Book: *[Computer Vision: Algorithms and Applications](http://szeliski.org/Book/)*
+- 
+
+## Geometry Deep Learing
+
+ `2019-07-03`
+
+- Some tutorials on geometry deep learning:
+  - http://www.geometricdeeplearning.com/
+  - [Learning Representations via Graph-structured Networks](https://xiaolonw.github.io/graphnn/)
 
   
 
@@ -88,10 +109,19 @@ author: Chunpai
 
 - reading of [structured prediction is not reinforcement learning](https://nlpers.blogspot.com/2017/04/structured-prediction-is-not-rl.html) 
 
+`2019-07-12:`
+
+- read paper "Connecting the Dots Between MLE and RL for Sequence Generation"
+- deep learning and sequence model https://www.coursera.org/learn/nlp-sequence-models/home/welcome
+
 ## Meta Learning
 
 
 
-​	
+## Time-Series Analysis	
 
+ `2019-07-03`
 
+- [Applied Time Series Analysis](https://newonlinecourses.science.psu.edu/stat510/lesson/1/1.1) 
+- [Tutorials on time series analysis](http://dept.stat.lsa.umich.edu/~ionides/tutorials/index.html)
+- [Tutorial Point on Time Series Tutorial](https://www.tutorialspoint.com/time_series/)
