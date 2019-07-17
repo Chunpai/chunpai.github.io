@@ -9,7 +9,12 @@ author: Chunpai
 
 
 
-## Network Embedding
+## Recommender System
+
+`2019-07-17`
+
+- read paper *Neural Collaborative Filtering*
+- read Hongwei Wang's thesis
 
 ## Structured Prediction
 
