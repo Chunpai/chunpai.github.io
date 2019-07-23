@@ -43,7 +43,7 @@ author: Chunpai
 `2019-06-26`
 
 - [a good tutorial on feature functions in CRF](https://blog.echen.me/2012/01/03/introduction-to-conditional-random-fields/)   
-- we choose multiclass as model, and n_slack_svm as learner. The learner will call the model, and train. We only need to make modification on prediction step in learner module.
+- we choose multiclass as model, and n_slack_svm as learner. The learner will call the model, and train. We only need to make modification on prediction step in learner module. 
 - We need to read the model.fit() function first. 
 
 `2019-06-27`
