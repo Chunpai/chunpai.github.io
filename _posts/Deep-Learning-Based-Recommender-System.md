@@ -1,11 +1,20 @@
 ---
 layout: post
+tags: recommender-system
 author: Chunpai
 ---
 
 * TOC
 {: toc}
 ## Reviews of Recommender System
+
+Recommendation models are usually classified into 3 categories: 
+
+- collaborative filtering, which makes recommendations by learning from user-item historical **interactions**, either explicit (ratings, likes) or implicit feedback (e.g. browsing history). 
+- content based recommendation, which is based primarily on similarities of different items and users with items' attributes and auxiliary information, such as texts, images, and videos.
+- hybrid, which integrates two or more types of recommendation strategies.
+
+
 
 **Implicit and Explicit Feedbacks:**
 
