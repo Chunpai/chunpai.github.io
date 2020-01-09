@@ -2,7 +2,6 @@
 .sass-cache
 Gemfile.lock
 _site
-_drafts
 *.gem
 .idea/*
 _posts/template.md
