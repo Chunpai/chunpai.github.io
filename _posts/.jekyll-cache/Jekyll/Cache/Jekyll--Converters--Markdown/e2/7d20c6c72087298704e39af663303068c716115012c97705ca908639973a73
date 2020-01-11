@@ -1,0 +1,312 @@
+I"&f<p>In this post, I will summarize some concepts about policy gradient, off-policy gradient, and importance sampling.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#goal-of-reinforcement-learning" id="markdown-toc-goal-of-reinforcement-learning">Goal of Reinforcement Learning</a></li>
+  <li><a href="#policy-gradient" id="markdown-toc-policy-gradient">Policy Gradient</a>    <ul>
+      <li><a href="#relationship-between-policy-gradient-and-mle" id="markdown-toc-relationship-between-policy-gradient-and-mle">Relationship between Policy Gradient and MLE</a></li>
+    </ul>
+  </li>
+  <li><a href="#issues-of-policy-gradient" id="markdown-toc-issues-of-policy-gradient">Issues of Policy Gradient</a>    <ul>
+      <li><a href="#tip-0-reducing-variance" id="markdown-toc-tip-0-reducing-variance">Tip 0: Reducing Variance</a></li>
+      <li><a href="#tip-1-add-a-baseline" id="markdown-toc-tip-1-add-a-baseline">Tip 1: Add a Baseline</a></li>
+      <li><a href="#tip-2-discount-factors" id="markdown-toc-tip-2-discount-factors">Tip 2: Discount Factors</a></li>
+    </ul>
+  </li>
+  <li><a href="#off-policy-gradient" id="markdown-toc-off-policy-gradient">Off-Policy Gradient</a>    <ul>
+      <li><a href="#policy-gradient-with-important-sampling" id="markdown-toc-policy-gradient-with-important-sampling">Policy Gradient with Important Sampling</a></li>
+      <li><a href="#issue-of-importance-sampling" id="markdown-toc-issue-of-importance-sampling">Issue of Importance Sampling</a></li>
+    </ul>
+  </li>
+  <li><a href="#summary" id="markdown-toc-summary">Summary</a></li>
+  <li><a href="#reference" id="markdown-toc-reference">Reference</a></li>
+</ul>
+
+<h2 id="goal-of-reinforcement-learning">Goal of Reinforcement Learning</h2>
+
+<p>A policy $ \pi$​ is a mapping from states to probabilities of selecting each possible action. At step $t$ of an episode,</p>
+
+<script type="math/tex; mode=display">\pi(a | s)=\operatorname{Pr}\left(A_{t}=a | S_{t}=s\right)</script>
+
+<p>We can view the policy <script type="math/tex">\pi</script> as a neural network which parameterized by <script type="math/tex">\theta</script>, which are denoted by $ \pi(a \mid s, \theta) $ or $\pi_{\theta} (a \mid  s)$.  The goal of reinforcement learning is to find a policy <script type="math/tex">\pi</script> that achieve a lot reward over the long run. For example, in episodic tasks, the probability of occurrence of one specific episode $\tau$ under policy $\pi$ is</p>
+
+<script type="math/tex; mode=display">p_{\theta}(\tau)
+=p_{\theta}\left(s_{1}, a_{1}, \cdots, s_{T}, a_{T}\right)
+=p\left(s_{1}\right) \prod_{t}\left[\pi_{\theta}\left(a_{t} | s_{t}\right) \cdot p\left(s_{t+1} | s_{t}, a_{t}\right)\right]</script>
+
+<p>The objective is to find the optimal policy $\pi$ which is parameterized by <script type="math/tex">\theta</script> such that have maximum expected return:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\theta^{*} &= \arg\max_{\theta} J(\theta) \\
+&= \arg \max _{\theta} \mathbb{E}_{\tau \sim p_{\theta}(\tau)}\left[\sum_{t=1}^{T} R_{t} \right]
+\end{align} %]]></script>
+
+<p>First, we can do sampling and averaging to derive an unbiased estimate of our objective $J(\theta)$ :</p>
+
+<script type="math/tex; mode=display">J(\theta) \approx \frac{1}{N} \sum_{n}^{N} \sum_{t}^{T} R_t</script>
+
+<p>Then, we try to improve it based on gradient ascent. Once we obtain the optimal policy, we can determine the optimal action in each possible state.</p>
+
+<h2 id="policy-gradient">Policy Gradient</h2>
+
+<p>For each trajectory $ \tau$,</p>
+
+<script type="math/tex; mode=display">\tau = \{S_0, A_0, R_1, \cdots, S_{T-1}, A_{T-1}, R_{T}, S_{T}\}</script>
+
+<p>there is a total reward $R(\tau)$ associate with it,</p>
+
+<script type="math/tex; mode=display">R(\tau) = \sum_{t=1}^{T} R_t = \sum_{t=0}^{T} R(s_t, a_t) = G_{0}</script>
+
+<p>Then the expected total reward of a trajectory under $ \theta$ is</p>
+
+<script type="math/tex; mode=display">J(\theta) = \bar{R}_{\theta}=\sum_{\tau} R(\tau) p_{\theta}(\tau)=E_{\tau \sim p_{\theta}(\tau)}[R(\tau)]</script>
+
+<p>We can maximize the <script type="math/tex">\bar{R}_{\theta}</script> w.r.t  $\theta$ with gradient descent. We firstly compute the $\nabla_{\theta} \bar{R}_{\theta}$</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\nabla_{\theta} J(\theta) = \nabla \bar{R}_{\theta} &= \sum_{\tau} R(\tau) \nabla p_{\theta}(\tau) \\
+&= \sum_{\tau} R(\tau) p_{\theta}(\tau) \frac{\nabla p_{\theta}(\tau)}{p_{\theta}(\tau)} \\
+&= \sum_{\tau} R(\tau) p_{\theta}(\tau) \nabla \log p_{\theta}(\tau)\\
+&= E_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla \log p_{\theta}(\tau) \right] \\
+&\color{red}{\approx} \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \nabla \log p_{\theta}(\tau^n) \\
+&= \frac{1}{N} \sum_{n=1}^{N} R(\tau^n) \nabla \log \left\{ p\left(s_{0}^{n} \right) \prod_{t}\left[\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot p\left(s_{t+1}^{n} | s_{t}^{n}, a_{t}^{n}\right)\right]\right\} \\
+&= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \nabla \log \left[  \prod_{t}\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
+&= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \sum_{t=0} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n} \right) \\
+&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t=0}^{T_n} R(s_t, a_t) \right] \left[\sum_{t=0}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
+&=\frac{1}{N} \sum_{n=1}^{N} \left[ \sum_{t=0}^{T_n} \left( \sum_{t=0}^{T_n} R(s_t, a_t) \right)  \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
+& \approx \operatorname{E}\left[\sum_{t=0}^{T_n} \left( \sum_{t=0}^{T_n} R(s_t, a_t) \right)  \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right]
+\end{align} %]]></script>
+
+<p>where we apply the fact in 3rd step that</p>
+
+<script type="math/tex; mode=display">\nabla \log f(x) = \frac{\nabla f(x)}{f(x)}</script>
+
+<p>The proof above is related to the <em>policy gradient theorem</em> [1], which provides us an analytic expression for the gradient of performance w.r.t the policy parameter that <em>does not</em> involve the <strong>derivative</strong> <em>of the state distribution</em> (model dynamic).</p>
+
+<p>Now given a policy $ \pi_{\theta}$ , we need to 1) first collect many trajectories with current policy $\pi_{\theta}(a_t \mid s_t)$, 2) accumulate or estimate the return for each trajectory, 3)  compute <script type="math/tex">\nabla \bar{R}_{\theta}</script> and apply gradient descent [REINFORCE algo.]:</p>
+
+<script type="math/tex; mode=display">\theta \leftarrow \theta+\eta \nabla \bar{R}_{\theta}</script>
+
+<p>where <script type="math/tex">\nabla \bar{R}_{\theta}</script> is <em>a stochastic estimate whose expectation approximates the gradient of the performance measure with respect to its argument</em> $\theta$ .</p>
+
+<p><img src="/assets/img/REINFOCE_algo.png" alt="REINFORCE algorithm, a on-policy policy gradient method" /></p>
+
+<h3 id="relationship-between-policy-gradient-and-mle">Relationship between Policy Gradient and MLE</h3>
+
+<p>If we try to maximize the log-likelihood of a trajectory of $T$ state-action pairs $(s_t, a_t)$ with gradient ascent, then we need to compute the gradient of log-likelihood as</p>
+
+<script type="math/tex; mode=display">\nabla_{\theta} J(\theta) \approx \frac{1}{N} \sum_{n}^{N} \left[ \sum_{t}^{T_n} \nabla_{\theta} \log \pi_{\theta}(a_t^n \mid s_t^n) \right]</script>
+
+<p>It is the <script type="math/tex">\nabla \bar{R }_{\theta}</script> without multiplying the return term $ \sum_{t}^{T_n} R_t $. We can see that policy gradient ascent update is a formalization of trial-and-error: if current $\pi_{\theta} ( a_{t}^{n} \mid s_{t}^{n} )$ leads to positive total reward, then the gradient update will increase the probability $\pi_{\theta} ( a_{t}^{n} \mid  s_{t}^{n} )$. If negative total reward, then it will decrease the probability.</p>
+
+<h2 id="issues-of-policy-gradient">Issues of Policy Gradient</h2>
+
+<h3 id="tip-0-reducing-variance">Tip 0: Reducing Variance</h3>
+
+<p>Recall that,</p>
+
+<script type="math/tex; mode=display">\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N}  \left[\sum_{t=0}^{T_n} \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \left[ \sum_{t=0}^{T_n} R(s_t, a_t) \right]</script>
+
+<p>Simply use the distribution law, we have</p>
+
+<script type="math/tex; mode=display">\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=0}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{t=0}^{T_n} R(s_t, a_t) \right]</script>
+
+<p>Since the policy at time $t’$ cannot affect reward at time $t$ when $t &lt; t’$ , we can revise the policy gradient as</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\nabla \bar{R}_{\theta} &\approx \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=0}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{\color{red}{t'=t}}^{T_n} R(s',a')\right] \\
+&= \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=0}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot \color{red}{\hat{Q}_{t}^{n}} \right]
+\end{align} %]]></script>
+
+<p>where it is not unbiased estimator anymore. <strong>Here we add some bias and reduce some variance ?</strong> Recall the definition of variance is MSE between estimated reward multiplier and true reward multiplier. Here, since we reduce the reward multiplicity from $\sum_{t=0}^{T_n} R(s_t, a_t)$ to $\sum_{t’=t}^{T_n} R(s_{t’}, a_{t’})$ , the estimated reward multiplier is reduced to a more accurate one, thus the variance of our estimated policy gradient reduced. Am I right ?</p>
+
+<p>We can also understand in the following way: the original gradient $ \nabla \log \pi_{\theta}(a_{t}^{n} \mid  s_{t}^{n} )$  of all actions in the same trajectory always multiply same value $R(\tau^n) $ , and intuitively it would be more reasonable to assign high value to $\pi_{\theta}(a_{t}^{n} \mid  s_{t}^{n} ) $ which action leads to high return in the following steps.</p>
+
+<h3 id="tip-1-add-a-baseline">Tip 1: Add a Baseline</h3>
+
+<p>Sometimes, the total rewards of all trajectories are always positive, then the gradient update will always increase the probability of all $\pi_{\theta} ( a_{t}^{n} \mid s_{t}^{n} )$, since <script type="math/tex">\nabla \bar{R}_{\theta}</script>  is positive. Although the increasing magnitude are different among different actions, we need to ensure the $\sum_{j} \pi_{\theta} ( a_{tj}^{n} \mid  s_{t}^{n} ) = 1.0 $ with normalization, which may actually decrease the probability of good actions. Notice that, we are doing sampling to approximate the expectation, and at the worse case, some good actions may not be sampled ever, then the probabilities of all other (including bad) actions are increased. After normalization, it results in low probabilities of good actions which were not sampled, and the good actions may not be sampled ever since then.</p>
+
+<p>We may want to assign negative rewards to bad actions so that the gradient update will decrease the probability. We can modify the $ \nabla \bar{R}_{\theta}$ as below:</p>
+
+<script type="math/tex; mode=display">\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N} \sum_{t=0}^{T_n} \left\{ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot [\hat{Q}_t^n - b] \right\}</script>
+
+<p>where $b$ is called baseline, which could be assign as average total reward practically</p>
+
+<script type="math/tex; mode=display">b \approx E[R(\tau)] = \frac{1}{N} \sum_{n=1}^{N} R(\tau)</script>
+
+<p>during we sample the trajectories. But, are we allowed to do that ? We will see that subtracting a baseline is <em>unbiased in expectation</em>, that is</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\nabla \bar{R}_{\theta} &= E_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla \log p_{\theta}(\tau) \right] \\
+&= E_{\tau \sim p_{\theta}(\tau)} \left[ \left( R(\tau)-b \right) \nabla \log p_{\theta}(\tau) \right] \\
+&= E_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla \log p_{\theta}(\tau) \right] - E_{\tau \sim p_{\theta}(\tau)} \left[ b \nabla \log p_{\theta}(\tau) \right] \\
+&= E_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla \log p_{\theta}(\tau) \right] - \int_{\tau} p_{\theta}(\tau)\cdot b \nabla \log p_{\theta}(\tau) d\tau \\
+&= E_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla \log p_{\theta}(\tau) \right] - \int_{\tau}  b \nabla \cdot p_{\theta}(\tau) d\tau \\
+&= E_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla \log p_{\theta}(\tau) \right] - b \nabla_{\theta}  \int_{\tau} p_{\theta}(\tau) d\tau \\
+&=E_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla \log p_{\theta}(\tau) \right] - b \nabla_{\theta} 1 \\
+&= E_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla \log p_{\theta}(\tau) \right] - 0
+\end{align} %]]></script>
+
+<p>In addition, the average reward baseline is not the best baseline, and we can derive the optimal baseline by analyzing the variance of policy gradient as below:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\operatorname{Var}[x] &= E\left[x^{2}\right]-E[x]^{2} \\
+\nabla_{\theta} J(\theta) &= E_{\tau \sim p_{\theta}(\tau)}\left[\nabla_{\theta} \log p_{\theta}(\tau)(R(\tau)-b)\right] \\
+\mathrm{Var[\nabla_{\theta} J(\theta)]} &= E_{\tau \sim p_{\theta}(\tau)}\left[\left(\nabla_{\theta} \log p_{\theta}(\tau)(R(\tau)-b)\right)^{2}\right]- \left\{E_{\tau \sim p_{\theta}(\tau)}\left[\nabla_{\theta} \log p_{\theta}(\tau)(R(\tau)-b)\right]\right\}^{2} \\
+&= E_{\tau \sim p_{\theta}(\tau)}\left[\left(\nabla_{\theta} \log p_{\theta}(\tau)(R(\tau)-b)\right)^{2}\right]- \left\{ E_{\tau \sim p_{\theta}(\tau)}\left[\nabla_{\theta} \log p_{\theta}(\tau)R(\tau)\right]\right\}^{2} \\
+\frac{d \mathrm{Var}}{d b}&=\frac{d}{d b} E\left[g(\tau)^{2}(r(\tau)-b)^{2}\right] \\
+&=\frac{d}{d b}\left(E\left[g(\tau)^{2} r(\tau)^{2}\right]-2 E\left[g(\tau)^{2} r(\tau) b\right]+b^{2} E\left[g(\tau)^{2}\right]\right)\\
+&= -2 E\left[g(\tau)^{2} r(\tau)\right]+2 b E\left[g(\tau)^{2}\right] \\
+&=0
+\end{align} %]]></script>
+
+<p>where $g(\tau) = \nabla_{\theta} \log p_{\theta}(\tau)$. From above, we can derive the best baseline with minimum variance:</p>
+
+<script type="math/tex; mode=display">b=\frac{E\left[g(\tau)^{2} r(\tau)\right]}{E\left[g(\tau)^{2}\right]} = \frac{E\left[(\nabla_{\theta} \log p_{\theta}(\tau))^{2} r(\tau)\right]}{E\left[ (\nabla_{\theta} \log p_{\theta}(\tau))^{2}\right]}</script>
+
+<p>which is just expected reward, but weighted by gradient magnitudes. The computation cost on gradient magnitudes offsets the benefit of reduced variance, so we typically use the average reward as baseline.</p>
+
+<h3 id="tip-2-discount-factors">Tip 2: Discount Factors</h3>
+
+<p>The future rewards is always uncertain, which leads to high variance of total return for a long horizontal. We may introduce the discount factor to make the policy to prefer the sooner rewards. There are two ways to add discount factor into the policy gradient, which are :</p>
+
+<script type="math/tex; mode=display">\nabla \bar{R}_{\theta} \approx \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=0}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{\color{red}{t'=t}}^{T_n} \gamma^{t'-t}\cdot  R(s',a')\right]</script>
+
+<p>and</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\nabla \bar{R}_{\theta} &\approx \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=0}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{\color{red}{t=0}}^{T_n} \gamma^{t}\cdot  R(s',a')\right] \\
+&\approx \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=0}^{T_n} \left[ \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{\color{red}{t'=t}}^{T_n} \gamma^{t'}\cdot  R(s',a')\right] \\
+&= \frac{1}{N} \sum_{n=1}^{N}  \sum_{t=0}^{T_n} \left[ \color{red}{\gamma^{t}} \cdot \nabla \log \pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \sum_{\color{red}{t'=t}}^{T_n} \gamma^{t'-t}\cdot  R(s',a')\right]
+\end{align} %]]></script>
+
+<p>We can see that these two policy gradients with discount factor are slightly different. The latter one is more aligned with the fact that discount factor changes the MDPs by introducing exact dead end state:</p>
+
+<p><img src="/assets/img/discount-factor.png" alt="" /></p>
+
+<p>because multiplying discount factor in the front of gradient of log policy is same as multiplying discount factor in the front of log trajectory.</p>
+
+<p>However, the former policy gradient with discount factor is actually which we usually used in practice, which can be interpreted as the approximation to the gradient of average reward without a discount [9], from the perspective of variance reduction.</p>
+
+<h2 id="off-policy-gradient">Off-Policy Gradient</h2>
+
+<p>Policy gradient, for example REINFORCE algorithm, is an on-policy method. It is inefficient to iteratively update the model $ \pi_{\theta} $ and then generate new trajectories. Off-policy method is to train the policy $\pi_{\theta}$, called <em>target policy</em>, by using the sampled trajectories generated by another policy $ \pi_{\omega}$, called <em>behavior policy</em>. In this way, we can reuse the sample trajectories.</p>
+
+<p>Off-policy method has different form of objective function:</p>
+
+<script type="math/tex; mode=display">J(\theta) = E_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right] = E_{\tau \sim \color{red}{p_{\omega}(\tau)}}\left[\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right]</script>
+
+<p>which leverages the <em>important sampling</em></p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} E_{x \sim p(x)}[f(x)] &=\int p(x) f(x) d x \\ 
+&=\int \frac{q(x)}{q(x)} p(x) f(x) d x \\ 
+&=\int q(x) \frac{p(x)}{q(x)} f(x) d x \\ 
+&=E_{x \sim q(x)}\left[\frac{p(x)}{q(x)} f(x)\right] 
+\end{aligned} %]]></script>
+
+<p>We can compute the ratio $ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)}$</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)}
+&=\frac{p_{\theta}\left(\mathbf{s}_{1}\right) \prod_{t=1}^{T} \pi_{\theta}\left(\mathbf{a}_{t} | \mathbf{s}_{t}\right) p_{\theta}\left(\mathbf{s}_{t+1} | \mathbf{s}_{t}, \mathbf{a}_{t}\right)}{ p_{\omega}\left(\mathbf{s}_{1}\right) \prod_{t=1}^{T} \pi_{\omega}\left(\mathbf{a}_{t} | \mathbf{s}_{t}\right) p_{\omega}\left(\mathbf{s}_{t+1} | \mathbf{s}_{t}, \mathbf{a}_{t}\right)}\\
+&=\frac{ \prod_{t=1}^{T} \pi_{\theta}\left(\mathbf{a}_{t} | \mathbf{s}_{t}\right)}{\prod_{t=1}^{T} \pi_{\omega}\left(\mathbf{a}_{t} | \mathbf{s}_{t}\right)}
+\end{align} %]]></script>
+
+<p>where we use the fact that different policies do not effect the transition probabilities of the environment, that is <script type="math/tex">p_{\theta}(\mathbf{s}_{1}) = p_{\omega}(\mathbf{s}_{1})</script>.</p>
+
+<h3 id="policy-gradient-with-important-sampling">Policy Gradient with Important Sampling</h3>
+
+<p>We can derive the policy gradient w.G.t to parameter $\theta$ as:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\nabla_{\theta} J(\theta) &= E_{\tau \sim p_{\omega}(\tau)} \left[ \frac{\nabla p_{\theta}(\tau) }{p_{\omega}(\tau)} R(\tau)\right] \\
+&= E_{\tau \sim p_{\omega}(\tau)} \left[ \frac{p_{\theta}(\tau)  \nabla \log p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right] \\
+&= E_{\tau \sim p_{\omega}(\tau)} \left[ \frac{p_{\theta}(\tau)  }{p_{\omega}(\tau)} \nabla \log p_{\theta}(\tau) R(\tau)\right] \\
+&= E_{\tau \sim p_{\omega}(\tau)}\left[\left(\prod_{t=1}^{T} \frac{\pi_{\theta} \left(\mathbf{a}_{t} | \mathbf{s}_{t}\right)}{\pi_{\omega}\left(\mathbf{a}_{t} | \mathbf{s}_{t}\right)}\right)\left(\sum_{t=1}^{T} \nabla_{\theta} \log \pi_{\theta} \left(\mathbf{a}_{t} | \mathbf{s}_{t}\right)\right)\left(\sum_{t=1}^{T} r\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)\right)\right]
+\end{align} %]]></script>
+
+<p>if $\theta = \omega$ , then we can remove $\frac{p_{\theta}(\tau)  }{p_{\omega}(\tau)} $ at 3rd step, and <script type="math/tex">\nabla_{\theta} J(\theta) = E_{\tau \sim p_{\omega}(\tau)} \left[ \nabla \log p_{\theta}(\tau) G(\tau)\right]</script>.  We can also do more analysis on last equation and try to reduce the variance. But we omit it here [6, 7, 8].</p>
+
+<h3 id="issue-of-importance-sampling">Issue of Importance Sampling</h3>
+
+<p>Using importance sampling, we can derive unbiased policy gradient, that is</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\nabla_{\theta} J(\theta) &=  \nabla_{\theta} E_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right] \\
+&= \nabla_{\theta} E_{\tau \sim p_{\omega}(\tau)}\left[\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right] \\
+&\approx \nabla_{\theta} \left[ \frac{1}{N} \sum_{n=1}^{N} p_{\theta}(\tau) R(\tau)\right]\\
+&= \nabla_{\theta} \hat{E}_{\tau \sim p_{\omega}(\tau)}\left[\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right] \\
+&= \nabla_{\theta} \hat{E}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right]
+\end{align} %]]></script>
+
+<p>where $\hat{E} $ and $\hat{J}$ denotes by the estimates. The last equality holds when $p_{\omega}$ have support everywhere $p_{\theta}$ does:</p>
+
+<script type="math/tex; mode=display">p_{\theta}(\tau) > 0 \Rightarrow p_{\omega}(\tau) > 0</script>
+
+<p>The precision of these estimates depend on the variances of $G(\tau)$ and $\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} G(\tau)$ respectively.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\operatorname{Var}\left[ \hat{E}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right] \right] 
+&= \frac{\operatorname{Var}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right]}{N} \\
+&= \frac{\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau)^2 \right] - \left(\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right]\right)^2}{N} \\
+\operatorname{Var}\left[ \hat{E}_{\tau \sim p_{\omega}(\tau)}\left[\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right] \right]
+&= \frac{\operatorname{Var}_{\tau \sim p_{\omega} (\tau)}\left[\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right]}{N}\\
+&= \frac{\operatorname{E}_{\tau \sim p_{\omega}(\tau)} \left[ \left( \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right)^2 \right] - \left( \operatorname{E}_{\tau \sim p_{\omega}(\tau)} \left[ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau) \right]\right)^2}{N} \\
+&= \frac{\operatorname{E}_{\tau \sim p_{\omega}(\tau)} \left[ \left( \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)}\right)^2 R(\tau)^2 \right] - \left(\operatorname{E}_{\tau \sim \color{red}{p_{\theta}(\tau)}} \left[R(\tau) \right]\right)^2}{N} \\
+&= \frac{\operatorname{E}_{\tau \sim \color{red}{p_{\theta}(\tau)}} \left[ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)^2 \right] - \left(\operatorname{E}_{\tau \sim \color{red}{p_{\theta}(\tau)}} \left[R(\tau) \right]\right)^2}{N}
+\end{align} %]]></script>
+
+<p>If the distribution $p_{\theta}(\tau)$ is very different from the $p_{\omega}(\tau)$ , the precision of two different estimates would be very different. It is worth noting that importance sampling provides a way for <strong>variance reduction</strong> [4, 5] by restricting</p>
+
+<script type="math/tex; mode=display">\operatorname{Var}_{\tau \sim p_{\theta}(\tau)} \left[R(\tau) \right] - \operatorname{Var}_{\tau \sim p_{\omega} (\tau)}\left[\frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)\right] > 0</script>
+
+<p>that is</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau)^2 \right] - \operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} R(\tau)^2 \right] &> 0 \\
+\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ \left( 1- \frac{p_{\theta}(\tau)}{p_{\omega}(\tau)} \right)R(\tau)^2 \right] &> 0
+\end{align} %]]></script>
+
+<h2 id="summary">Summary</h2>
+
+<ul>
+  <li>The policy gradient has high variance, and the gradient will be very noisy.</li>
+  <li>We can reduce the variance by sampling more trajectories or using much larger batches. It would be very difficult to tweak learning rate, and adaptive step size rules like ADAM could be helpful, but not perfect.</li>
+  <li>The key point of improving the policy gradient methods is to reduce the variance of the policy gradient.</li>
+</ul>
+
+<h2 id="reference">Reference</h2>
+
+<p>[1] Chapter 13: Policy Gradient Methods, <a href="http://incompleteideas.net/book/bookdraft2017nov5.pdf">Reinforcement Learning:
+An Introduction</a></p>
+
+<p>[2] Sutton, G. S., McAllester, D. A., Singh, S. P., and Mansour, Y. (1999). <a href="https://papers.nips.cc/paper/1713-policy-gradient-methods-for-reinforcement-learning-with-function-approximation.pdf">Policy gradient methods for reinforcement learning with function approximation</a>. NeurIPS.</p>
+
+<p>[3] <a href="https://www.youtube.com/watch?v=XGmd3wcyDg8&amp;list=PLkFD6_40KJIxJMR-j5A1mkxK26gh_qg37&amp;index=21">Lecture of Berkeley DRL course</a></p>
+
+<p>[4] <a href="https://timvieira.github.io/blog/post/2014/12/21/importance-sampling/">Importance Sampling for Reinforcement Learning</a></p>
+
+<p>[5] <a href="https://web.archive.org/web/20170401030417/http://www.columbia.edu/~mh2078/MCS04/MCS_var_red2.pdf">Variance Reduction with Importance Sampling</a></p>
+
+<p>[6] Jie, Tang, and Pieter Abbeel. “<a href="http://rll.berkeley.edu/~jietang/pubs/nips10_Tang.pdf">On a connection between importance sampling and the likelihood ratio policy gradient.</a>” NeurIPS. 2010.]</p>
+
+<p>[7] Levine, Sergey, and Vladlen Koltun. “<a href="https://graphics.stanford.edu/projects/gpspaper/gps_full.pdf">Guided policy search.</a>” <em>International Conference on Machine Learning</em>. 2013.</p>
+
+<p>[8] Schulman, John, et al. “<a href="https://arxiv.org/pdf/1707.06347.pdf">Proximal policy optimization algorithms</a>.” <em>arXiv preprint arXiv:1707.06347</em> (2017).</p>
+
+<p>[9] Thomas, Philip. “<a href="http://proceedings.mlr.press/v32/thomas14.html">Bias in natural actor-critic algorithms</a>.” <em>International Conference on Machine Learning</em>. 2014.</p>
+
+<p>[10] <a href="https://danieltakeshi.github.io/2017/03/28/going-deeper-into-reinforcement-learning-fundamentals-of-policy-gradients/">Going Deeper Into Reinforcement Learning: Fundamentals of Policy Gradients</a></p>
+
+:ET

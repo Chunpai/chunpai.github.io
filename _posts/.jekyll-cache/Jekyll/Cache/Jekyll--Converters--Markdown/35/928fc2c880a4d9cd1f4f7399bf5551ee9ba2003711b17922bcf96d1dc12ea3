@@ -1,0 +1,603 @@
+I"Ն<p>This is my first post on reinforcement learning, which will cover the foundation of value-based methods in reinforcement learning, such as MDP, Bellman equations, generalized policy iteration, MC, TD, and DQN. This post is based to Sutton’s book and  <a href="http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html">David Silver’s lectures</a>, which are the best lectures on value-based methods I believe.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#notations" id="markdown-toc-notations">Notations</a></li>
+  <li><a href="#markov-decision-process" id="markdown-toc-markov-decision-process">Markov Decision Process</a>    <ul>
+      <li><a href="#markov-property" id="markdown-toc-markov-property">Markov Property</a></li>
+      <li><a href="#markov-process" id="markdown-toc-markov-process">Markov Process</a></li>
+      <li><a href="#markov-reward-process" id="markdown-toc-markov-reward-process">Markov Reward Process</a></li>
+      <li><a href="#markov-decision-process-1" id="markdown-toc-markov-decision-process-1">Markov Decision Process</a></li>
+      <li><a href="#ergodic-mdp" id="markdown-toc-ergodic-mdp">Ergodic MDP</a></li>
+    </ul>
+  </li>
+  <li><a href="#goal-of-an-agent" id="markdown-toc-goal-of-an-agent">Goal of an Agent</a></li>
+  <li><a href="#bellman-equations" id="markdown-toc-bellman-equations">Bellman Equations</a>    <ul>
+      <li><a href="#bellman-expectation-equation-for-v_pis" id="markdown-toc-bellman-expectation-equation-for-v_pis">Bellman Expectation Equation for $v_{\pi}(s)$</a></li>
+      <li><a href="#bellman-expectation-equation-for--q_pis-a" id="markdown-toc-bellman-expectation-equation-for--q_pis-a">Bellman Expectation Equation for $ q_{\pi}(s, a)$</a></li>
+      <li><a href="#bellman-optimality-equation-for-v_pis" id="markdown-toc-bellman-optimality-equation-for-v_pis">Bellman Optimality Equation for $v_{\pi}(s)$</a></li>
+      <li><a href="#bellman-optimality-equation-for-q_pis-a" id="markdown-toc-bellman-optimality-equation-for-q_pis-a">Bellman Optimality Equation for $q_{\pi}(s, a)$</a></li>
+    </ul>
+  </li>
+  <li><a href="#generalized-policy-iteration" id="markdown-toc-generalized-policy-iteration">Generalized Policy Iteration</a>    <ul>
+      <li><a href="#policy-evaluation" id="markdown-toc-policy-evaluation">Policy Evaluation</a></li>
+      <li><a href="#policy-improvement" id="markdown-toc-policy-improvement">Policy Improvement</a></li>
+    </ul>
+  </li>
+  <li><a href="#planning-by-dynamic-programming-for-known-mdp" id="markdown-toc-planning-by-dynamic-programming-for-known-mdp">Planning by Dynamic Programming for Known MDP</a>    <ul>
+      <li><a href="#policy-iteration" id="markdown-toc-policy-iteration">Policy Iteration</a></li>
+      <li><a href="#value-iteration" id="markdown-toc-value-iteration">Value Iteration</a></li>
+    </ul>
+  </li>
+  <li><a href="#model-free-approach" id="markdown-toc-model-free-approach">Model Free Approach</a>    <ul>
+      <li><a href="#monte-carlo-prediction-and-control" id="markdown-toc-monte-carlo-prediction-and-control">Monte-Carlo Prediction and Control</a></li>
+      <li><a href="#temporal-difference-prediction-and-control" id="markdown-toc-temporal-difference-prediction-and-control">Temporal-Difference Prediction and Control</a></li>
+      <li><a href="#advantages-and-disadvantages-of-mc-vs-td" id="markdown-toc-advantages-and-disadvantages-of-mc-vs-td">Advantages and Disadvantages of MC vs. TD</a></li>
+      <li><a href="#relationship-between-dp-and-td" id="markdown-toc-relationship-between-dp-and-td">Relationship Between DP and TD</a></li>
+    </ul>
+  </li>
+  <li><a href="#reference" id="markdown-toc-reference">Reference</a></li>
+</ul>
+
+<h2 id="notations">Notations</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Definition                     </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>$s, s’$</td>
+      <td>states</td>
+    </tr>
+    <tr>
+      <td>$a$</td>
+      <td>an action</td>
+    </tr>
+    <tr>
+      <td>$r$</td>
+      <td>a reward</td>
+    </tr>
+    <tr>
+      <td>$\mathcal{S}$</td>
+      <td>set of nonterminal states</td>
+    </tr>
+    <tr>
+      <td>$\mathcal{S}^+$</td>
+      <td>set of all states, including the terminal states</td>
+    </tr>
+    <tr>
+      <td>$\mathcal{A}$</td>
+      <td>set of all actions or action space</td>
+    </tr>
+    <tr>
+      <td>$\mathcal{R}$</td>
+      <td>set of all possible rewards, a finite subset of $\mathbb{R}$</td>
+    </tr>
+    <tr>
+      <td>$t$</td>
+      <td>discrete time step</td>
+    </tr>
+    <tr>
+      <td>$T$</td>
+      <td>final time step of episode</td>
+    </tr>
+    <tr>
+      <td>$A_t$</td>
+      <td>action at time $t$</td>
+    </tr>
+    <tr>
+      <td>$S_t$</td>
+      <td>state at time $t$</td>
+    </tr>
+    <tr>
+      <td>$R_t$</td>
+      <td>reward at time $t$</td>
+    </tr>
+    <tr>
+      <td>$\pi$</td>
+      <td>policy, or decision making rule</td>
+    </tr>
+    <tr>
+      <td>$\pi(s)$</td>
+      <td>action taken in state $s$ under <em>deterministic</em> policy $\pi$</td>
+    </tr>
+    <tr>
+      <td>$\pi(a \mid s)$</td>
+      <td>probability of taking action $a$ in $s$ under <em>stochastic</em> policy $\pi$</td>
+    </tr>
+    <tr>
+      <td>$ \pi(a \mid s, \theta)$</td>
+      <td>probability of taking action $a$ in $s$ given parameter $\theta$</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>$p(s’, r \mid s, a)$: probability of transition to state $s’$ with reward $r$, from state $s$ and action $a$</li>
+</ul>
+
+<script type="math/tex; mode=display">p(s', r | s, a) = Pr(S_t = s', R_t=r |S_{t-1}=s, A_{t-1}=a)</script>
+
+<script type="math/tex; mode=display">\sum_{s' \in \mathcal{S}, r \in \mathcal{R}} p(s', r | s, a) = 1 \ \ \text{for all} \ s \in S, a \in A</script>
+
+<ul>
+  <li>$p(s’ \mid s, a)$ or $\mathcal{P}_{ss’}^{a}$:  probability of transition to state $s’$, from state $s$ and action $a$</li>
+</ul>
+
+<script type="math/tex; mode=display">p(s'| s, a) = Pr(S_t = s'|S_{t-1}=s, A_{t-1}=a) = \sum_{r\in \mathcal{R}} p(s', r | s, a)</script>
+
+<ul>
+  <li>$r(s, a, s’)$ or $\mathcal{R}_{ss’}^{a} $ : <em>expected</em> immediate reward on transition from $s$ to $s’$ under action $a$</li>
+</ul>
+
+<script type="math/tex; mode=display">r(s,a,s') = \mathbb{E}[R_t |S_{t-1}=s, A_{t-1} = a, S_{t}=s'] =\sum_{r\in \mathcal{R}} r \cdot p(r |s, a, s') =  \sum_{r\in \mathcal{R}} r \cdot \frac{p(s',r|s,a)}{p(s'|s,a)}</script>
+
+<ul>
+  <li>$r(s, a)$ or $\mathcal{R}_{s}^{a}$:  <em>expected</em> reward for state-action pairs</li>
+</ul>
+
+<script type="math/tex; mode=display">r(s,a) = \mathbb{E}[R_t |S_{t-1}=s, A_{t-1} = a] =\sum_{r\in \mathcal{R}} r \sum_{s'\in S}p(s', r |s, a)</script>
+
+<ul>
+  <li>$G_t:$ return (cumulative reward) following time $t$, in the simplest case:</li>
+</ul>
+
+<script type="math/tex; mode=display">G_t = R_{t+1} + R_{t+2} + \cdots + R_{T}</script>
+
+<h2 id="markov-decision-process">Markov Decision Process</h2>
+<p>Markov decision processes formally describe an environment for reinforcement learning. Below is the figure about the process of agent-environment interaction in a Markov decision process.</p>
+
+<p><img src="/assets/img/agent_environment_interaction.png" alt="agent_environment_interaction" /></p>
+
+<p>The agent interacts with the environment over time and generate a sequence or trajectory:</p>
+
+<script type="math/tex; mode=display">\tau = \{ S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, \cdots \}</script>
+
+<h3 id="markov-property">Markov Property</h3>
+<p>A state $S_t$ is Markov if and only if</p>
+
+<script type="math/tex; mode=display">\mathbb{P}\left[S_{t+1} | S_{t}\right]=\mathbb{P}\left[S_{t+1} | S_{1}, \ldots, S_{t}\right]</script>
+
+<p>that means the state is a sufficient statistic of the future. For a Markov state $s$ and successor state $s^{\prime}$, the state transition probability is defined by</p>
+
+<script type="math/tex; mode=display">\mathcal{P}_{s s^{\prime}}=\mathbb{P}\left[S_{t+1}=s^{\prime} | S_{t}=s\right]</script>
+
+<p>and we have state transition matrix $ \mathcal{P} $ as:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\mathcal{P} = 
+\left[\begin{matrix}
+	\mathcal{P}_{11} & \cdots & \mathcal{P}_{1n} \\
+	\vdots & & \vdots \\
+	\mathcal{P}_{n1} & \cdots & \mathcal{P}_{nn}
+\end{matrix}\right] %]]></script>
+
+<p>where each row of the matrix sums to $1$.</p>
+
+<h3 id="markov-process">Markov Process</h3>
+
+<p>A Markov Process (or Markov Chain) is a tuple $\langle\mathcal{S}, \mathcal{P}\rangle$ ,</p>
+
+<ul>
+  <li>$\mathcal{S}$ is a (finite) set of states</li>
+  <li>$\mathcal{P}$ is a state transition probability matrix</li>
+</ul>
+
+<p>For example, below defines a Markov Chain of student activities in a day:</p>
+
+<p><img src="/assets/img/student_markov_chain.png" alt="Student Markov Chain" /></p>
+
+<p>where we can sample episodes with different states.</p>
+
+<h3 id="markov-reward-process">Markov Reward Process</h3>
+
+<p>A Markov Process (or Markov Chain) is a tuple $\langle\mathcal{S}, \mathcal{P}, \mathcal{R}, \gamma \rangle$ ,</p>
+
+<ul>
+  <li>$\mathcal{S}$ is a (finite) set of states</li>
+  <li>$\mathcal{P}$ is a state transition probability matrix</li>
+</ul>
+
+<script type="math/tex; mode=display">\mathcal{P}_{s s^{\prime}}=\mathbb{P}\left[S_{t+1}=s^{\prime} | S_{t}=s\right]</script>
+
+<ul>
+  <li>$\mathcal{R}$ is a reward function, <script type="math/tex">\mathcal{R}_{s}=\mathbb{E}\left[R_{t+1} \mid S_{t}=s \right]</script></li>
+  <li>$\gamma$ is a discount factor, $ \gamma \in[0,1]$ , which is used to define the total discounted reward from time-step $t$</li>
+</ul>
+
+<script type="math/tex; mode=display">G_{t}=R_{t+1}+\gamma R_{t+2}+\ldots=\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1}</script>
+
+<p>For example, below defines a Markov Reward Process of student activities in a day:</p>
+
+<p><img src="/assets/img/student_mrp.png" alt="Student MRP" /></p>
+
+<p>The discount factor is used to avoid infinite returns in infinite horizon, which will reduce the uncertainty about the future may not be fully represented.</p>
+
+<h3 id="markov-decision-process-1">Markov Decision Process</h3>
+
+<p>A Markov decision process is a Markov reward process with decisions, which can be defined by a tuple $\langle\mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma \rangle$</p>
+
+<ul>
+  <li>$\mathcal{S}$ is a (finite) set of states</li>
+  <li>$\mathcal{A}$ is a finite set of actions</li>
+  <li>$\mathcal{P}$ is a state transition probability matrix</li>
+</ul>
+
+<script type="math/tex; mode=display">\mathcal{P}_{s s^{\prime}}^{a}=\mathbb{P}\left[S_{t+1}=s^{\prime} \mid S_{t}=s, A_{t}=a\right]</script>
+
+<ul>
+  <li>$\mathcal{R}$ is a reward function, <script type="math/tex">\mathcal{R}_{s}^{a}=\mathbb{E}\left[R_{t+1} \mid S_{t}=s, A_t = a \right]</script></li>
+  <li>$\gamma$ is a discount factor, $ \gamma \in[0,1] $</li>
+</ul>
+
+<p>For example, below defines a Markov Decision Process of student activities in a day:</p>
+
+<p><img src="/assets/img/student_mdp.png" alt="Student MDP" /></p>
+
+<p>Another reason of using discounted factor is the decision $A_t$ typically has discounted effect on the future rewards $R_{t+k}$, which supposed to be effected by $A_{t+k-1}$.</p>
+
+<h3 id="ergodic-mdp">Ergodic MDP</h3>
+
+<p>An ergodic Markov process has a limiting stationary distribution, which is a vector $d(\mathcal{S})$ about state distribution , such that
+<script type="math/tex">d(\mathcal{S}) = d(\mathcal{S}) \cdot \mathcal{P}</script></p>
+
+<p>or</p>
+
+<script type="math/tex; mode=display">d(s)=\sum_{s^{\prime} \in \mathcal{S}} d\left(s^{\prime}\right) \mathcal{P}_{s^{\prime} s}</script>
+
+<p>It means over the long run, no matter what the starting state was, the proportion of time the chain spends in state $s$ is approximately $d(s)$, where $\sum_{s \in \mathcal{S} } d(s)$ = 1.0 .</p>
+
+<p>An MDP is ergodic if the Markov chain induced by any policy is ergodic. For any policy $\pi$ , an ergodic MDP has an <strong><em>average reward per time-step</em></strong> $\rho^{\pi}$ that is <em>independent</em> of start state</p>
+
+<script type="math/tex; mode=display">\rho^{\pi}=\lim _{T \rightarrow \infty} \frac{1}{T} \mathbb{E}\left[\sum_{t=1}^{T} R_{t}\right]</script>
+
+<h2 id="goal-of-an-agent">Goal of an Agent</h2>
+<p>The goal of an agent is to maximize the expected value of the cumulative sum of a reward, which an agent receives in the long run.  In general, the agent seeks to maximize the expected return, which is denoted by $\mathbb{E}[G_t]$. In episodic tasks, which means there exists finite steps of agent-environment interaction, the return can be generally expressed as</p>
+
+<p><script type="math/tex">G_1 = R_{1} + R_{2} + \cdots + R_{T} = R_{1} + G_{2}</script>
+However, if the agent continually interacts with the environment without limit, which is called continuing tasks, we need another form of return</p>
+
+<script type="math/tex; mode=display">G_1 = R_{1} + \gamma R_{2} + \gamma^2 R_{3} + \cdots = \sum_{t=0}^{\infty} \gamma^{t} R_{t+1} = R_{1} + \gamma \cdot G_{2}</script>
+
+<p>The intermediate reward usually is designed by human, and keep in mind that, the reward signal is your way of communicating to the robot or agent what you want it to achieve, not how you want it achieved. If you want to give prior knowledge about how we want it to achieve, we might impact the initial policy or initial value function.</p>
+
+<h2 id="bellman-equations">Bellman Equations</h2>
+<p><strong>State-value Function:</strong> the value of a state $s$ under policy $\pi$ is defined as</p>
+
+<script type="math/tex; mode=display">v_{\pi}(s)=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right]=\mathbb{E}_{\pi}\left[\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s\right] \quad \forall s \in S</script>
+
+<p>which denotes by the expected return of state $s$ under policy $\pi$ . If $s$ is a terminated state, then $v_{\pi}(s) = 0$.</p>
+
+<p><strong>Action-value Function:</strong> the value of a state-action pair under policy $\pi$ is defined as</p>
+
+<script type="math/tex; mode=display">q_{\pi}(s, a) = \mathbb{E}_{\pi}[G_{t} | S_t = s, A_t = a] = \mathbb{E}_{\pi} [\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} |S_t =s , A_t=a] \ \ \ \  \forall s \in \mathcal{S},a \in \mathcal{A}</script>
+
+<p>which denotes by the expected return of state $s$ with action $a$ committed under policy $\pi$.</p>
+
+<p><strong>Advantage Function:</strong> the difference between action-value and state value,</p>
+
+<script type="math/tex; mode=display">A_{\pi}(s, a) = q_{\pi}(s, a) - v_{\pi}(s, a)</script>
+
+<p>which represents how good is a specific action compared with average performance of other actions.</p>
+
+<h3 id="bellman-expectation-equation-for-v_pis">Bellman Expectation Equation for $v_{\pi}(s)$</h3>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} v_{\pi}(s) &=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s\right]=\mathbb{E}_{\pi}\left[\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s\right] \quad \forall s \in S \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} | S_{t}=s\right] \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) | S_{t}=s\right] \\ &=\sum_{a} \pi(a | s) \sum_{r, s^{\prime}} p\left(s^{\prime}, r | s, a\right)\left[r + \gamma v_{\pi}\left(s^{\prime}\right)\right] \\ &=\sum_{a} \pi(a | s) \cdot q_{\pi}(s, a) \end{aligned} %]]></script>
+
+<p>The inner summation is to compute the expected return of state $s$ with a specific action $a$. The outer summation is to compute the expected return of state $s$ with all possible actions. We can use two backup diagrams to represent it:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/assets/img/bellman_exp_v_backup_diagram.png" alt="bellman_exp_v_backup_diagram" /></td>
+      <td><img src="/assets/img/bellman_exp_v_backup_diagram2.png" alt="bellman_exp_v_backup_diagram2" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="bellman-expectation-equation-for--q_pis-a">Bellman Expectation Equation for $ q_{\pi}(s, a)$</h3>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} q_{\pi}(s, a) &=\mathbb{E}_{\pi}\left[G_{t} | S_{t}=s, A_{t}=a\right]=\mathbb{E}_{\pi}\left[\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1} | S_{t}=s, A_{t}=a\right] \quad \forall s \in \mathcal{S}, a \in \mathcal{A} \\ &=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) | S_{t}=s, A_{t}=a\right] \\ &=\sum_{r, s^{\prime}} p\left(s^{\prime}, r | s, a\right)\left[r+ \gamma v_{\pi}\left(s^{\prime}\right)\right] \end{aligned} %]]></script>
+
+<p>We can also use two backup diagrams to represent it:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/assets/img/bellman_exp_q_backup_diagram.png" alt="bellman_exp_q_backup_diagram" /></td>
+      <td><img src="/assets/img/bellman_exp_q_backup_diagram2.png" alt="bellman_exp_q_backup_diagram" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="bellman-optimality-equation-for-v_pis">Bellman Optimality Equation for $v_{\pi}(s)$</h3>
+
+<p>If we have already known the optimal policy where</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} v_{*}(s) &=\max _{\pi} v_{\pi}(s) \\ q_{*}(s, a) &=\max _{\pi} q_{\pi}(s, a) \end{aligned} %]]></script>
+
+<p>we can get that</p>
+
+<script type="math/tex; mode=display">v_{*}(s)=\max _{a} q_{*}(s, a) \quad \forall s \in \mathcal{S}</script>
+
+<p>that means the value of a state under an optimal policy must equal the expected return for the best action from that state. If it is deterministic action, all actions except the optimal action have $q_{\star}(s, a) = 0$ , since $\pi^{\star}(a \mid s) = 1.0$ for optimal action $a$ .</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+v_{*}(s) &= \max_{a} q_{*}(s,a) \\
+&= \max_{a} \mathbb{E}_{\pi^*}[G_t | S_t = s, A_t = a] \\
+&= \max_{a} \mathbb{E}_{\pi^*}[R_{t+1} + \gamma G_{t+1} | S_t = s, A_t = a] \\
+&= \max_{a} \mathbb{E}_{\pi^*}[R_{t+1} + \gamma v_{*}(S_{t+1}) | S_t = s, A_t = a] \\
+&= \max_{a}\sum_{r,s'} p(s', r |s, a) [r + \gamma v_{\pi^{*}}(s')] \\
+&= \pi^{*}(a|s) \sum_{r,s'} p(s', r |s, a) [r + \gamma v_{\pi^{*}}(s')]
+\end{align} %]]></script>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/assets/img/bellman_opt_v_backup_diagram.png" alt="bellman_opt_v_backup_diagram" /></td>
+      <td><img src="/assets/img/bellman_opt_v_backup_diagram2.png" alt="bellman_opt_v_backup_diagram2" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="bellman-optimality-equation-for-q_pis-a">Bellman Optimality Equation for $q_{\pi}(s, a)$</h3>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+q_{*}(s, a) &= \mathbb{E}_{\pi^*}[G_{t} | S_t = s, A_t = a] \\
+    &= \mathbb{E}_{\pi^*}[R_{t} + \gamma G_{t+1} | S_t = s, A_t = a] \\
+    &= \mathbb{E}_{\pi^*}[R_{t+1} + \gamma v_{*}(S_{t+1}) | S_t = s, A_t = a] \\
+    &= \mathbb{E}_{\pi^*}[R_{t+1} + \gamma \max_{a'} q_{*}(S_{t+1}, a') | S_t = s, A_t = a] \\
+    &= \sum_{r,s'} p(s', r |s, a) [r + \gamma \max_{a'} q_{\pi^{*}}(s', a')]
+    \end{align} %]]></script>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/assets/img/bellman_opt_q_backup_diagram.png" alt="bellman_opt_q_backup_diagram" /></td>
+      <td><img src="/assets/img/bellman_opt_q_backup_diagram2.png" alt="bellman_opt_q_backup_diagram2" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The way to check if it is an optimal policy is simply to evaluate if the Bellman optimality equation holds.</p>
+
+<h2 id="generalized-policy-iteration">Generalized Policy Iteration</h2>
+
+<p>The generalized policy iteration refers to the general idea of interleaving policy evaluation and policy improvement, where the policy is always being improved w.r.t the current value function and the current value function is always being driven toward a better value function for the policy.</p>
+
+<p><img src="/assets/img/GPI-1556293722416.png" alt="" /></p>
+
+<p>Both processes stabilize only when a policy has been found that is greedy w.r.t its own evaluation function, which implies that the Bellman optimality equation holds. <strong><em>Almost all reinforcement learning methods are well described as GPI.</em></strong></p>
+
+<h3 id="policy-evaluation">Policy Evaluation</h3>
+
+<p>Starting with a random guess of value function $v_0$, we utilize the <strong><em>Bellman expectation equation</em></strong> as update rule to iteratively update the value function to make more accurate prediction on state-value and action-value under current fixed policy:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} v_{k+1}(s) & \doteq \mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{k}\left(S_{t+1}\right) | S_{t}=s\right] \\ &=\sum_{a} \pi(a | s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r | s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right] \end{aligned} %]]></script>
+
+<p>Notice that, the exact policy evaluation requires known MDP, which can be implemented by <strong><em>dynamic programming</em></strong>. If we have unknown MDP, then we have to <em>estimate</em> the policy evaluation according to <em>model-free prediction</em>.</p>
+
+<h3 id="policy-improvement">Policy Improvement</h3>
+
+<p>Once we complete the policy evaluation and get a fixed most accurate value function for current policy, we can try to improve the policy <strong><em>greedily</em></strong> base on one simple update rule that:</p>
+
+<script type="math/tex; mode=display">q_{\pi} (s, \pi^{\prime}(s)) \geq v_{\pi}(s) \ \ \ \ \ \ \forall s \in \mathcal{S}</script>
+
+<p>where $\pi’(s) = \arg\max_{a} q_{\pi} (s, a)$ . We can tweak the policy by choosing the best action for each state based on derived value function for current policy $ \pi$, and <strong><em>we can view it as an optimization of action-value function w.r.t action space under current fixed policy $\pi$.</em></strong>  Then the policy $ \pi’$ must be as good as or better than $ \pi$ , under our current value function, that is</p>
+
+<script type="math/tex; mode=display">v_{\pi'}(s) \geq v_{\pi}(s)</script>
+
+<p>Since the policy improvement is based on the policy evaluation on current policy which requires model dynamic and finite MDP for exact evaluation, we only can approximately improve the policy based on approximated policy evaluation with model-free methods if we do not know them. <em>The question here is how can we guarantee to improve the policy based on approximated policy evaluation ?</em></p>
+
+<h2 id="planning-by-dynamic-programming-for-known-mdp">Planning by Dynamic Programming for Known MDP</h2>
+
+<h3 id="policy-iteration">Policy Iteration</h3>
+
+<p>Policy iteration is an <em>algorithm</em> or a procedure of alternatively completing policy evaluation and policy improvement, and eventually makes Bellman optimality equation hold.</p>
+
+<script type="math/tex; mode=display">\pi_{0} \xrightarrow{Eval.} v_{\pi_{0}} \xrightarrow{Impro.}  \pi_{1} \xrightarrow{Eval.} v_{\pi_{1}} \xrightarrow{Impro.} \cdots 
+\xrightarrow{Eval.} \pi_{*} \xrightarrow{Eval.} v_{\pi_{*}}</script>
+
+<p><img src="../assets/img/GPI2-1556293740184.png" alt="" /></p>
+
+<p>For completing the policy evaluation, it may require several sweeps over all states.  Making
+the policy greedy with respect to the value function typically makes the value function incorrect for the
+changed policy, and making the value function consistent with the policy typically causes that policy
+no longer to be greedy.</p>
+
+<h3 id="value-iteration">Value Iteration</h3>
+
+<p>Value iteration is a revised <em>algorithm</em> of policy iteration, which avoid multiple sweeps on all states during policy evaluation. Value iteration improves the policy as soon as it gets an evaluation of current state, which combines the policy improvement and truncated policy evaluation steps into one simple update operation:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} v_{k+1}(s) & \doteq \max _{a} \mathbb{E}\left[R_{t+1}+\gamma v_{k}\left(S_{t+1}\right) | S_{t}=s, A_{t}=a\right] \\ &=\max _{a} \sum_{s^{\prime}, r} p\left(s^{\prime}, r | s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right] \end{aligned} %]]></script>
+
+<p>As we can see in the operation above, we do not observe the exact policy improvement step, however we can see that the value function is <em>updated to evaluate the improved policy</em>. This operation also can be viewed as an update rule derived from the <em>Bellman optimality equation</em>.</p>
+
+<p><img src="/assets/img/value_iteration.png" alt="value_iteration" /></p>
+
+<h2 id="model-free-approach">Model Free Approach</h2>
+
+<p>We can utilize the state-value function with dynamic programming to find the optimal policy if we know the state transition probability. However, it is often that we do not have the known MDP, and we have to seek the help of model-free methods, which leverage the action-value function instead. There are two major classes of model-free methods: <em>Monte-Carlo method</em> for episodic tasks and <em>temporal-difference method</em> for continuous tasks. Both MC and TD methods can estimate the state-value function $V_{\pi}(s) $ without a model, however, state-value alone is not sufficient to determine a policy. Therefore, we only study the MC and TD methods for policy evaluation and improvement with action-value function $Q_{\pi}(s, a)$ here.  Once we find the optimal action-value function $Q_{*}(s, a)$, we can recover an optimal policy by</p>
+
+<script type="math/tex; mode=display">\pi_{*}(s)=\arg \max _{a} Q_{*}(s, a)</script>
+
+<p>One drawback of model-free methods is we need many samples of trajectories. <em>One question here is how many samples are sufficient ? Can we do smart sampling ?</em></p>
+
+<p>We refer to TD and Monte Carlo updates as <em>sample updates</em> because they involve looking ahead to a sample successor state (or state-action pair), using the value of the successor and the reward along the way to compute a backed-up value, and then updating the value of the original state (or state-action pair) accordingly. <strong><em>Sample updates</em></strong> differ from the <strong><em>expected updates</em></strong> of DP methods in that they are based on a single sample successor rather than on a complete distribution of all possible successors.</p>
+
+<h3 id="monte-carlo-prediction-and-control">Monte-Carlo Prediction and Control</h3>
+
+<p>MC methods are used in episodic tasks that we can sample the full episodes.</p>
+
+<p><img src="/assets/img/MC.png" alt="MC" /></p>
+
+<p>By the law of large numbers, $ Q_{\star} (s,a) \longleftarrow Q_{\pi}(s, a)$ as $N(s,a) \longrightarrow \infty$, and thus $\pi \approx \pi_*$. (Step 7 - Step 12) is policy evaluation, and (Step 13 - Step 15) is policy improvement, which follows value iteration (also the generalized policy iteration). We use the exploring starts to ensure every pair of state and action has probability $&gt;0$ to be visited.</p>
+
+<p>In the algorithm above, we need to keep track of the counter and returns. However, we cannot remember everything in real life, especially when state space and action space is very large. We can replace the (Step 9 - Step 11) with a running mean update:</p>
+
+<script type="math/tex; mode=display">Q(s, a) = Q(s, a) + \alpha (G - Q(s, a))</script>
+
+<p>Because</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+            \mu_k &= \frac{1}{k} \sum_{j=1}^{k} x_j \\
+            &= \frac{1}{k} (x_k + \sum_{j=1}^{k-1} x_j) \\
+            &= \frac{1}{k} (x_k + (k-1) \mu_{k-1}) \\
+            &= \mu_{k-1}  + \frac{1}{k} (x_k - \mu_{k-1})
+\end{align} %]]></script>
+
+<p>Therefore, we do not need to keep track of the $Returns(s,a)$ after each episode by setting:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+N(s,a) &\longleftarrow N(s,a) + 1 \\
+        Q(s,a) &\longleftarrow Q(s,a) + \frac{1}{N(s,a)} (G - Q(s,a))
+\end{align} %]]></script>
+
+<p>In addition, we can further avoid tracking the $N(s,a)$ by replacing it with $\alpha$. Thus, we can totally forget about the old episodes.</p>
+
+<p><img src="/assets/img/MC2-1556298863798.png" alt="MC2" /></p>
+
+<p>The reason we use the equation (25) is because it still guarantees policy improvement towards optimum, at the meantime, it ensures the exploration to avoid some states are not visited ever in the sampled episodes.</p>
+
+<blockquote>
+  <p>For any $\epsilon$-greedy $\pi$, the $\epsilon$-greedy policy $\pi^{\prime}$ with respect to $Q_{\pi}$ is an improvement, that is $V_{\pi^{\prime}}(s) \geq V_{\pi}(s)$.</p>
+
+  <script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} 
+Q_{\pi}\left(s, \pi^{\prime}(s)\right) 
+&=\sum_{a \in \mathcal{A}} \pi^{\prime}(a | s) Q_{\pi}(s, a) \\ &=\epsilon / m \sum_{a \in \mathcal{A}} Q_{\pi}(s, a)+(1-\epsilon) \max _{a \in \mathcal{A}} Q_{\pi}(s, a) \\ 
+& \geq \epsilon / m \sum_{a \in \mathcal{A}} Q_{\pi}(s, a)+(1-\epsilon) \sum_{a \in \mathcal{A}} \frac{\pi(a | s)-\epsilon / m}{1-\epsilon} Q_{\pi}(s, a) \\ 
+&=\sum_{a \in \mathcal{A}} \pi(a | s) Q_{\pi}(s, a) \\
+&=V_{\pi}(s) 
+\end{aligned} %]]></script>
+
+</blockquote>
+
+<p>After we improve the policy, we also use the improved policy to generate next episode, that is the meaning of <strong><em>on-policy</em></strong>. If the episode is generated by another policy which is different from the policy we are trying to learn, then it is called <strong><em>off-policy</em></strong>. Typically, we leverage importance sampling to help off-policy MC methods, and we will discuss it later in off-policy gradient methods. However, the Q-Learning is a special off-policy method that does not require important sampling.</p>
+
+<p>For <em>every-visit Monte-Carlo</em> policy evaluation, it is same as the first-visit MC prediction, except increment the counter $N(s,a)$ and $Returns(s,a)$ when every visit of state-action pair (s,a).</p>
+
+<h3 id="temporal-difference-prediction-and-control">Temporal-Difference Prediction and Control</h3>
+
+<p>In many scenarios, we need to handle the continuing tasks that do not have a terminated step. We have to learn from the incomplete episodes by bootstrapping, which means to update a guess of action value function towards a guess of $G$.</p>
+
+<p><img src="/assets/img/SARSA.png" alt="SARSA" /></p>
+
+<p>We can see that the main difference between general update in MC methods and in SARSA, is</p>
+
+<ul>
+  <li>MC methods wait until the return (final outcome) $G$ following the visit of $(s,a)$ is known, then use that return as a target for $Q(s,a)$. TD can learn without the final outcome.</li>
+  <li>Whereas Monte Carlo methods must wait until the end of the episode to determine the increment to $Q(s,a)$ (only then is $G$ known).  TD methods need to wait only until the next time step. At next step on visit of $(s’,a’)$, they immediately form a target and make a useful update using the observed reward $r$ and the estimate $Q(s’,a’)$. In effect, the target for MC is G, whereas the target for <em>TD(0)</em> is $r + \gamma Q(s’, a’)$ .</li>
+  <li>In addition, if we are estimating the $V \approx V_{*}$, the updating rule is similar:</li>
+</ul>
+
+<script type="math/tex; mode=display">V(s) = V(s) + \alpha [r + \gamma V(s') - V(s)]</script>
+
+<ul>
+  <li>TD and DP both are bootstrapping, but TD does not need to know the model dynamic.</li>
+</ul>
+
+<p><img src="/assets/img/Q_learning.png" alt="Q-Learning" /></p>
+
+<p>The main difference of SARSA and Q-Learning are:</p>
+
+<ul>
+  <li>SARSA is an on-policy method, and Q-Learning is a off-policy method.</li>
+  <li>Q-Learning chooses action at state $s$ following the behavior policy, whereas it updates the Q function assuming we are taking action that maximize $Q(s’,a)$.</li>
+  <li>Another way of understanding Q-Learning is by reference to the <em>Bellman optimality equation</em>. The learned action-value function, $Q$, directly approximates the optimal action-value function $Q_*$, independent of the policy being followed.</li>
+  <li>Q-Learning learns the optimal policy (by greedy policy) even when actions are selected according to a more exploratory or even random policy.</li>
+  <li>If we change the update rule in Q-Learning to following, we get method call expected-SARSA.</li>
+</ul>
+
+<script type="math/tex; mode=display">Q(s,a) = Q(s,a) + \alpha[r + \gamma \sum_{a'} \pi(a'|s') Q(s', a') - Q(s,a)]</script>
+
+<ul>
+  <li>Q-Learning can be viewed as Max-SARSA.</li>
+</ul>
+
+<h3 id="advantages-and-disadvantages-of-mc-vs-td">Advantages and Disadvantages of MC vs. TD</h3>
+
+<ul>
+  <li>TD can learn before knowing the final outcome; MC must wait until end of episode before return is known.</li>
+  <li>TD can learn without the final outcome; TD can learn from incomplete sequences; MC can only learn from complete sequences.</li>
+  <li>MC has high variance, zero bias;  The reason is MC uses the return $G$ as target, which depends on many random actions, transitions, rewards.
+    <ul>
+      <li>Good convergence properties (even with function approximation)</li>
+      <li>Not very sensitive to initial value</li>
+      <li>Very simple to understand and use</li>
+    </ul>
+  </li>
+  <li>TD has low variance, some bias. TD uses the $r + \gamma Q(s’, a’)$ as target, which depends on one random action, transition, reward.
+    <ul>
+      <li>Usually more efficient than MC</li>
+      <li>TD(0) converges to $v_{\pi}(s)$ (but not always with function approximation)</li>
+      <li>More sensitive to initial value</li>
+    </ul>
+  </li>
+  <li>TD exploits Markov property, which is usually more efficient in Markov environments; MC does not exploit Markov property, which is usually more efficient in non-Markov environments.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>MC Backup Diagram</th>
+      <th>TD Backup Diagram</th>
+      <th>DP Backup Diagram</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="/assets/img/MC_backup.png" alt="MC_backup" /></td>
+      <td><img src="/assets/img/TD_backup.png" alt="TD_backup" /></td>
+      <td><img src="/assets/img/DP_backup.png" alt="DP_backup" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="relationship-between-dp-and-td">Relationship Between DP and TD</h3>
+
+<p><img src="/assets/img/DP_and_TD.png" alt="DP_and_TD" /></p>
+
+<h2 id="reference">Reference</h2>
+
+<p>[1] <a href="http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html">David Silver’s Lectures</a></p>
+
+<p>[2] <a href="http://incompleteideas.net/book/bookdraft2017nov5.pdf">Sutton’s Reinforcement Learning Book </a></p>
+
+:ET

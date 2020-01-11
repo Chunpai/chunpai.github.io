@@ -1,0 +1,201 @@
+I"�;<p>This post is about how to write a Python wrapper for C/C++ program using “Simple Wrapper Interface Generator” (SWIG), which turns C code into a Python module and enables calling C functions in python directly and speed up the running time of code.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#swig" id="markdown-toc-swig">SWIG</a></li>
+  <li><a href="#a-quick-example" id="markdown-toc-a-quick-example">A Quick Example</a></li>
+  <li><a href="#compile" id="markdown-toc-compile">Compile</a></li>
+  <li><a href="#setuppy-file-configuration" id="markdown-toc-setuppy-file-configuration">Setup.py File Configuration</a></li>
+  <li><a href="#reference" id="markdown-toc-reference">Reference</a></li>
+</ul>
+<h2 id="swig">SWIG</h2>
+
+<blockquote>
+  <p>SWIG is an interface compiler that connects programs written in C and C++ with scripting languages such as Perl, Python, Ruby, and Tcl. It works by taking the declarations found in C/C++ header files and using them to generate the wrapper code that scripting languages need to access the underlying C/C++ code. In addition, SWIG provides a variety of customization features that let you tailor the wrapping process to suit your application.</p>
+</blockquote>
+
+<p>SWIG requires an interface file fed into the generator and it will automatically generate two files: <code class="highlighter-rouge">*_wrap.c</code> and <code class="highlighter-rouge">*.py</code>, where <code class="highlighter-rouge">*_wrap.c</code> is used to generate the file <code class="highlighter-rouge">*.so</code> file and <code class="highlighter-rouge">*.py</code> provided the functionality of Python interface for C code.</p>
+
+<h2 id="a-quick-example">A Quick Example</h2>
+
+<p>For example, we have C code called <code class="highlighter-rouge">example.c</code> , which contains 1 global variable and 3 functions.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;time.h&gt;
+</span>
+<span class="kt">double</span> <span class="n">My_variable</span> <span class="o">=</span> <span class="mi">3</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">fact</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">return</span> <span class="n">n</span><span class="o">*</span><span class="n">fact</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">my_mod</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">%</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">char</span> <span class="o">*</span><span class="nf">get_time</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="kt">time_t</span> <span class="n">ltime</span><span class="p">;</span>
+  <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ltime</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">ctime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ltime</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now, we would like to call those functions, such as <code class="highlighter-rouge">fact()</code> in our Python code <code class="highlighter-rouge">test.py</code> as below.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">example</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'My_varaiable: </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">example</span><span class="o">.</span><span class="n">cvar</span><span class="o">.</span><span class="n">My_variable</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'fact(5): </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">example</span><span class="o">.</span><span class="n">fact</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'my_mod(7,3): </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">example</span><span class="o">.</span><span class="n">my_mod</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'get_time(): </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">example</span><span class="o">.</span><span class="n">get_time</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>How could we achieve this ? How could we convert a piece of C code into a importable python module ? What we need to do is to write an interface file, which is the input of SWIG. An interface file <code class="highlighter-rouge">example.i</code> might look like this:</p>
+
+<pre><code class="language-C">%module example
+
+%{
+#include "example.h"
+%}
+
+extern double My_variable;
+extern int fact(int n);
+extern int my_mod(int x, int y);
+extern char *get_time();
+</code></pre>
+
+<p>where</p>
+
+<ul>
+  <li><code class="highlighter-rouge">%module</code> is used to indicate the name of the module to be generated</li>
+  <li><code class="highlighter-rouge">extern</code> is used to declare the interface of functions</li>
+  <li><code class="highlighter-rouge">%{}%</code> specifies the declarations which will be needed in <code class="highlighter-rouge">example_wrap.c</code> file.</li>
+</ul>
+
+<h2 id="compile">Compile</h2>
+
+<p>First of all, we need to install some requirements, for example in Ubuntu:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>build-essential python3-dev swig
+</code></pre></div></div>
+
+<p>Before compilation, we need to covert the <code class="highlighter-rouge">example.i</code> into <code class="highlighter-rouge">example_wrap.c</code> and <code class="highlighter-rouge">example.py</code> using <code class="highlighter-rouge">swig</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>swig <span class="nt">-python</span> example.i
+</code></pre></div></div>
+
+<p>thereafter we could use <code class="highlighter-rouge">gcc</code> to compile. We need to write the <code class="highlighter-rouge">Makefile</code> as below and simply execute <code class="highlighter-rouge">make</code>:</p>
+
+<div class="language-makefile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">_example.so </span><span class="o">:</span> <span class="nf">example.o example_wrap.o</span>
+	gcc <span class="nt">-shared</span> example.o example_wrap.o <span class="nt">-o</span> _example.so <span class="nt">-lpython3</span>.6
+
+<span class="nl">example.o </span><span class="o">:</span> <span class="nf">example.c</span>
+	gcc <span class="nt">-c</span> <span class="nt">-fPIC</span> <span class="nt">-I</span>/usr/include/python3.6 example.c
+
+<span class="nl">example_wrap.o </span><span class="o">:</span> <span class="nf">example_wrap.c</span>
+	gcc <span class="nt">-c</span> <span class="nt">-fPIC</span> <span class="nt">-I</span>/usr/include/python3.6 example_wrap.c
+
+<span class="nl">example_wrap.c example.py </span><span class="o">:</span> <span class="nf">example.i example.h</span>
+	swig <span class="nt">-python</span> example.i
+
+<span class="nl">clean</span><span class="o">:</span>
+	<span class="nb">rm</span> <span class="nt">-f</span> <span class="k">*</span>.o <span class="k">*</span>.so example_wrap.<span class="k">*</span> example.py<span class="k">*</span>
+
+<span class="nl">test</span><span class="o">:</span>
+	python3 test.py
+
+<span class="nl">all</span><span class="o">:</span> <span class="nf">_example.so test</span>
+
+<span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">clean test all</span>
+
+<span class="nv">.DEFAULT_GOAL</span> <span class="o">:=</span> all
+</code></pre></div></div>
+
+<h2 id="setuppy-file-configuration">Setup.py File Configuration</h2>
+
+<p>We could also avoid writing the <code class="highlighter-rouge">Makefile</code>, instead we could leverage the SWIG support from <code class="highlighter-rouge">distutils</code> and <code class="highlighter-rouge">setup tools</code>.</p>
+
+<p>For example, we have the following project structure: (see <a href="https://github.com/Chunpai/swig-example">github</a>)</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code>swig-example
+├── Makefile
+├── setup.cfg
+├── setup.py
+├── src
+│   |── example
+│       ├── example.c
+│       ├── example.h
+│       ├── example.i
+│       ├── __init__.py
+└── tests
+    ├── test_example.py
+</code></pre></div></div>
+
+<p>where <code class="highlighter-rouge">src/example</code> folder contains the C code we would like to wrap. Now we could configure the <code class="highlighter-rouge">setup.py</code> as below:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">Extension</span><span class="p">,</span> <span class="n">find_packages</span><span class="p">,</span> <span class="n">setup</span>
+<span class="kn">from</span> <span class="nn">setuptools.command.build_py</span> <span class="kn">import</span> <span class="n">build_py</span>
+
+<span class="n">EXAMPLE_EXT</span> <span class="o">=</span> <span class="n">Extension</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">'_example'</span><span class="p">,</span>
+    <span class="n">sources</span><span class="o">=</span><span class="p">[</span>
+        <span class="s">'src/example/example.c'</span><span class="p">,</span>
+        <span class="s">'src/example/example.i'</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Build extensions before python modules,
+# or the generated SWIG python files will be missing.
+</span><span class="k">class</span> <span class="nc">BuildPy</span><span class="p">(</span><span class="n">build_py</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_command</span><span class="p">(</span><span class="s">'build_ext'</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">build_py</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">'swig-example'</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s">'A Python demo for SWIG'</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s">'0.0.1'</span><span class="p">,</span>
+    <span class="n">author</span><span class="o">=</span><span class="s">'Chunpai Wang'</span><span class="p">,</span>
+    <span class="n">license</span><span class="o">=</span><span class="s">''</span><span class="p">,</span>
+    <span class="n">author_email</span><span class="o">=</span><span class="s">'chunpaiwang@gmail.com'</span><span class="p">,</span>
+    <span class="n">url</span><span class="o">=</span><span class="s">'https://chunpai.github.io'</span><span class="p">,</span>
+    <span class="n">keywords</span><span class="o">=</span><span class="p">[</span><span class="s">'SWIG'</span><span class="p">],</span>
+
+    <span class="n">packages</span><span class="o">=</span><span class="n">find_packages</span><span class="p">(</span><span class="s">'src'</span><span class="p">),</span>
+    <span class="n">package_dir</span><span class="o">=</span><span class="p">{</span><span class="s">''</span><span class="p">:</span> <span class="s">'src'</span><span class="p">},</span>
+    <span class="n">ext_modules</span><span class="o">=</span><span class="p">[</span><span class="n">EXAMPLE_EXT</span><span class="p">],</span>
+    <span class="n">cmdclass</span><span class="o">=</span><span class="p">{</span>
+        <span class="s">'build_py'</span><span class="p">:</span> <span class="n">BuildPy</span><span class="p">,</span>
+    <span class="p">},</span>
+	
+    <span class="c1">#some dependencies or requirements
+</span>    <span class="n">python_requires</span><span class="o">=</span><span class="s">'&gt;=3.4'</span><span class="p">,</span>
+    <span class="n">setup_requires</span><span class="o">=</span><span class="p">[</span>
+        <span class="s">'pytest-runner'</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">tests_require</span><span class="o">=</span><span class="p">[</span>
+        <span class="s">'pytest'</span><span class="p">,</span>
+        <span class="s">'pytest-cov'</span><span class="p">,</span>
+        <span class="s">'pytest-flake8'</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span>
+        <span class="s">'pytest'</span><span class="p">,</span>
+        <span class="s">'pytest-conv'</span><span class="p">,</span>
+        <span class="s">'pytset-flake8'</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">extras_require</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">],</span>
+    <span class="n">dependency_links</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="reference">Reference</h2>
+<ol>
+  <li>https://intermediate-and-advanced-software-carpentry.readthedocs.io/en/latest/c++-wrapping.html</li>
+  <li>http://www.swig.org/Doc3.0/Python.html</li>
+  <li>https://note.qidong.name/2018/01/hello-swig-example/</li>
+  <li>https://note.qidong.name/2018/01/python-setup-requires/</li>
+</ol>
+
+:ET
