@@ -37,7 +37,7 @@ where $\mathbb{\theta}$ is $\{\pi, p, q\}$. If $A$ is head, the observation is f
 
 
 
- 
+
 $$
 P(X;\mathbb{\theta}) = \prod_{i=1}^{n}\pi \cdot p^{x_i} \cdot (1-p)^{1-x_{i}} + (1-\pi)\cdot q^{x_{i}} \cdot (1-q)^{1-x_{i}} 
 $$
@@ -81,7 +81,7 @@ $$
 $$
 u_j = \frac{\pi_{(i-1)} p_{(i-1)}^{x_j} (1-p_{(i-1)})^{1-x_j}}{\pi_{(i-1)} p_{(i-1)}^{x_j} (1-p_{(i-1)})^{1-x_j} + (1-\pi_{(i-1)}) q_{(i-1)}^{x_j} (1-q_{(i-1)})^{1-x_j}}
 $$
- 
+
 
 and 
 
@@ -122,22 +122,6 @@ Thereafter, we could apply E-step and M-step iteratively until converged.
 
 
 
-## Gaussian Mixture Model
-
-## Hidden Markov Model
-
-## Bayesian Knowledge Tracing
-
-## Implementation of EM
-
-```python
-import sklearn 
-import numpy as np
-import scipy
-
-a = np.zeros(10)
-print("ths list {}".format(a))
-```
 
 
 
