@@ -32,7 +32,7 @@ p_{\theta}(\tau)
 $$
 
 
-The objective is to find the optimal policy $\pi$ which is parameterized by $$\theta$$ such that have maximum expected return:
+The objective is to ==find the optimal policy $\pi$== which is parameterized by $$\theta$$ such that have maximum expected return:
 
 
 $$

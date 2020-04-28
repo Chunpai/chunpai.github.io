@@ -8,6 +8,9 @@ dl, dd, ol, ul, figure {
   padding: 0;
 }
 
+h2, h3, h4, h5, h6 {
+   color: $grey-color-dark;
+}
 
 
 /**
@@ -15,6 +18,7 @@ dl, dd, ol, ul, figure {
  */
 body {
   font: $base-font-weight #{$base-font-size}/#{$base-line-height}, $base-font-family;
+  @include relative-font-size(1.0);
   //font-family: sans-serif;
   color: $text-color;
   background-color: $background-color;
@@ -143,7 +147,7 @@ blockquote {
   color: darkred;
   border-left: 2px solid $grey-color-light;
   padding-left: $spacing-unit / 2 ;
-  @include relative-font-size(1.0);
+  @include relative-font-size(0.9);
   letter-spacing: 0px;
   //font-style: italic;
   //font-family: sans-serif;
