@@ -144,7 +144,7 @@ blockquote {
   border-left: 2px solid $grey-color-light;
   padding-left: $spacing-unit / 2 ;
   @include relative-font-size(1.0);
-  letter-spacing: -1px;
+  letter-spacing: 0px;
   //font-style: italic;
   //font-family: sans-serif;
 
@@ -160,10 +160,11 @@ blockquote {
  */
 pre,
 code {
-  @include relative-font-size(0.9375);
+  @include relative-font-size(0.8);
   border: 1px solid $grey-color-light;
   border-radius: 3px;
-  background-color: #eef;
+  //background-color: #eef;
+  background-color: #f4f4ff;
 }
 
 code {
