@@ -19,7 +19,7 @@ h2, h3, h4, h5, h6 {
 body {
   font: $base-font-weight #{$base-font-size}/#{$base-line-height}, $base-font-family;
   @include relative-font-size(1.0);
-  //font-family: sans-serif;
+  font-family: "Lora";
   color: $text-color;
   background-color: $background-color;
   -webkit-text-size-adjust: 100%;

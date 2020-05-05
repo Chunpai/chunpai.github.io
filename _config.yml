@@ -3,7 +3,7 @@ description: > # this means to ignore newlines until "show_exerpts:"
    Keep Simple and Meliora.
 
 copyright: >
-   Copyright &copy 2019; Built by Jekyll.
+   Copyright &copy 2020.
 
 show_excerpts: true # set to true to show excerpts on the homepage
 #disqus.shortname: true

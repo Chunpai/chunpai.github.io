@@ -1,4 +1,4 @@
 ---
 layout: tagpage
-tag: energy-based-model
+tag: causal-inference
 ---

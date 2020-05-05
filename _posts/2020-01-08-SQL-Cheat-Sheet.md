@@ -1,4 +1,5 @@
 ---
+title: "SQL Cheat Sheet"
 layout: post
 tags: programming
 author: Chunpai
