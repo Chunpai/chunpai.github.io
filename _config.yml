@@ -9,6 +9,10 @@ show_excerpts: true # set to true to show excerpts on the homepage
 #disqus.shortname: true
 
 
+header-includes:
+    - \usepackage{algorithm2e}
+
+
 markdown: kramdown
 kramdown:
   input: GFM

@@ -1,9 +1,10 @@
 ---
 title: "Thompson Sampling"
 layout: post
-tags: [reinforcement-learning]
 author: Chunpai
+tags: [reinforcement-learning]
 typora-root-url: ./
+
 ---
 
 Thompson sampling is a well-known multi-armed bandits algorithm for solving exploitation and exploration problem, which is also known as posterior sampling and probability matching. In this post, we will cover Bernoulli bandit problems, sequential recommendation, and reinforcement learning in MDPs with Thompson sampling. Most importantly, we will discuss when, why, and how to apply Thompson sampling. 
@@ -52,7 +53,31 @@ The parameters $(\alpha_k, \beta_k)$ are sometimes called pseudo- counts, since 
 
  
 
-s
+
+### Algorithm 1
+```latex
+Just a sample algorithmn
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\KwResult{Write here the result}
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Write here the input}
+\Output{Write here the output}
+\BlankLine
+\While{While condition}{
+    instructions\;
+    \eIf{condition}{
+        instructions1\;
+        instructions2\;
+    }{
+        instructions3\;
+    }
+}
+\caption{While loop with If/Else condition}
+\end{algorithm} 
+```
+
 
 ## General Thompson Sampling
 
