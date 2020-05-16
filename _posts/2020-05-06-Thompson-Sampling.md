@@ -213,6 +213,10 @@ An agent commutes from home to work every morning. She would like to commute alo
 
 For example, the figure above, it takes $\theta_e$ traveling time on average along an edge $e$ . If there parameters were known, the agent would select (an action) a path $(e_1, \cdots, e_n$), consisting of a sequence of adjacent edges connecting vertices $1$ and $N$, such that the expected total time $\theta_{e_1} + \cdots + \theta_{e_n}$ is minimized.  However, the agent does not know the parameters and only could experiment to learn them. In day $t$ , the agent selects a path $x_t = (e_1, \cdots, e_n)$ and observe the realized total traveling time $c_t = \sum_{e\in x_t} y_{t, e}$ , where $y_{t,e}$ is the realized traveling time for each edge along the path $x_t$ . By exploring intelligently, she hopes to minimize cumulative travel time $\sum_{t=1}^{T} c_t $ over a large number of days $T$. 
 
+
+
+
+
 ### Log-Normal Distribution 
 
 The **log-normal distribution** is the probability distribution of a random variable whose logarithm follows a normal distribution. It models phenomena whose **relative growth rate** is independent of size, which is true of most natural phenomena including the size of tissue and blood pressure, income distribution, and even the length of chess games.
@@ -223,13 +227,16 @@ $$
 X = e^{\mu+\sigma Z},
 $$
 
-where $\mu$ and $\sigma$ are the mean and standard deviation of the **logarithm of** *X*, respectively. The term "log-normal" comes from the result of taking the logarithm of both sides:
+where $\mu$ and $\sigma$ are the mean and standard deviation of the **logarithm of** *X*, respectively. The term "log-normal" comes from the result of taking the logarithm of both sides: 
+
+
 $$
 \log X = \mu +\sigma Z
 $$
 
-Therefore, the definition of log-normal distribution is 
 
+
+Therefore, the definition of log-normal distribution is 
 $$
 f_X(x) = \frac{1}{x}\frac{1}{\sigma \sqrt{2\pi}}e^{-\dfrac{(\ln x-\mu)^2}{2\sigma^2}},
 $$
@@ -243,6 +250,10 @@ $$
 $$
 Var[X] = (\exp(\sigma^2) - 1) \exp(2\mu + \sigma^2) = (\exp(\sigma^2) - 1)\cdot  \mathbb{E}^2[X]
 $$
+
+
+
+
 
 
 
@@ -290,7 +301,9 @@ $$
 
 
 
-For every observation $y_{t,e}$ , we could update the distribution of $\theta_e$ by updating the mean and variance of $\log(\theta_e)$ :
+For every observation $y_{t,e}$ , we could update the distribution of $\theta_e$ by updating the mean and variance of $\log(\theta_e)$ :  
+
+
 $$
 \mu_{e}\leftarrow \frac{\frac{1}{\sigma_{e}^{2}} \mu_{e}+\frac{1}{\tilde{\sigma}^{2}}\left(\ln \left(y_{t, e}\right)+\frac{\tilde{\sigma}^{2}}{2}\right)}{\frac{1}{\sigma_{e}^{2}}+\frac{1}{\tilde{\sigma}^{2}}}
 $$
