@@ -1,11 +1,11 @@
 ---
-title: "Gibbs-Sampling-with-Data-Augmentation"
+title: "Gibbs Sampling with Data Augmentation"
 layout: post
 tags: [bayesian-inference]
 author: Chunpai
 ---
 
-
+This is a quick note on data augmentation strategy for Gibbs sampling. 
 
 * TOC
 {: toc}
@@ -23,9 +23,9 @@ Variable $Z$ could be viewed as latent or hidden variables, which are introduced
 
 Given a dataset on heights of U.S. 300 women and 400 U.S. men, but we don't know which data points are from women and which are from men. However, we could have the combined distribution looks like below:
 
-| ![](../assets/img/height_distribution.png) |
-| :----------------------------------------: |
-|    Heights of women and men, combined.     |
+| ![](/../assets/img/height_distribution.png) |
+| :-----------------------------------------: |
+|     Heights of women and men, combined.     |
 
 This is a two-component mixture of Gaussian, and there should have a unique set of mixture parameters corresponding to any such distribution. Let's assume that both mixture components have the same fixed and known  precision, say $\lambda$. Then, we could formulate the two-component Gaussian mixture model as:
 
