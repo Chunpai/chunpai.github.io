@@ -5,7 +5,7 @@ tags: [bayesian-inference]
 author: Chunpai
 ---
 
-This is a quick note on data augmentation strategy which introduce hidden variables for a convenient Gibbs sampling. Two examples are shown for illustration: *two-component Gaussian mixture model* and *Bayesian normal ogive IRT model*. 
+[Updated on 05-28-2020] This is a quick note on data augmentation strategy which introduces hidden variables for a handy Gibbs sampling. Two examples are shown for illustration: *two-component Gaussian mixture model* and *Bayesian normal ogive IRT model*. 
 
 * TOC
 {: toc}
@@ -308,12 +308,45 @@ The posterior of person trait $\theta_i$ is
 
 
 $$
-\pi(\theta_i \mid \cdot) \propto \mathcal{N}(\theta_i; \mu_{\theta}, \sigma_{\theta}^2) \prod_{i=1}^{N} \mathcal{N}(Z_{ij}; \eta_{ij}, 1) 
+\pi(\theta_i \mid \cdot) \propto \underbrace{\mathcal{N}(\theta_i; \mu_{\theta}, \sigma_{\theta}^2)}_{\text{prior}} \cdot \overbrace{ \prod_{j=1}^{N} \mathcal{N}(Z_{ij}; \eta_{ij}, 1)}^{\text{likelihood}}
 $$
 
 
 
-and we can sample it from 
+
+
+where the likelihood can be expressed as:
+
+
+$$
+\begin{align}
+&\prod_{j=1}^{N} \mathcal{N}(Z_{ij}; \eta_{ij}, 1) \\
+&\propto \left(\sigma^{2}\right)^{-\frac{N}{2}} \exp\left\{-\frac{1}{\sigma^2} \cdot \sum_{j=1}^{N} \frac{(Z_{ij}-a_j\theta_i + d_j)^{2}}{2}\right\} \\
+&= \exp\left\{- \sum_{j=1}^{N} \frac{(Z_{ij}-a_j\theta_i + d_j)^{2}}{2}\right\} \\
+&= \exp\left\{- \sum_{j=1}^{N} \frac{(Z_{ij} + d_j)^2-2(a_j\theta_i)(Z_{ij}+d_j) +(a_j\theta_i)^{2}}{2}\right\} \\
+&= \exp\left\{- \frac{\sum_{j=1}^{N} (Z_{ij} + d_j)^2- 2\theta_i\sum_{j=1}^{N} a_j(Z_{ij}+d_j) + \theta_i^2\sum_{j=1}^{N} a_j^2}{2}\right\} \\
+&= \exp\left\{- \sum_{j=1}^{N} a_j^2 \cdot \frac{\frac{\sum_{j=1}^{N}(Z_{ij} + d_j)^2}{\sum_{j=1}^{N} a_j^2}- \frac{2\theta_i\sum_{j=1}^{N} a_j(Z_{ij}+d_j)}{\sum_{j=1}^{N} a_j^2} + \theta_i^2}{2 }\right\}\\
+&= \exp\left\{- \sum_{j=1}^{N} a_j^2 \cdot \frac{(\theta- \frac{\sum_{j=1}^{N} a_j(Z_{ij}+d_j)}{\sum_{j=1}^{N} a_j^2})^2}{2 }\right\} \\
+&\propto \mathcal{N}\left(\frac{\sum_{j=1}^{N} a_j(Z_{ij}+d_j)}{\sum_{j=1}^{N} a_j^2} , \frac{1}{\sum_{j=1}^{N} a_j^2} \right)
+\end{align}
+$$
+
+
+
+
+Based on the conjugacy of Gaussian [4], we can obtain the mean $\mu_n$ and variance $\sigma_n^2$ of posterior distribution on Gaussian as:
+
+
+$$
+\mu_n = \sigma_n^2 \left( \frac{\mu_0}{\sigma^2_0} + \frac{\sum_{i}^{n}x_i}{\sigma^2} \right)
+$$
+
+$$
+\sigma_{n}^{2}=\frac{1}{\frac{n}{\sigma^{2}}+\frac{1}{\sigma_{0}^{2}}}
+$$
+
+
+where $\mu_0$ and $\sigma_0^2$ are mean and variance of prior distribution, and $n$ is the number of data points, $x_i$ is the data point, and $\sigma^2$ is the variance of likelihood. In our case, $x_i$ is the $\theta_i$ with $n=1$. Therefore, we can sample $\theta_i $ from 
 
 
 
@@ -323,61 +356,68 @@ $$
 
 
 
-Lastly, we sample item difficulty $d_j$ and item discrimination from
+Lastly, the posterior of  item characteristics $\xi_j$ is
 
-
-$$
-d_j\mid \bullet \sim \mathcal{N}\left(\frac{\sum_i (- Z_{ij}) + \mu_d/\sigma_d^2}{1/\sigma_a^2 + \sum_{i}\theta_i^2 }, \frac{1}{1/\sigma_d^2 + \sum_{i}\theta_i^2 } \right)
-$$
 
 
 $$
-a_j\mid \bullet \sim \mathcal{N}\left(\frac{\sum_i Z_{ij}\theta_i + \mu_a/\sigma_a^2}{1/\sigma_a^2 + \sum_{i}\theta_i^2 }, \frac{1}{1/\sigma_a^2 + \sum_{i}\theta_i^2 } \right) \mathbb{I}(a_j > 0)
+\pi(\xi_j \mid \cdot) \propto \underbrace{\mathcal{N}(\xi_i; \mu_{\xi}, \Sigma_{\xi})}_{\text{prior}} \cdot \overbrace{ \prod_{i=1}^{M} \mathcal{N}(Z_{ij}; \eta_{ij}, 1)}^{\text{likelihood}}
 $$
 
 
 
+where $\boldsymbol{\mu}_{\boldsymbol{\xi}} = [\mu_a, \mu_d]^\top$ , $\boldsymbol{\Sigma}_{\boldsymbol{\xi}}=\left[\begin{array}{cc}
+\sigma_{\alpha}^{2} & 0 \\
+0 & \sigma_{\beta}^{2}
+\end{array}\right]$ , and the likelihood can be expressed 
 
-
-
-
-<!--
-
-## $\beta^3$-IRT 
-
-Assume there are $M$ users,  $N$ items, and $x_{ij}$ is the observed response of user $i$ to item $j$ , which is drawn from a Beta distribution with parameters $\alpha_{ij}$ and $\beta_{ij}$ :
-
-$$
-x_{ij} \sim Beta(\alpha_{ij}, \beta_{ij})
-$$
-
-
-where $\alpha_{ij}$ and $\beta_{ij}$ are computed from $\theta_i$ (the ability of user $i$ ), $\delta_j$ (the difficulty of item $j$), and $a_j$ (the discrimination of item $j$):
 
 
 $$
 \begin{align}
-\alpha_{i j}&=\mathcal{F}_{\alpha}\left(\theta_{i}, \delta_{j}, a_{j}\right)=\left(\frac{\theta_{i}}{\delta_{j}}\right)^{a_{j}} \\
-\beta_{i j}&=\mathcal{F}_{\beta}\left(\theta_{i}, \delta_{j}, a_{j}\right)=\left(\frac{1-\theta_{i}}{1-\delta_{j}}\right)^{a_{j}}
-\end{align}
-$$
-
-
-Therefore, we could write down the likelihood of all observations as 
-
-
-$$
-\begin{align}
-p(X \mid \boldsymbol{\theta}, \boldsymbol{\delta}, \boldsymbol{a}) &=  \prod_{i=1}^{M} \prod_{j=1}^{N}  p(x_{ij} \mid \theta_i, \delta_j, a_j)  \\
-&= \prod_{i=1}^{M} \prod_{j=1}^{N} \frac{\Gamma(\alpha_{ij} + \beta_{ij})}{\Gamma(\alpha_{ij})\Gamma(\beta_{ij})} x_{ij}^{\alpha_{ij}-1} (1-x_{ij})^{\beta_{ij}-1} 
+&\prod_{i=1}^{M} \mathcal{N}(Z_{ij}; \eta_{ij}, 1) \\
+&\propto \left(\sigma^{2}\right)^{-\frac{N}{2}} \exp\left\{-\frac{1}{\sigma^2} \cdot \sum_{i=1}^{M} \frac{(Z_{ij}-a_j\theta_i + d_j)^{2}}{2}\right\} \\
+&= \exp\left\{-  \frac{\sum_{i=1}^{M}(Z_{ij})^{2} - \sum_{i=1}^{M}2Z_{ij}(a_j\theta_i-d_j) + \sum_{i=1}^{M}(a_j\theta_i -d_j)^2}{2}\right\} \\
+&= \exp\left\{-  \frac{\|Z_j\|^2_2 - 2Z_j^\top[\boldsymbol{\theta,-\boldsymbol{1}}]\boldsymbol{\xi}_j + \|[\boldsymbol{\theta}, -\boldsymbol{1}]\boldsymbol{\xi}_j\|^2_2}{2}\right\} \\
+&= \exp\left\{-  \frac{\|Z_j\|^2_2 - 2Z_j^\top\mathbf{x}\boldsymbol{\xi}_j + \|\mathbf{x} \boldsymbol{\xi}_j\|^2_2}{2}\right\} \\
+&= \exp\left\{-  \frac{Z_j^\top Z_j - 2Z_j^\top\mathbf{x}\boldsymbol{\xi}_j + (\mathbf{x}\boldsymbol{\xi}_j)^\top(\mathbf{x}\boldsymbol{\xi}_j) }{2}\right\} \\
+&= \exp\left\{-  \frac{Z_j^\top Z_j  - 2Z_j^\top\mathbf{x}\boldsymbol{\xi}_j + \boldsymbol{\xi}_j^\top (\mathbf{x}^\top\mathbf{x})\boldsymbol{\xi}_j }{2}\right\} \\
+&= \exp\left\{- (\mathbf{x}^\top\mathbf{x})\cdot \frac{Z_j^\top Z_j  - 2Z_j^\top\mathbf{x}\boldsymbol{\xi}_j + \boldsymbol{\xi}_j^\top (\mathbf{x}^\top\mathbf{x})\boldsymbol{\xi}_j }{2(\mathbf{x}^\top\mathbf{x})}\right\} \\
+&= \exp\left\{- (\mathbf{x}^\top\mathbf{x})\cdot \frac{ \frac{Z_j^\top Z_j}{\mathbf{x}^\top\mathbf{x}}  - 2\frac{Z_j^\top\mathbf{x}\boldsymbol{\xi}_j}{\mathbf{x}^\top\mathbf{x}} + \boldsymbol{\xi}_j^\top \boldsymbol{\xi}_j }{2}\right\} \\
+&= \exp\left\{- \frac{ (\boldsymbol{\xi}_j - \frac{Z_j}{\mathbf{x}})^\top (\mathbf{x}^\top\mathbf{x}) (\boldsymbol{\xi}_j -\frac{Z_j}{\mathbf{x}}) }{2}\right\} \\
 \end{align}
 $$
 
 
 
+where $\mathbf{x} = [\boldsymbol{\theta}, \boldsymbol{1}]$ . Therefore, we have mean of likelihood w.r.t $\boldsymbol{\xi}_j$ as $\frac{Z_j}{\mathbf{x}}$ and variance as  $(\mathbf{x}^\top\mathbf{x})^{-1}$ . 
+
+Based on the conjugacy of Gaussian [4], we can obtain the mean $\mu_M$ and covariance $\Sigma_{M}$ of posterior distribution on Gaussian as:
 
 
--->
+$$
+\begin{align}
+\Sigma_n &= (\Sigma_0^{-1} + n\Sigma^{-1})^{-1} = (\Sigma_{\xi}^{-1} + \mathbf{x}^\top\mathbf{x})^{-1} \\
+\mu_n &= \Sigma_n (n \Sigma^{-1} \bar{x} + \Sigma_{0}^{-1}\mu_0) = (\Sigma_{\xi}^{-1} + \mathbf{x}^\top\mathbf{x})^{-1} ( \mathbf{x}^\top\mathbf{x} \cdot \frac{Z_j}{\mathbf{x}}+ \Sigma_{\xi}^{-1} \mu_{\xi})
+\end{align}
+$$
+
+
+where $\mu_0$ and $\Sigma_0$ are mean and covariance of prior distribution, and $M$ is the number of data points, $x_i$ is the data point, and $\Sigma$ is the covariance of likelihood. In our case, $x_i$ is the $\boldsymbol{\xi}_j$ with $n=1$. Therefore, we can sample $\boldsymbol{\xi}_i $ from 
+
+
+$$
+\boldsymbol{\xi}_j\mid \bullet \sim \mathcal{N}\left((\Sigma_{\xi}^{-1} + \mathbf{x}^\top\mathbf{x})^{-1} ( \mathbf{x}^\top Z_j+ \Sigma_{\xi}^{-1} \mu_{\xi}) , (\Sigma_{\xi}^{-1} + \mathbf{x}^\top\mathbf{x})^{-1} \right) \mathbb{I}(a_j > 0)
+$$
+
+
+
+
+
+
+
+
+
 
 ## Reference 
 
@@ -387,6 +427,7 @@ $$
 
 [3] Sheng, Yanyan. "Markov chain Monte Carlo estimation of normal ogive IRT models in MATLAB." *Journal of Statistical Software* 25.8 (2008): 1-15.
 
+[4] Conjugate Bayesian analysis of the Gaussian distribution - Kevin P. Murphy
 
 
 
@@ -394,21 +435,3 @@ $$
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-````
-
-````

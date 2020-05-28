@@ -11,7 +11,7 @@ author: Chunpai
 {: toc}
 
 
-## Univariate Normal Distribution 
+# Univariate Normal Distribution 
 
 
 
@@ -28,23 +28,23 @@ f\left(x_{1},\cdots, x_{n} \mid \mu, \sigma^{2}\right) &= f\left(x_{n} \mid \mu,
 $$
 
 
-### Unknown Mean, but Known Variance: *Normal Distribution*
+### Random Mean ($$\mu$$), but Fixed Variance $$(\sigma^2)$$  : *Normal Distribution*
 
 
 
-If the data $x_1, \cdots, x_n$ are independent and identically distributed from a normal distribution where the mean $\mu_X$ is unknown and the variance $\sigma_X^2$ is known. The likelihood could be rewritten as proportion to 
-
-
-$$
-L\left(\mu_X | x_{1}, \ldots, x_{n}\right) \propto \exp \left(-\frac{n}{2\sigma_X^2}(\bar{x}-\mu_X)^{2}\right)
-$$
-
-
-where the sufficient statistics are $n$, the number of data points, and $\bar{x}$ , the mean of the data. The conjugate prior is a normal distribution with mean $\nu_{\mu}$ and variance $\sigma_{\mu}^2$ :
+If the data $x_1, \cdots, x_n$ are independent and identically distributed from a normal distribution where the mean $\mu$ is unknown and the variance $ \sigma^2 $ is known. The likelihood could be rewritten as proportion to 
 
 
 $$
-\pi(\mu \mid \nu_{\mu}, \sigma_{\mu}^2) = \sqrt{\frac{1}{2\pi \sigma_{\mu}^2}} \exp\left( -\frac{1}{2\sigma_{\mu}^2}(\mu - \nu_{\mu})^2\right) \propto \exp\left( -\frac{1}{2\sigma_{\mu}^2}(\mu - \nu_{\mu})^2\right)
+L\left(\mu | x_{1}, \ldots, x_{n}\right) \propto \exp \left(-\frac{n}{2\sigma^2}(\bar{x}-\mu)^{2}\right)
+$$
+
+
+where the sufficient statistics are $n$, the number of data points, and $\bar{x}$ , the mean of the data. The conjugate prior is a normal distribution with mean $\mu_{0}$ and variance $\sigma_{0}^2$ :
+
+
+$$
+\pi(\mu \mid \mu_{0}, \sigma_{0}^2) = \sqrt{\frac{1}{2\pi \sigma_{0}^2}} \exp\left( -\frac{1}{2\sigma_{0}^2}(\mu - \mu_{0})^2\right) \propto \frac{1}{\sigma_0} \exp\left( -\frac{1}{2\sigma_{0}^2}(\mu - \mu_{0})^2\right)
 $$
 
 
@@ -53,31 +53,86 @@ Therefore,  the posterior is proportion to
 
 $$
 \begin{align}
-p(\mu \mid \cdot) &\propto \exp \left(-\frac{n}{2\sigma_X^2}(\bar{x}-\mu_X)^{2}\right) \cdot \exp\left( -\frac{1}{2\sigma_{\mu}^2}(\mu - \nu_{\mu})^2 \right) \\
-&= \exp \left(-\frac{n\cdot \sigma_{\mu}^2}{2\sigma_X^2 \cdot \sigma_{\mu}^2}(\bar{x}-\mu_X)^{2}\right) \cdot \exp\left( -\frac{\sigma_X^2}{2\sigma_X^2\cdot \sigma_{\mu}^2}(\mu - \nu_{\mu})^2 \right) \\
-&= \exp \left(-\frac{n\cdot \sigma_{\mu}^2}{2\sigma_X^2 \cdot \sigma_{\mu}^2}(\bar{x}-\mu_X)^{2} -\frac{\sigma_X^2}{2\sigma_X^2\cdot \sigma_{\mu}^2}(\mu - \nu_{\mu})^2 \right) \\
-&= \exp \left(- \left[ \frac{n\cdot \sigma_{\mu}^2(\bar{x}-\mu_X)^{2} + \sigma_X^2 (\mu - \nu_{\mu})^2}{2\sigma_X^2\cdot \sigma_{\mu}^2} \right] \right) \\
-&= \exp \left(- \left[ \frac{\sigma_{\mu}^2 (n\bar{x}^2-2\bar{x}\mu_X + \mu_X^2) + \sigma_X^2 (\mu^2 - 2\mu\nu_{\mu} + \nu_{\mu}^2)}{2\sigma_X^2\cdot \sigma_{\mu}^2} \right] \right)\\
-&= 
+p(\mu \mid \cdot) &\propto \exp \left(-\frac{1}{2\sigma^2}\sum_{i}(x_i-\mu)^{2}\right) \cdot \exp\left( -\frac{1}{2\sigma_{0}^2}(\mu - \mu_{0})^2 \right) \\
+&= \exp \left[\frac{-1}{2 \sigma^{2}} \sum_{i}\left(x_{i}^{2}+\mu^{2}-2 x_{i} \mu\right)+\frac{-1}{2 \sigma_{0}^{2}}\left(\mu^{2}+\mu_{0}^{2}-2 \mu_{0} \mu\right)\right]
+\end{align}
+$$
+Since the product of two Gaussian is a Gaussian, which should have the exponent term as :
+
+$$
+p(\mu \mid \cdot) \propto \exp \left[-\frac{1}{2 \sigma_{n}^{2}}\left(\mu-\mu_{n}\right)^{2}\right]
+$$
+
+
+
+but we do not know the $\mu_n$ and $\sigma_n^2$ right now. Therefore, we will need to rewrite the equation (6) as 
+$$
+\begin{align}
+p(\mu \mid \cdot)
+&\propto \exp \left[-\frac{\mu^{2}}{2}\left(\frac{1}{\sigma_{0}^{2}}+\frac{n}{\sigma^{2}}\right)+\mu\left(\frac{\mu_{0}}{\sigma_{0}^{2}}+\frac{\sum_{i} x_{i}}{\sigma^{2}}\right)-\left(\frac{\mu_{0}^{2}}{2 \sigma_{0}^{2}}+\frac{\sum_{i} x_{i}^{2}}{2 \sigma^{2}}\right)\right] \\
+&\stackrel{\operatorname{def}}{=} \exp \left[-\frac{1}{2 \sigma_{n}^{2}}\left(\mu^{2}-2 \mu \mu_{n}+\mu_{n}^{2}\right)\right]=\exp \left[-\frac{1}{2 \sigma_{n}^{2}}\left(\mu-\mu_{n}\right)^{2}\right]
 \end{align}
 $$
 
 
-With some algebra, we could derive the posterior distribution is normal distributed with mean $\tilde{\mu}$ and variance $\tilde{\sigma}^2$ as
+
+where we could match 
 
 
 $$
-\tilde{\mu} = \tilde{\sigma}^2 \left(\frac{\nu_{\mu}}{\sigma_{\mu}^2} + \frac{n\bar{x}}{\sigma_X^2} \right)
+\begin{align}
+\frac{1}{\sigma_n^2} &= \frac{1}{\sigma_0^2} + \frac{n}{\sigma^2} \\
+\sigma_{n}^{2}&=\frac{\sigma^{2} \sigma_{0}^{2}}{n \sigma_{0}^{2}+\sigma^{2}}=\frac{1}{\frac{n}{\sigma^{2}}+\frac{1}{\sigma_{0}^{2}}}\\
+\frac{2\mu\mu_n}{2\sigma_n^2} &= \mu\left(\frac{\mu_0}{\sigma^2_0} + \frac{\sum_{i}x_i}{\sigma^2} \right)\\
+\frac{\mu_n}{\sigma_n^2} &=  \frac{\mu_0}{\sigma^2_0} + \frac{\sum_{i}x_i}{\sigma^2} = \frac{\sigma_{0}^{2} n \bar{x}+\sigma^{2} \mu_{0}}{\sigma^{2} \sigma_{0}^{2}}
+\end{align}
 $$
 
+
+Therefore, we have 
+
+
 $$
-\tilde{\sigma}^2 = \frac{\sigma_{\mu}^2\sigma_X^2}{\sigma_{\mu}^2 + \sigma_{X}^2}
+\mu_n = \sigma_n^2 \left( \frac{\mu_0}{\sigma^2_0} + \frac{\sum_{i}x_i}{\sigma^2} \right)
+$$
+
+
+Another way to understand the posterior is if we work with the precision of a Gaussian. Let 
+
+
+$$
+\begin{align}
+\lambda &= 1/\sigma^2 \\
+\lambda_0 &= 1/\sigma_0^2 \\
+\lambda_n &= 1/\sigma_n^2
+\end{align}
+$$
+
+
+Then we can rewrite the posterior as 
+
+
+$$
+p(\mu\mid \cdot) = \mathcal{N}(\mu \mid \mu_n, \lambda_n) 
+$$
+
+
+where  **the precision of the posterior $\lambda_n$ is the precision of the prior $\lambda_0$ plus one contribution of data precision $ \lambda $ for each observed data point**:
+$$
+\lambda_n = \frac{1}{\sigma_n^2} = \frac{1}{\sigma_0^2} + \frac{n}{\sigma^2}  = \lambda_0 + n\lambda \\
+$$
+and **the mean of the posterior is a convex combination of the prior and the MLE, with weights proportional to the relative precisions**:
+$$
+\mu_n = \sigma_n^2 \left( \frac{\mu_0}{\sigma^2_0} + \frac{\sum_{i}x_i}{\sigma^2} \right)= \frac{n\bar{x}\lambda +\lambda_0\mu_0}{\lambda_n} = \frac{n\lambda}{\lambda_n}\bar{x} + \frac{\lambda_0}{\lambda_n}\mu_0 = \omega \mu_{ML} + (1-\omega)\mu_0
 $$
 
 
 
 
-### Known Mean, but Unknown Variance: *Inverse Gamma Distribution*
+
+
+
+### Fixed Mean $$(\mu)$$ , but Random Variance ($$\sigma^2 $$): *Inverse Gamma Distribution*
 
 The inverse gamma distribution is 
 
@@ -123,22 +178,26 @@ $$
 
 
 
-Therefore, we can say that the posterior distribution is the inverse gamma distribution with parameters $(\alpha + \frac{n}{2}, \beta + \sum_{i=1}^{n} \frac{(x_{i}-\mu)^{2}} {2})$, where $\mu$ is the known mean of normal distribution.
+Therefore, we can say that the posterior distribution is the inverse gamma distribution with parameters 
+$$
+(\alpha + \frac{n}{2}, \beta + \sum_{i=1}^{n} \frac{(x_{i}-\mu)^{2}} {2}),
+$$
+ where $\mu$ is the known mean of normal distribution.
 
 
 
-### Unknown Mean and Unknown Variance: 
+### Random Mean $$(\mu)$$ , and Random Variance ($$\sigma^2 $$): *Normal-Gamma Distribution*
 
 
 
-## Multivariate Normal Distribution 
+# Multivariate Normal Distribution 
 
 ## Conjugate Prior of Multivariate Normal Distribution
 
 
 
 
-## Log-normal Distribution 
+# Log-normal Distribution 
 
 The **log-normal distribution** is the probability distribution of a random variable whose logarithm follows a normal distribution. It models phenomena whose **relative growth rate** is independent of size, which is true of most natural phenomena including the size of tissue and blood pressure, income distribution, and even the length of chess games.
 
@@ -182,6 +241,10 @@ $$
 [1] Fink, Daniel. "A Compendium of Conjugate Priors." (1997).
 
 [2] https://jrnold.github.io/bayesian_notes/priors.html#levels-of-priors
+
+[3] Gaussian Conjugate Prior Cheat Sheet - Tom SF Haines
+
+[4] Conjugate Bayesian analysis of the Gaussian distribution - Kevin P. Murphy
 
 
 
