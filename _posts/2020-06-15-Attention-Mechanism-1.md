@@ -29,9 +29,9 @@ where $a$ is the alignment, i.e. word-level correspondence between French senten
 
  **How to represent the $a$ ?** We could use matrix $A$ to represent the alignment, where the column corresponds to source sentence and row corresponds to target sentence. We could set $A_{ij} = 1$ if word $i$ in source sentence aligns with the word $j$ in target sentence. So the alignment could be very complex, such that it could be 1 to 1 alignment, 1 to many alignment,  many to 1 alignment. or many to many alignment. For example, sometime a single word in one language may require many words to describe. 
 
-| ![alignment](../assets/img/alignment.png) |
-| :---------------------------------------: |
-|     Figure 1. One-to-Many Alignment.      |
+| ![alignment](/assets/img/alignment.png) |
+| :-------------------------------------: |
+|    Figure 1. One-to-Many Alignment.     |
 
  **How to learn this alignment or $P(x, a\mid y)$ ? **[8] Alignment $a$ are latent variables, which are not explicitly specified in the data. Therefore, given the pair of input and output sentence, we need to use some special learning algorithm (like EM) for learning the parameters of distributions with latent variables. 
 
@@ -66,7 +66,7 @@ $$
 
 
 
-|            ![SEQ2SEQ](../assets/img/seq2seq.png)             |
+|             ![SEQ2SEQ](/assets/img/seq2seq.png)              |
 | :----------------------------------------------------------: |
 | Figure 2. The model reads an input sentence "ABC" and produces "WXYZ" as the output sentence. The model stops making predictions after outputting the end-of-sentence token [2]. |
 
@@ -76,7 +76,7 @@ Now, let's check the detail of this RNN model. By design, RNNs take two inputs: 
 
 
 
-|     ![seq2seqcontext](../assets/img/seq2seq_context.png)     |
+|      ![seq2seqcontext](/assets/img/seq2seq_context.png)      |
 | :----------------------------------------------------------: |
 | Figure3. Visualization of Hidden State Processing in NMT [6] |
 
@@ -107,7 +107,7 @@ To address this issue, [5, 7] introduce "attention" mechanism which allows the m
 
 
 
-|   ![attention](../assets/img/attention.png)    |
+|    ![attention](/assets/img/attention.png)     |
 | :--------------------------------------------: |
 | Figure 4.  Visualization of Attention Process. |
 
@@ -153,7 +153,7 @@ Advantages of attention:
 
 - surprisingly, it provides some interpretability. By inspecting attention distribution, we can see what the decoder was focusing on, and we get soft alignment automatically. 
 
-  | ![attention_alignment](../assets/img/attention_alignment.png) |
+  | ![attention_alignment](/assets/img/attention_alignment.png)  |
   | :----------------------------------------------------------: |
   | Figure 5. Soft Alignment from Attention Distribution with Explicitly Trained by Alignment System [8]. Thus, attention distribution is often called align scores [7]. |
 
@@ -210,7 +210,7 @@ In general, attention variants could be categorized into 3 classes:
 
 - Local attention [7]: attention is placed on few source position. Global attention may be expensive and impractical to translate longer sequences such as paragraphs or documents. Refer [7,12] to see ways to select source locations for attention.
 
-  | ![global_local_attention](../assets/img/global_local_attention.png) |
+  | ![global_local_attention](/assets/img/global_local_attention.png) |
   | :----------------------------------------------------------: |
   |           Figure 6. Global vs Local Attention [7]            |
 
@@ -243,7 +243,7 @@ In general, attention variants could be categorized into 3 classes:
 
 [7] Luong, Minh-Thang, Hieu Pham, and Christopher D. Manning. "Effective approaches to attention-based neural machine translation." *arXiv preprint arXiv:1508.04025* (2015).
 
-[8] [Stanford CS224N: NLP with Deep Learning | Winter 2019 | Lecture 8 – Translation, Seq2Seq, Attention](https://www.youtube.com/watch?v=XXtpJxZBa2c) 
+[8] [Stanford CS224N: NLP with Deep Learning, Winter 2019, Lecture 8 – Translation, Seq2Seq, Attention](https://www.youtube.com/watch?v=XXtpJxZBa2c) 
 
 [9] [Attention? Attention!](https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html#born-for-translation) 
 
