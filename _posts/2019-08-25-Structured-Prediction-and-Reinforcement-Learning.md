@@ -1,4 +1,5 @@
 ---
+title: "Structured Prediction and Reinforcement Learning" 
 layout: post
 tags: structured-prediction
 author: Chunpai
