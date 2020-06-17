@@ -249,13 +249,13 @@ $$
 
 
 
-where $\mathbb{I}(\cdot)$ is the indicator function. 
+
 
 
 
 ### Latent Variables
 
-To implement the Gibbs sampler for the joint posterior distribution above, we first introduce random variables $(Z_{11}, \cdots, Z_{MN})$ where $Z_{ij}$  is distributed normal with mean $\eta_{ij} = a_j\theta_i - d_j$ and standard deviation $1$. Suppose $Y_{ij} = 1$ if $Z_{ij} > 0$ and $Y_{ij} = 0$ otherwise. Now, we are interested in simulating from the joint posterior distribution $(\boldsymbol{Z}, \boldsymbol{\theta}, \boldsymbol{\xi})$ , where $\boldsymbol{\xi}_j = (a_j, d_j)$ :
+To implement the Gibbs sampler for the joint posterior distribution above, we first introduce random variables $(Z_{11}, \cdots, Z_{MN})$ where $Z_{ij}$  is distributed normal with mean $\eta_{ij} = a_j\theta_i - d_j$ and standard deviation $1$. Suppose $Y_{ij} = 1$ if $Z_{ij} > 0$ and $Y_{ij} = 0$ otherwise. Now, we are interested in simulating from the joint posterior distribution $(\boldsymbol{Z}, \boldsymbol{\theta}, \boldsymbol{\xi})$ , where $\boldsymbol{\xi}_j = [a_j, d_j]^\top$ :
 
 
 
@@ -277,6 +277,8 @@ $$
 $$
 
 
+
+where $\mathbb{I}(\cdot)$ is the indicator function. 
 
 The Gibbs sampling involves 3 of the sampling processing, namely, a sampling of the augmented $Z$ parameters, a sampling of person trait $\theta_{i}$ , and a sampling of the item parameter $\boldsymbol{\xi}_j$ .
 
@@ -308,14 +310,15 @@ The posterior of person trait $\theta_i$ is
 
 
 $$
-\pi(\theta_i \mid \cdot) \propto \underbrace{\mathcal{N}(\theta_i; \mu_{\theta}, \sigma_{\theta}^2)}_{\text{prior}} \cdot \overbrace{ \prod_{j=1}^{N} \mathcal{N}(Z_{ij}; \eta_{ij}, 1)}^{\text{likelihood}}
+\pi(\theta_i \mid \cdot) \propto \underbrace{\mathcal{N}(\theta_i; \mu_{0}, \sigma_{0}^2)}_{\text{prior}} \cdot \overbrace{ \prod_{j=1}^{N} \mathcal{N}(Z_{ij}; \eta_{ij}, 1)}^{\text{likelihood}}
 $$
 
 
 
 
 
-where the likelihood can be expressed as:
+where the likelihood can be expressed as
+
 
 
 $$
@@ -351,7 +354,7 @@ where $\mu_0$ and $\sigma_0^2$ are mean and variance of prior distribution, and 
 
 
 $$
-\theta_{i} | \bullet \sim \mathcal{N}\left(\frac{\sum_{j}\left(Z_{i j}+d_{j}\right) a_{j}+\mu_{\theta} / \sigma_{\theta}^{2}}{1 / \sigma_{\theta}^{2}+\sum_{j} a_{j}^{2}}, \frac{1}{1 / \sigma_{\theta}^{2}+\sum_{j} a_{j}^{2}}\right)
+\theta_{i} | \bullet \sim \mathcal{N}\left(\frac{\sum_{j}\left(Z_{i j}+d_{j}\right) a_{j}+\mu_{0} / \sigma_{0}^{2}}{1 / \sigma_{0}^{2}+\sum_{j} a_{j}^{2}}, \frac{1}{1 / \sigma_{0}^{2}+\sum_{j} a_{j}^{2}}\right)
 $$
 
 
@@ -366,10 +369,22 @@ $$
 
 
 
-where $\boldsymbol{\mu}_{\boldsymbol{\xi}} = [\mu_a, \mu_d]^\top$ , $\boldsymbol{\Sigma}_{\boldsymbol{\xi}}=\left[\begin{array}{cc}
-\sigma_{\alpha}^{2} & 0 \\
+where 
+
+
+$$
+\boldsymbol{\mu}_{\boldsymbol{\xi}} = [\mu_a, \mu_d]^\top
+$$
+
+$$
+\boldsymbol{\Sigma}_{\boldsymbol{\xi}}=\left[\begin{array}{cc}\sigma_{\alpha}^{2} & 0 \\
 0 & \sigma_{\beta}^{2}
-\end{array}\right]$ , and the likelihood can be expressed 
+\end{array}\right]
+$$
+
+
+
+and the likelihood can be expressed 
 
 
 
@@ -392,7 +407,7 @@ $$
 
 where $\mathbf{x} = [\boldsymbol{\theta}, \boldsymbol{1}]$ . Therefore, we have mean of likelihood w.r.t $\boldsymbol{\xi}_j$ as $\frac{Z_j}{\mathbf{x}}$ and variance as  $(\mathbf{x}^\top\mathbf{x})^{-1}$ . 
 
-Based on the conjugacy of Gaussian [4], we can obtain the mean $\mu_M$ and covariance $\Sigma_{M}$ of posterior distribution on Gaussian as:
+Based on the conjugacy of Gaussian [4], we can obtain the mean $\mu_n$ and covariance $\Sigma_{n}$ of posterior distribution on Gaussian as:
 
 
 $$
