@@ -14,17 +14,34 @@ This is the first note on attention mechanism in deep learning. Neural machine t
 ## Early Machine Translation  
 
 Machine learning (MT) is the task of translating a sentence $x$ from one language (the source language) to a sentence $y$ in another language (the target language). The early systems were mostly rule-based. In 1990s and 2010s, the statistical machine translation (SMT) was the main stream of the MT method, which is to learn a probabilist model from data [8]. For example, if we want to find best English sentence $y$ given French sentence $x$ , the objective is to :
+
+
 $$
 \arg\max_{y} P(y \mid x) = \arg\max_{y} \underbrace{P(x\mid y) }_{\text{translate model}}\cdot \underbrace{p(y)}_{\text{language model}}
 $$
 
 
-where the translation model models how words and phrases should be translated (fidelity) from two languages, and language model models how to write good English (fluency) from monolingual data. For example, the n-gram language model $p(y)$ could be viewed as $p(y_1, \cdots, y_n) = p(y_1) p(y_2\mid y_1) \cdots p(y_n \mid y_{n-1})$, where $y_i$ denotes the $i^{th}$ word of sentence $y$.  Given a large amount of text data, we could easily compute the $p(y_i\mid y_j)$ based on Baye's  rule. 
 
-**How to learn translation model $P(x\mid y)$ from the parallel corpus** ?  We could break it down further by considering a latent variable in the model
+where the translation model models how words and phrases should be translated (fidelity) from two languages, and language model models how to write good English (fluency) from monolingual data. For example, the n-gram language model $p(y)$ could be viewed as
+
+ 
+
+$$
+p(y_1, \cdots, y_n) = p(y_1) p(y_2\mid y_1) \cdots p(y_n \mid y_{n-1})
+$$
+
+
+
+where $y_i$ denotes the $i^{th}$ word of sentence $y$.  Given a large amount of text data, we could easily compute the $p(y_i\mid y_j)$ based on Baye's  rule. 
+
+**How to learn translation model $P(x\mid y)$ from the parallel corpus** ?  We could break it down further by considering a latent variable in the model  
+
+
 $$
 P(x, a \mid y)
 $$
+
+
 where $a$ is the alignment, i.e. word-level correspondence between French sentence $x$ and English sentence $y$ . 
 
  **How to represent the $a$ ?** We could use matrix $A$ to represent the alignment, where the column corresponds to source sentence and row corresponds to target sentence. We could set $A_{ij} = 1$ if word $i$ in source sentence aligns with the word $j$ in target sentence. So the alignment could be very complex, such that it could be 1 to 1 alignment, 1 to many alignment,  many to 1 alignment. or many to many alignment. For example, sometime a single word in one language may require many words to describe. 
@@ -47,7 +64,7 @@ The goal of the encoder and decoder RNN (or LSTM) is to estimate the conditional
 
 
 $$
-p\left(y_{1}, \ldots, y_{T^{\prime}} \mid x_{1}, \ldots, x_{T}\right)=\prod_{t=1}^{T^{\prime}} p\left(y_{t} \mid \textcolor{red}{v}, y_{1}, \ldots, y_{t-1}\right)
+p\left(y_{1}, \ldots, y_{T^{\prime}} \mid x_{1}, \ldots, x_{T}\right)=\prod_{t=1}^{T^{\prime}} p\left(y_{t} \mid \color{red}{v}, y_{1}, \ldots, y_{t-1}\right)
 $$
 
 
@@ -178,7 +195,7 @@ There are several attention variants [8], and all of them differ on the computin
 -  **Content-based attention** [7]: $e_i = cosine(\mathbf{s}, \mathbf{h}_i)$ 
 -  **Multiplicative attention** [7]: $e_{i}=\boldsymbol{s}^{\top} \boldsymbol{W} \boldsymbol{h}_{i} \in \mathbb{R}$ 
    -  $\boldsymbol{W}\in \mathbb{R}^{d_2\times d_1}$ is a weight matrix.
--  **Additive attention** [5]: $e_{i}=\boldsymbol{v}^{\top} \tanh \left(\boldsymbol{W}_{1} \boldsymbol{h}_{i}+\boldsymbol{W}_{2} \boldsymbol{s}\right) \in \mathbb{R}$ 
+-  **Additive attention** [5]:  $$ e_{i}=\boldsymbol{v}^{\top} \tanh \left(\boldsymbol{W}_{1} \boldsymbol{h}_{i}+\boldsymbol{W}_{2} \boldsymbol{s}\right) \in \mathbb{R} $$ 
    -  $\boldsymbol{W}_1 \in \mathbb{R}^{d_3\times d_1}$ , $\boldsymbol{W}_2\in \mathbb{R}^{d_3\times d_2}$, and $\mathbf{v} \in \mathbb{R}^{d_3}$ 
    -  $d_3$ (the attention dimensionality) is a hyper-parameter 
 
@@ -186,15 +203,22 @@ However, attention always involves 3 steps:
 
 1. computing the attention scores $\mathbf{e}\in \mathbb{R}^{T}$ 
 
-2. Taking softmax to get attention distribution $\alpha$ 
+2. Taking softmax to get attention distribution $\alpha$  
+   
+   
    $$
    \alpha=\operatorname{softmax}(\boldsymbol{e}) \in \mathbb{R}^{T}
    $$
    
+   
 3. Using attention distribution to take weighted sum of values:
+
+   
    $$
    \mathbf{a}=\sum_{i=1}^{T} \alpha_{i} \boldsymbol{h}_{i} \in \mathbb{R}^{d_{1}}
    $$
+   
+
    which is called the context vector. Essentially the context vector consumes 3 pieces of information: encoder hidden states, decoder hidden states, and alignment between source and target. 
 
 After obtaining the context vector, there are several ways to obtain the predictive distribution:
