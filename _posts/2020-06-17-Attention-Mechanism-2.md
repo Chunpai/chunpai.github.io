@@ -17,7 +17,7 @@ All seq2seq models that leverage the RNN related architecture require previous h
 
 Self-attention means attention is placed on different position of same sentence to learn the correlation between the current words and the different part of the sentence. 
 
-|     ![self-attention](../assets/img/self-attention.png)      |
+|      ![self-attention](/assets/img/self-attention.png)       |
 | :----------------------------------------------------------: |
 | Figure 1. Self-attention Layer Illustration for Generating First Output [5] |
 
@@ -63,7 +63,7 @@ $$
 
 Similarly, we applied same process to generate the rest of output. It is worthing noting that $\mathbf{b}^1, \mathbf{b}^2, \mathbf{b}^3, \mathbf{b}^4$ could be computed in parallel, since the attention layer could be viewed as matrix multiplication operations [see [5] for details], by packing queries, keys, and values into matrices $Q$, $K$ and $V$. 
 
-|    ![](../assets/img/scaled-dot-product-attention.png)    |
+|     ![](/assets/img/scaled-dot-product-attention.png)     |
 | :-------------------------------------------------------: |
 | Figure 2. Scaled dot-product attention in matrix form [1] |
 
@@ -81,7 +81,7 @@ $$
 
 
 
-| ![multi-head-attention](../assets/img/multi-head-attention.png) |
+| ![multi-head-attention](/assets/img/multi-head-attention.png) |
 | :----------------------------------------------------------: |
 |             Figure 3. Multi-Head Attention [1].              |
 
@@ -122,9 +122,9 @@ One thing missing so far is, self-attention layer introduced above does not cons
 
 
 
-| ![transformer](../assets/img/transformer.png) |
-| :-------------------------------------------: |
-|      The Transformer model architecture.      |
+| ![transformer](/assets/img/transformer.png) |
+| :-----------------------------------------: |
+|     The Transformer model architecture.     |
 
 **Encoder**: 
 
@@ -150,13 +150,11 @@ Graph attention networks (GAT) is also inspired by attention mechanism. In this 
 
 Given a graph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, )$ with a set of node features:
 
-
 $$
 \mathbf{h}=\left\{\vec{h}_{1}, \vec{h}_{2}, \ldots, \vec{h}_{N}\right\}, \vec{h}_{i} \in \mathbb{R}^{F}
 $$
 
-
-where $|\mathcal{V}| = N$ and $F$ is the number of features in each node. The input of graph attention layer is just the set of node features $\mathbf{h}$, and the output of this layer is a new set of node features 
+where $ \mid\mathcal{V}\mid = N$ and $F$ is the number of features in each node. The input of graph attention layer is just the set of node features $\mathbf{h}$, and the output of this layer is a new set of node features 
 
 
 $$
@@ -169,52 +167,62 @@ Graph attention layer leverages the multi-head attention, so for every single no
 - obtain higher-level feature embedding for $v_i$ by a shared linear transformation, which is parameterized by a weight matrix $\mathbf{W} \in \mathbb{R}^{F'\times F}$ . 
 
 - perform self-attention on the nodes - a shared attentional mechanism 
+
   $$
   a : \mathbb{R}^{F'} \times \mathbb{R}^{F'} \rightarrow \mathbb{R}
   $$
+  
   computes attention score or coefficients on other nodes $v_j$ in the graph:
+
   $$
   e_{i j}=a\left(\mathbf{W} \vec{h}_{i}, \mathbf{W} \vec{h}_{j}\right)
   $$
+
 that indicate the importance of node $v_j$'s features to node $v_i$.  However, in GAT, it only attends the first order neighbors of $v_i$ (including $v_i$), and 
-  
-  
-  $$
+
+
+$$
   e_{i j} = a\left(\mathbf{W} \vec{h}_{i}, \mathbf{W} \vec{h}_{j}\right) = \text { LeakyReLU }\left(\overrightarrow{\mathbf{a}}^{\top}\left[\mathbf{W} \vec{h}_{i} \| \mathbf{W} \vec{h}_{j}\right]\right)
-  $$
+$$
+
   where $\overrightarrow{\mathbf{a}} \in \mathbb{R}^{2F'}$ and $\|$ is the concatenation operation. 
+
   
-  
-  
+
 - normalize the attention score with softmax function to obtain the attention distribution:
+
   $$
   \alpha_{i j}=\operatorname{softmax}_{j}\left(e_{i j}\right)=\frac{\exp \left(e_{i j}\right)}{\sum_{k \in \mathcal{N}_{i}} \exp \left(e_{i k}\right)}
   $$
   
-	| ![graph-attention-1](../assets/img/graph_attention_1.png) |
-	| :-------------------------------------------------------: |
-	|     Figure 1: The attention mechanism employed by [7]     |
+  
+	| ![graph-attention-1](/assets/img/graph_attention_1.png) |
+	| :-----------------------------------------------------: |
+	|    Figure 1: The attention mechanism employed by [7]    |
 	
 	
 
 
 
 - compute weighted sum of other nodes' features to serve as the final output feature (after potentially applying a nonlinearity, $\sigma$ ):
+
   $$
   \vec{h}_{i}^{\prime}=\sigma\left(\sum_{j \in \mathcal{N}_{i}} \alpha_{i j} \mathbf{W} \vec{h}_{j}\right)
   $$
   
 - for multi-head attention, $K$ independent attention meachanisms execute the transformation of equation (14) by using $K$ different matrices $W$ , and then their features are concatenated :
+
   $$
   \vec{h}_{i}^{\prime}=\|_{k=1}^{K} \sigma\left(\sum_{j \in \mathcal{N}_{i}} \alpha_{i j}^{k} \mathbf{W}^{k} \vec{h}_{j}\right)
   $$
   
   if it is final (prediction layer) of the network with multi-head attention, then the output becomes:
+
   $$
 	\vec{h}_{i}^{\prime}=\sigma\left(\frac{1}{K} \sum_{k=1}^{K} \sum_{j \in \mathcal{N}_{i}} \alpha_{i j}^{k} \mathbf{W}^{k} \vec{h}_{j}\right)
 	$$
 	
-	|  ![graph_attention_2](../assets/img/graph_attention_2.png)   |
+	|   ![graph_attention_2](/assets/img/graph_attention_2.png)    |
 	| :----------------------------------------------------------: |
 	| Figure 2. An illustration of multi-head attention (with $K=3$ heads) by node $v_1$ on its neighbors. Different arrow styles and colors denote independent attention computations. |
 	
