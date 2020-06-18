@@ -230,9 +230,9 @@ After obtaining the context vector, there are several ways to obtain the predict
 
 In general, attention variants could be categorized into 3 classes:
 
-- Global attention [7] or soft attention [11]: attention is placed on all source positions, like the way in previous NMT example.
+- **Global attention** [7] or **soft attention** [11]: attention is placed on all source positions, like the way in previous NMT example.
 
-- Local attention [7]: attention is placed on few source position. Global attention may be expensive and impractical to translate longer sequences such as paragraphs or documents. Refer [7,12] to see ways to select source locations for attention.
+- **Local attention** [7]: attention is placed on few source position. Global attention may be expensive and impractical to translate longer sequences such as paragraphs or documents. Refer [7,12] to see ways to select source locations for attention.
 
   | ![global_local_attention](/assets/img/global_local_attention.png) |
   | :----------------------------------------------------------: |
@@ -240,7 +240,7 @@ In general, attention variants could be categorized into 3 classes:
 
   
 
-- Self-attention [10, 13]: attention is placed on different position of same sentence to learn the correlation between the current words and the previous part of the sentence. This will be introduced in more details in next post.
+- **Self-attention** [10, 13]: attention is placed on different position of same sentence to learn the correlation between the current words and the previous part of the sentence. This will be introduced in more details in next post.
 
 
 
