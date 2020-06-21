@@ -44,6 +44,7 @@ p, blockquote, pre,
 ul, ol, dl, figure,
 %vertical-rhythm {
   margin-bottom: $spacing-unit / 2;
+  text-align: justify;
 }
 
 
@@ -147,6 +148,7 @@ blockquote {
   color: darkred;
   border-left: 2px solid $grey-color-light;
   padding-left: $spacing-unit / 2 ;
+  text-align: justify-all;
   @include relative-font-size(0.9);
   letter-spacing: 0px;
   //font-style: italic;

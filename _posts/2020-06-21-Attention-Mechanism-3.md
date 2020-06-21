@@ -86,18 +86,20 @@ where $\beta_t$ is a positive key strength, which can *amplify or attenuate the 
 
 *The location based addressing mechanism is designed to facilitate both simple iteration across the locations of the memory and random-access jumps. It does so by implementing a rotational shift of a weighting* [1]. Think about the situation that we would like $\mathbf{w}_{t-1} = [1, 0, 0, \cdots]$ becomes $\mathbf{w}_t = [0, 1, 0, 0, \cdots ]$, how could be achieve this ?
 
-**Gated Weighting**: we need to consider both (or either one of) the content system at the current time-step $$\mathbf{w}_t^c$$ and the location system at the previous time-step $\mathbf{w}_{t-1}$ :
+**Gated Weighting**: we need to consider both (or either one of) the content system at the current time-step $$\mathbf{w}_t^c$$ and the location system at the previous time-step $\mathbf{w}_{t-1}$ : 
+
+
 $$
 \mathbf{w}_{t}^{g} \longleftarrow g_{t} \mathbf{w}_{t}^{c}+\left(1-g_{t}\right) \mathbf{w}_{t-1}
 $$
+
 
 
 where $g_t \in (0,1)$ can be viewed as interpolation gate which is emit by each head.
 
 
 
-**Shift Weighting**: After interpolation (or gated weighting), each head emits a shift weighting $$\mathbf{s}_t$$ that defines a normalized distribution **over the allowed integer shifts**.  For example, let $$\mathbf{w}_{t-1} = [1, 0, 0]$$ and $$g_t = 0$$, if we would like the system shifts the focus to next memory location, that is $$\mathbf{w}_t = [0,1,0]$$, how can we do that ? Recall the image shifting in CNN, we could also apply 1-D circular convolution, where $$\mathbf{s}_t$$ is the filter, a function of the position offset:
-
+**Shift Weighting**: After interpolation (or gated weighting), each head emits a shift weighting $$\mathbf{s}_t$$ that defines a normalized distribution *over the allowed integer shifts*.  For example, let $$\mathbf{w}_{t-1} = [1, 0, 0]$$ and $$g_t = 0$$, if we would like the system shifts the focus to next memory location, that is $$\mathbf{w}_t = [0,1,0]$$, how can we do that ? Recall the image shifting in CNN, we could also apply 1-D circular convolution, where $$\mathbf{s}_t$$ is the filter, a function of the position offset:
 $$
 \tilde{w}_{t}(i) \longleftarrow \sum_{j=0}^{N-1} w_{t}^{g}(j) s_{t}(i-j)
 $$
@@ -164,7 +166,7 @@ As you can see in Figure 4.,  the input of MANN is a joint embedding $\mathbf{v}
 
  
 
-As you can see in the figure 5, the input of DKVMN is still $(q_t, r_t)$, but it will separately generate embeddings $\mathbf{k}_t$ (purely based on $q_t$) and $\mathbf{v}_t$ (based on ($q_t, r_t$ )).   In order to model the underlying concepts of each exercise, DKVMN utilizes a static matrix $\mathbf{M}^k \in \mathbb{R}^{N \times d_k}$ (key matrix) to represent the $N$ latent concepts$$ \{c^1, c^2, \cdots, c^N \}$$, each of which is represented by $d_k$ dimensional vector. In order to tracing student's mastery levels of each concept, DKVMN employs a matrix $\mathbf{M}^{v}_t \in \mathbb{R}^{N \times d_v}$ (value matrix) to store concept states $$ \{\mathbf{s}_t^1, \mathbf{s}_t^2, \cdots, \mathbf{s}_t^N \}$$ at time $t$ $. 
+As you can see in the figure 5, the input of DKVMN is still $(q_t, r_t)$, but it will separately generate embeddings $\mathbf{k}_t$ (purely based on $q_t$) and $\mathbf{v}_t$ (based on ($q_t, r_t$ )).   In order to model the underlying concepts of each exercise, DKVMN utilizes a static matrix $\mathbf{M}^k \in \mathbb{R}^{N \times d_k}$ (key matrix) to represent the $N$ latent concepts$$ \{c^1, c^2, \cdots, c^N \}$$, each of which is represented by $d_k$ dimensional vector. In order to tracing student's mastery levels of each concept, DKVMN employs a matrix $\mathbf{M}^{v}_t \in \mathbb{R}^{N \times d_v}$ (value matrix) to store concept states $$ \{\mathbf{s}_t^1, \mathbf{s}_t^2, \cdots, \mathbf{s}_t^N \}$$ at time $t$ . 
 
 ### Reading 
 
@@ -205,7 +207,7 @@ Inspired by the NTM, knowledge updating step contains two steps: erase step and 
 
 $$
 \begin{align}
-\tilde{\mathbf{M}}_{t}^{v}(i)&=\mathbf{M}_{t-1}^{v}(i)\left[\mathbf{1}-w_{t}(i) \mathbf{e}_{t}\right] \\
+\tilde{\mathbf{M}}_{t}^{v}(i)&=\mathbf{M}_{t-1}^{v}(i)\odot\left[\mathbf{1}-w_{t}(i) \mathbf{e}_{t}\right] \\
 \mathbf{M}_{t}^{v}(i)&=\tilde{\mathbf{M}}_{t-1}^{v}(i)+w_{t}(i) \mathbf{a}_{t}
 \end{align}
 $$
