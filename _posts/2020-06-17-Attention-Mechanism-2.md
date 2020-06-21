@@ -245,7 +245,7 @@ $$
 
 [7] [Graph Attention Networks](Veličković, Petar, et al. "Graph attention networks." *arXiv preprint arXiv:1710.10903* (2017).) 
 
-
+[8] [The Annotated Transformer](http://nlp.seas.harvard.edu/2018/04/03/attention.html) 
 
 
 
