@@ -47,6 +47,12 @@ ul, ol, dl, figure,
   text-align: justify;
 }
 
+p, blockquote, pre,
+ul, ol, dl, figure,
+%vertical-rhythm {
+  text-align: justify;
+}
+
 
 
 /**
