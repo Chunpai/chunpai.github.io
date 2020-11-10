@@ -116,7 +116,7 @@ $$
 " %}
 
 
-In addition, we could replace $$\color{red}{ \left( \sum_{t=0}^{\vert \tau^{n} \vert } r(s_t, a_t) \right)}$$ with a discounted future reward  $$R_t = \sum_{t'=t}^{\vert \tau^{n} \vert} \gamma^{(t'-t)} r(s_{t'}, a_{t'})$$ for action at time $t$ to reduce variance in the gradient estimate. 
+In addition, we could replace $$\color{red}{ \left( \sum_{t=0}^{\vert \tau^{n} \vert } r(s_t, a_t) \right) }$$ with a discounted future reward  $$ R_t = \sum_{t'=t}^{\vert \tau^{n} \vert} \gamma^{(t'-t)} r(s_{t'}, a_{t'}) $$ for action at time $t$ to reduce variance in the gradient estimate. 
 
 
 
@@ -155,7 +155,7 @@ $$
 \end{align}
 $$
 
-where we use the fact that different policies do not effect the transition probabilities of the environment, that is $$ p_{\theta}(s_{0}) = p_{\omega}(s_{0})$$. **However, the variance of the estimator is huge due to the chained products, leading quickly to very low or high values of the importance weights. In addition, this will also lead to gradient vanishing or exploding in RNNs.** Two approaches are used to reduce the variance:
+where we use the fact that different policies do not effect the transition probabilities of the environment, that is $ p_{\theta}(s_{0}) = p_{\omega}(s_{0}) $. **However, the variance of the estimator is huge due to the chained products, leading quickly to very low or high values of the importance weights. In addition, this will also lead to gradient vanishing or exploding in RNNs.** Two approaches are used to reduce the variance:
 
 1. ignore the terms after time $t$. 
 2. first-order approximation. 
@@ -221,7 +221,7 @@ $$
   
 * The parameter $\theta$ of the policy $\pi_{\theta}$ contains:
 
-  * two action embeddings $\mathbf{U} \in \mathbb{R}^{m \times \vert\mathcal{A} \vert}$ and $$\mathbf{V} \in \mathbb{R}^{n \times \vert\mathcal{A}\vert}$$.
+  * two action embeddings $\mathbf{U} \in \mathbb{R}^{m \times \vert\mathcal{A} \vert}$ and $\mathbf{V} \in \mathbb{R}^{n \times \vert\mathcal{A}\vert}$.
   * weight matrices $\mathbf{U}_z, \mathbf{U_i}\in \mathbb{R}^{n\times n}$.
   * weight matrices $\mathbf{W}_{z}, \mathbf{W}_i, \mathbf{W}_a \in \mathbb{R}^{n \times m}$.
   * biases $\mathbf{b}_z, \mathbf{b}_i \in \mathbf{R}^n$. 
@@ -238,7 +238,7 @@ $$
   
   - Iterate through the recurrent cell to get the user state $\mathbf{s}_{t+1}$.
   
-  - With $$\mathbf{s}_{t+1}$$, we are able to get the $$\pi_{\theta}(a_{t+1} \mid \mathbf{s}_{t+1})$$ distribution. 
+  - With $\mathbf{s}_{t+1}$, we are able to get the $\pi_{\theta}(a_{t+1} \mid \mathbf{s}_{t+1})$ distribution. 
   
   - With $\pi_{\theta}(a_{t+1} \mid \mathbf{s}_{t+1})$, we are able to produce a policy gradient to update the policy. 
   
@@ -309,6 +309,7 @@ $$
   is the probability that an item $a$ appears in the final non-repetitive set $A$. 
 
 * Replace $\pi_{\theta}$ with $\alpha_{\theta}$ and apply log-trick to get the top-K off-policy corrected gradient: 
+
   $$
   \begin{align}
   &\quad \ \frac{1}{N} \sum_{\color{red}{\tau\sim \beta}}\left[\sum_{t=0}^{|\tau|} \frac{\alpha_{\theta} \left(a_{t} | s_{t}\right)}{\beta\left(a_{t} | s_{t}\right)} R_t \nabla_{\theta} \log \alpha_{\theta} \left(a_{t} | s_{t}\right)\right]\\
