@@ -21,10 +21,12 @@ This is a paper from Google published in WSDM-2019 conference on applying reinfo
 
 # Contributions
 
+
 * Scale a REINFORCE policy-gradient-based approach to learn a neural recommendation policy in a extremely large action space.
 * Apply off-policy correction to learn from logged feedback, collected from an ensemble of prior model policies.
 * Define a novel top-k off-policy correction for top-k recommender system.
 * An real-world RL application and live experiments demonstration.
+
 
 
 
@@ -46,14 +48,19 @@ The Markov Decision Process (MDP) is $(\mathcal{S}, \mathcal{A}, \mathbf{P}, R, 
 ### Objective
 
 The expected cumulative reward is: 
+
 $$
 J(\theta) = \mathbb{E}_{\tau \sim \pi_{\theta}}[R(\tau)]\quad \text { where } \quad R(\tau)=\sum_{t=0}^{|\tau|} r\left(s_{t}, a_{t}\right)
 $$
+
  where assuming policy $\pi_{\theta}(a\mid s)$ is a function parameterized by $\theta\in\mathbb{R}^d$, and the expectation is taken over the trajectories
+
 $$
 \tau = (s_0, a_0, s_1, \cdots)
 $$
+
 obtained by acting according to the policy:
+
 $$
 \begin{align}
 s_0 &\sim \rho_0, \\
@@ -63,12 +70,15 @@ s_{t+1} &\sim \mathbf{P}(\cdot\mid s_t, a_t)
 $$
 
 For example, in episodic tasks, the probability of occurrence of one specific episode $\tau$ **under policy** $\pi$ is:
+
 $$
 p_{\theta}(\tau)
 =p_{\theta}\left(s_{0}, a_{0}, \cdots, s_{T}, a_{T}\right)
 =p\left(s_{0}\right) \prod_{t}\left[\pi_{\theta}\left(a_{t} | s_{t}\right) \cdot p\left(s_{t+1} | s_{t}, a_{t}\right)\right]
 $$
+
 where $\rho_0 = p(s_0)$. The objective is to find a policy $\pi_{\theta}$ that maximizes the expected cumulative reward obtained by the recommender system:
+
 $$
 \max _{\theta} J(\theta)
 $$
@@ -77,13 +87,14 @@ $$
 
 ### REINFORCE: a policy-gradient-based approach
 
-The most straightforward way is to maximize the expected cumulative reward via gradient descent w.r.t $\textcolor{blue}{\theta}$ . Hence, we need to derive the $\nabla_{\textcolor{blue}{\theta}} J(\theta)$, that is 
+The most straightforward way is to maximize the expected cumulative reward via gradient descent w.r.t $\color{blue}{\theta}$ . Hence, we need to derive the $\nabla_{\color{blue}{\theta}} J(\theta)$, that is 
+
 $$
 \begin{align}
 \nabla_{\theta} J(\theta) &= \sum_{\tau} R(\tau) \nabla_{\theta} p_{\theta}(\tau) \\
-&= \sum_{\tau} R(\tau) \textcolor{blue}{p_{\theta}(\tau) \frac{\nabla_{\theta} p_{\theta}(\tau)}{p_{\theta}(\tau)}} \\
-&= \sum_{\tau} R(\tau) \textcolor{blue}{p_{\theta}(\tau) \nabla_{\theta} \log p_{\theta}(\tau)}\\
-&= \textcolor{red}{\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla_{\theta} \log p_{\theta}(\tau) \right]} \\
+&= \sum_{\tau} R(\tau) \color{blue}{p_{\theta}(\tau) \frac{\nabla_{\theta} p_{\theta}(\tau)}{p_{\theta}(\tau)}} \\
+&= \sum_{\tau} R(\tau) \color{blue}{p_{\theta}(\tau) \nabla_{\theta} \log p_{\theta}(\tau)}\\
+&= \color{red}{\operatorname{E}_{\tau \sim p_{\theta}(\tau)} \left[ R(\tau) \nabla_{\theta} \log p_{\theta}(\tau) \right]} \\
 &\color{red}{\approx} \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \nabla_{\theta} \log p_{\theta}(\tau^n) \\
 &= \frac{1}{N} \sum_{n=1}^{N} R(\tau^n) \nabla_{\theta} \log \left\{ p\left(s_{0}^{n} \right) \prod_{t}\left[\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \cdot p\left(s_{t+1}^{n} | s_{t}^{n}, a_{t}^{n}\right)\right]\right\} \\
 &= \frac{1}{N} \sum_{n=1}^{N}  R(\tau^n) \nabla_{\theta} \log \left[  \prod_{t}\pi_{\theta}\left(a_{t}^{n} | s_{t}^{n}\right) \right] \\
@@ -104,7 +115,8 @@ $$
 \end{algorithm}
 " %}
 
-In addition, we could replace $\textcolor{red}{\left( \sum_{t=0}^{|\tau^n|} r(s_t, a_t) \right)}$ with a discounted future reward  $R_t = \sum_{t'=t}^{|\tau^n|} \gamma^{(t'-t)} r(s_{t'}, a_{t'})$ for action at time $t$ to reduce variance in the gradient estimate. 
+
+In addition, we could replace $$\color{red}{ \left( \sum_{t=0}^{\vert \tau^{n} \vert } r(s_t, a_t) \right)}$$ with a discounted future reward  $$R_t = \sum_{t'=t}^{\vert \tau^{n} \vert} \gamma^{(t'-t)} r(s_{t'}, a_{t'})$$ for action at time $t$ to reduce variance in the gradient estimate. 
 
 
 
@@ -149,11 +161,13 @@ where we use the fact that different policies do not effect the transition proba
 2. first-order approximation. 
 
 Therefore,
+
 $$
 \begin{align}
-\prod_{t'=0}^{|\tau|} \frac{\pi_{\theta}\left(a_{t'} | s_{t'}\right)}{ \pi_{\omega}\left(a_{t'} | s_{t'}\right)} \approx \prod_{t'=0}^{\textcolor{red}{t}} \frac{\pi_{\theta}\left(a_{t'} | s_{t'}\right)}{ \pi_{\omega}\left(a_{t'} | s_{t'}\right)} = \textcolor{blue}{\frac{p_{\pi_{\theta}}(s_\textcolor{red}{t})}{p_{\pi_{\omega}}(s_\textcolor{red}{t})}} \frac{\pi_{\theta}\left(a_{t} | s_{t}\right)}{ \pi_{\omega}\left(a_{t} | s_{t}\right)} \approx \frac{\pi_{\theta}\left(a_{t} | s_{t}\right)}{ \pi_{\omega}\left(a_{t} | s_{t}\right)}
+\prod_{t'=0}^{|\tau|} \frac{\pi_{\theta}\left(a_{t'} | s_{t'}\right)}{ \pi_{\omega}\left(a_{t'} | s_{t'}\right)} \approx \prod_{t'=0}^{\color{red}{t}} \frac{\pi_{\theta}\left(a_{t'} | s_{t'}\right)}{ \pi_{\omega}\left(a_{t'} | s_{t'}\right)} = \frac{p_{\pi_{\theta}}(s_t)}{p_{\pi_{\omega}}(s_t)} \frac{\pi_{\theta}\left(a_{t} | s_{t}\right)}{ \pi_{\omega}\left(a_{t} | s_{t}\right)} \approx \frac{\pi_{\theta}\left(a_{t} | s_{t}\right)}{ \pi_{\omega}\left(a_{t} | s_{t}\right)}
 \end{align}
 $$
+
 where $p_{\pi_{\theta}}(s_t)$ represents the probability of state $s_t$ under policy $\pi_{\theta}$. Therefore, we can derive a biased estimator of the policy gradient  w.r.t parameter $\theta$ with lower variance as:
 
 $$
@@ -176,10 +190,13 @@ $$
 * $\mathbf{u}_{a_t} \in \mathbb{R}^m$ denotes by action taken at time $t$.
 
 * The state transition (or user interest transition modeling) $\mathbf{P}: \mathcal{S}\times \mathcal{A} \times \mathcal{S}$ is modeled by a Chaos Free RNN (CFN):
+
   $$
   \mathbf{s}_{t+1} = f(\mathbf{s}_t, \mathbf{u}_{a_t})
   $$
+  
   where the state is updated recursively as 
+  
   $$
   \begin{aligned}
   \mathbf{s}_{t+1} &=\mathbf{z}_{t} \odot \tanh \left(\mathbf{s}_{t}\right)+\mathbf{i}_{t} \odot \tanh \left(\mathbf{W}_{a} \mathbf{u}_{a_{t}}\right) \\
@@ -187,29 +204,31 @@ $$
   \mathbf{i}_{t} &=\sigma\left(\mathbf{U}_{i} \mathbf{s}_{t}+\mathbf{W}_{i} \mathbf{u}_{a_{t}}+\mathbf{b}_{i}\right)
   \end{aligned}
   $$
+  
   where $\mathbf{z}_t, \mathbf{i}_t \in \mathbb{R}^n$ are the update and input gate respectively. 
 
-* Conditioning on a user state s, the policy $\pi_{\theta} (a\mid s)$ is then modeled
-  with softmax:
-  $$
-  \pi_{\theta}(a \mid \mathbf{s})=\frac{\exp \left(\mathbf{s}^{\top} \mathbf{v}_{a} / T\right)}{\sum_{a^{\prime} \in \mathcal{A}} \exp \left(\mathbf{s}^{\top} \mathbf{v}_{a^{\prime}} / T\right)}
-  $$
-  where 
+* Conditioning on a user state s, the policy $\pi_{\theta} (a\mid s)$ is then modeled with softmax:
 
-  * $\mathbf{v}_a \in \mathbb{R}^n$ is another embedding for each action $a$.
+	$$
+	\pi_{\theta}(a \mid \mathbf{s})=\frac{\exp \left(\mathbf{s}^{\top} 	\mathbf{v}_{a} / T\right)}{\sum_{a^{\prime} \in \mathcal{A}} \exp \left(\mathbf{s}^{\top} \mathbf{v}_{a^{\prime}} / T\right)}
+	$$
+
+
+* * $\mathbf{v}_a \in \mathbb{R}^n$ is another embedding for each action $a$.
+  
   * $T$ is a temperature that is normally set to 1. 
-  * If $|\mathcal{A}|$ is very large, we could use sampled softmax. 
-
+  * If $\vert \mathcal{A} \vert$ is very large, we could use sampled softmax. 
+  
 * The parameter $\theta$ of the policy $\pi_{\theta}$ contains:
 
-  * two action embeddings $\mathbf{U} \in \mathbb{R}^{m \times |\mathcal{A}|}$ and $\mathbf{V} \in \mathbb{R}^{n \times |\mathcal{A}|}$.
+  * two action embeddings $\mathbf{U} \in \mathbb{R}^{m \times \vert\mathcal{A} \vert}$ and $$\mathbf{V} \in \mathbb{R}^{n \times \vert\mathcal{A}\vert}$$.
   * weight matrices $\mathbf{U}_z, \mathbf{U_i}\in \mathbb{R}^{n\times n}$.
   * weight matrices $\mathbf{W}_{z}, \mathbf{W}_i, \mathbf{W}_a \in \mathbb{R}^{n \times m}$.
   * biases $\mathbf{b}_z, \mathbf{b}_i \in \mathbf{R}^n$. 
 
 * Architecture Diagram:
 
-  | ![reinforce_recsys_architect](../assets/img/reinforce_recsys_architect.png) |
+  | ![reinforce_recsys_architect](/../assets/img/reinforce_recsys_architect.png) |
   | :----------------------------------------------------------: |
   |             policy $\pi_{\theta}$ architecture.              |
 
@@ -219,7 +238,7 @@ $$
   
   - Iterate through the recurrent cell to get the user state $\mathbf{s}_{t+1}$.
   
-  - With $\mathbf{s}_{t+1}$, we are able to get the $\pi_{\theta}(a_{t+1} \mid \mathbf{s}_{t+1})$ distribution. 
+  - With $$\mathbf{s}_{t+1}$$, we are able to get the $$\pi_{\theta}(a_{t+1} \mid \mathbf{s}_{t+1})$$ distribution. 
   
   - With $\pi_{\theta}(a_{t+1} \mid \mathbf{s}_{t+1})$, we are able to produce a policy gradient to update the policy. 
   
@@ -252,6 +271,7 @@ $$
 * In classic reinforcement learning, user interacts with one item. But in recommender system, we need to pick a set of relevant items instead of a single one. 
 
 * We seek a policy $\Pi_{\Theta}(A \mid s)$, here each action $A$ is to select a set of $k$ items, to maximize the expected cumulative reward, 
+
   $$
   \max _{\Theta} \mathbb{E}_{\tau \sim \Pi_{\theta}}\left[\sum_{t} r\left(s_{t}, A_{t}\right)\right]
   $$
@@ -268,17 +288,21 @@ $$
 * Assume the expected reward of a set of non-repetitive items equal to the sum of the expected reward of each item in the set. 
 
 * Generate the set action $A$ by independently sampling each item $a$ according to the softmax policy $\pi_{\theta}$ and then de-duplicate. That is,
+
   $$
   \Pi_{\Theta}\left(A^{\prime} \mid s\right)=\prod_{a \in A^{\prime}} \pi_{\theta}(a \mid s)
   $$
   
 * Modify the on-policy gradient update:
+
   $$
-  \frac{1}{N} \sum_{\textcolor{red}{\tau\sim \pi_{\theta}}} \left[\sum_{t=0}^{|\tau|} R_{t} \nabla_{\theta} \log \alpha_{\theta}\left(a_{t} \mid s_{t}\right)\right]
+  \frac{1}{N} \sum_{\color{red}{\tau\sim \pi_{\theta}}} \left[\sum_{t=0}^{|\tau|} R_{t} \nabla_{\theta} \log \alpha_{\theta}\left(a_{t} \mid s_{t}\right)\right]
   $$
+
   where 
+
   $$
-  \textcolor{blue}{\alpha_{\theta}(a\mid s) = 1- (1-\pi_{\theta}(a\mid s))^K}
+  \color{blue}{\alpha_{\theta}(a\mid s) = 1- (1-\pi_{\theta}(a\mid s))^K}
   $$
   
 
@@ -287,33 +311,38 @@ $$
 * Replace $\pi_{\theta}$ with $\alpha_{\theta}$ and apply log-trick to get the top-K off-policy corrected gradient: 
   $$
   \begin{align}
-  &\quad \ \frac{1}{N} \sum_{\textcolor{red}{\tau\sim \beta}}\left[\sum_{t=0}^{|\tau|} \frac{\alpha_{\theta} \left(a_{t} | s_{t}\right)}{\beta\left(a_{t} | s_{t}\right)} R_t \nabla_{\theta} \log \alpha_{\theta} \left(a_{t} | s_{t}\right)\right]\\
+  &\quad \ \frac{1}{N} \sum_{\color{red}{\tau\sim \beta}}\left[\sum_{t=0}^{|\tau|} \frac{\alpha_{\theta} \left(a_{t} | s_{t}\right)}{\beta\left(a_{t} | s_{t}\right)} R_t \nabla_{\theta} \log \alpha_{\theta} \left(a_{t} | s_{t}\right)\right]\\
   &= \frac{1}{N} \sum_{\tau \sim \beta}\left[\sum_{t=0}^{|\tau|} \frac{\alpha_{\theta}\left(a_{t} \mid s_{t}\right)}{\beta\left(a_{t} \mid s_{t}\right)} R_{t} \frac{\nabla_{\theta}\alpha_{\theta}(a_t\mid s_t)}{\alpha_{\theta}(a_t\mid s_t)}\right]\\
   &= \frac{1}{N} \sum_{\tau \sim \beta}\left[\sum_{t=0}^{|\tau|} \frac{\alpha_{\theta}\left(a_{t} \mid s_{t}\right)}{\beta\left(a_{t} \mid s_{t}\right)} R_{t} \frac{\partial\alpha(a_t \mid s_t)}{\partial \pi(a_t, s_t)}\cdot \frac{\partial \pi_{\theta}(a_t\mid s_t)}{\alpha_{\theta}(a_t\mid s_t)} \right]\\
-  &= \frac{1}{N} \sum_{\tau \sim \beta}\left[\sum_{t=0}^{|\tau|} \frac{\textcolor{red}{{\alpha_{\theta}\left(a_{t} \mid s_{t}\right)}} \pi_{\theta}(a_t\mid s_t)}{\beta\left(a_{t} \mid s_{t}\right)} R_{t} \frac{\partial\alpha(a_t \mid s_t)}{\partial \pi(a_t, s_t)}\cdot \frac{\partial \pi_{\theta}(a_t\mid s_t)}{\textcolor{red}{\alpha_{\theta}(a_t\mid s_t)}\pi_{\theta}(a_t\mid s_t)} \right]\\
-  &=\frac{1}{N} \sum_{\tau \sim \beta}\left[\sum_{t=0}^{|\tau|} \frac{\pi_{\theta}\left(a_{t} \mid s_{t}\right)}{\beta\left(a_{t} \mid s_{t}\right)} \textcolor{blue}{\frac{\partial \alpha\left(a_{t} \mid s_{t}\right)}{\partial \pi\left(a_{t} \mid s_{t}\right)}} R_{t} \nabla_{\theta} \log \pi_{\theta}\left(a_{t} \mid s_{t}\right)\right]
+  &= \frac{1}{N} \sum_{\tau \sim \beta}\left[\sum_{t=0}^{|\tau|} \frac{\color{red}{ {\alpha_
+  {\theta} \left(a_{t} \mid s_{t}\right)}} \pi_{\theta}(a_t\mid s_t)}{\beta\left(a_{t} \mid s_{t
+  }\right)} R_{t} \frac{\partial\alpha(a_t \mid s_t)}{\partial \pi(a_t, s_t)}\cdot \frac{\partial \pi_{\theta}(a_t\mid s_t)}{\alpha_{\theta}(a_t\mid s_t)}\pi_{\theta}(a_t\mid s_t) \right]\\
+  &=\frac{1}{N} \sum_{\tau \sim \beta}\left[\sum_{t=0}^{|\tau|} \frac{\pi_{\theta}\left(a_{t} \mid s_{t}\right)}{\beta\left(a_{t} \mid s_{t}\right)} \color{blue}{\frac{\partial \alpha\left(a_{t} \mid s_{t}\right)}{\partial \pi\left(a_{t} \mid s_{t}\right)}} R_{t} \nabla_{\theta} \log \pi_{\theta}\left(a_{t} \mid s_{t}\right)\right]
   \end{align}
   $$
 
 * The only difference between previous off-policy corrected gradient and top-k off-policy corrected gradient is the additional multiplier:
+
   $$
   \lambda_{K}\left(s_{t}, a_{t}\right)=\frac{\partial \alpha\left(a_{t} \mid s_{t}\right)}{\partial \pi\left(a_{t} \mid s_{t}\right)}=K\left(1-\pi_{\theta}\left(a_{t} \mid s_{t}\right)\right)^{K-1}
   $$
 
-  * As $\pi_{\theta} (a|s) \rightarrow 0,\quad \lambda_K(s, a) \rightarrow K$. If at state $s$ the new policy $\pi$ barely choose action $a$, then we increase the policy update by a factor of $K$ comparing to the standard off-policy correction. When the desirable item has a small mass in the softmax policy $\pi_{\theta} (·\mid s)$, the top-K correction more aggressively pushes up its likelihood than the standard correction.
+  * As $\pi_{\theta} (a\mid s) \rightarrow 0,\quad \lambda_K(s, a) \rightarrow K$. If at state $s$ the new policy $\pi$ barely choose action $a$, then we increase the policy update by a factor of $K$ comparing to the standard off-policy correction. When the desirable item has a small mass in the softmax policy $\pi_{\theta} (·\mid s)$, the top-K correction more aggressively pushes up its likelihood than the standard correction.
 
-  * As $\pi_{\theta} (a|s) \rightarrow 1,\quad \lambda_K(s, a) \rightarrow 0$. If at state $s$ the new policy $\pi$ always choose action $a$, then we don't do the policy update. Once the softmax policy $\pi_{\theta} (·\mid s)$ casts a reasonable mass on the desirable item (to ensure it will be likely to appear in the top-K), the correction then zeros out the gradient and no longer tries to push up its likelihood. 
+  * As $\pi_{\theta} (a\mid s) \rightarrow 1,\quad \lambda_K(s, a) \rightarrow 0$. If at state $s$ the new policy $\pi$ always choose action $a$, then we don't do the policy update. Once the softmax policy $\pi_{\theta} (·\mid s)$ casts a reasonable mass on the desirable item (to ensure it will be likely to appear in the top-K), the correction then zeros out the gradient and no longer tries to push up its likelihood. 
 
-  * As K increases, this multiplier reduces the gradient to zero faster as $\pi_{\theta} (a\mid s) $ $\textcolor{red}{\text{reaches a reasonable range?}}$
+  * As K increases, this multiplier reduces the gradient to zero faster as $\pi_{\theta} (a\mid s) $ $\color{red}{\text{reaches a reasonable range?}}$
 
     
 
 ## Variance Reduction Techniques 
 
 We need to pay attention to the importance weight: 
+
 $$
 \omega(s, a) = \frac{\pi(a\mid s)}{\beta(a \mid s)}
 $$
+
 which could be very large due to:
 
 1. $\pi(a\mid s) >> \beta(a\mid s)$ when new policy $\pi$ explores regions that are less explored by the behavior policy $\beta$. 
@@ -328,11 +357,13 @@ There are several approaches to reduce the variance of estimated policy gradient
 3. First order approximation.
 
 4. **Weight capping**. Smaller value of $c$ reduces variance in the gradient estimate, but introduces larger bias.
+
    $$
    \bar{\omega}_{c}(s, a)=\min \left(\frac{\pi(a \mid s)}{\beta(a \mid s)}, c\right)
    $$
 
 5. **Normalized Importance Sampling**:
+
    $$
    \bar{\omega}_{n}(s, a)=\frac{\omega(s, a)}{\sum_{\left(s^{\prime}, a^{\prime}\right) \sim \beta} \omega\left(s^{\prime}, a^{\prime}\right)}
    $$
