@@ -116,7 +116,7 @@ $$
 " %}
 
 
-In addition, we could replace $$\color{red}{ \left( \sum_{t=0}^{\vert \tau^{n} \vert } r(s_t, a_t) \right) }$$ with a discounted future reward  $$ R_t = \sum_{t'=t}^{\vert \tau^{n} \vert} \gamma^{(t'-t)} r(s_{t'}, a_{t'}) $$ for action at time $t$ to reduce variance in the gradient estimate. 
+In addition, we could replace $\color{red}{ \left( \sum_{t=0}^{\vert \tau^{n} \vert } r(s_t, a_t) \right) }$ with a discounted future reward  $ R_t = \sum_{t'=t}^{\vert \tau^{n} \vert} \gamma^{(t'-t)} r(s_{t'}, a_{t'}) $ for action at time $t$ to reduce variance in the gradient estimate. 
 
 
 
@@ -238,7 +238,7 @@ $$
   
   - Iterate through the recurrent cell to get the user state $\mathbf{s}_{t+1}$.
   
-  - With $\mathbf{s}_{t+1}$, we are able to get the $\pi_{\theta}(a_{t+1} \mid \mathbf{s}_{t+1})$ distribution. 
+  - With $ \mathbf{s}_{t+1} $, we are able to get the $ \pi_{\theta}(a_{t+1} \mid \mathbf{s}_{t+1}) $ distribution. 
   
   - With $\pi_{\theta}(a_{t+1} \mid \mathbf{s}_{t+1})$, we are able to produce a policy gradient to update the policy. 
   
