@@ -361,5 +361,13 @@ There are several approaches to reduce the variance of estimated policy gradient
 
 
 
+# Reference 
+
+[1] [Top-k Off-Policy Correction for a REINFORCE Recommender System](https://arxiv.org/pdf/1812.02353.pdf)
+
+[2] [Paper Presentation Video](https://www.youtube.com/watch?v=HEqQ2_1XRTs&ab_channel=AssociationforComputingMachinery%28ACM%29)
+
+[3] [Reinforcement Learning for Slate-based Recommender Systems: A Tractable Decomposition and Practical Methodology](https://arxiv.org/pdf/1905.12767.pdf)
+
 
 
