@@ -17,28 +17,31 @@ All seq2seq models that leverage the RNN related architecture require previous h
 
 Self-attention means attention is placed on different position of same sentence to learn the correlation between the current words and the different part of the sentence. 
 
-|      ![self-attention](/assets/img/self-attention.png)       |
+|     ![self-attention](../assets/img/self-attention.png)      |
 | :----------------------------------------------------------: |
 | Figure 1. Self-attention Layer Illustration for Generating First Output [5] |
 
 Let $a^1, \cdots, a^4$ denote the input of attention layer, which could be word embeddings of input sentence $(x^1, \cdots, x^4)$ or output of previous self-attention layer. Self-attention layer will compute 3 different values for each word embedding first: 
 
-- $\mathbf{q}$:  query vector to match others 
+- $\mathbf{q}$:  query vector to match others   
+
   $$
   \mathbf{q}^i = \mathbf{W}^q \mathbf{a}^i
   $$
   
-- $\mathbf{k}$: key vector to be matched 
+- $\mathbf{k}$: key vector to be matched
+
   $$
   \mathbf{k}^i = \mathbf{W}^k \mathbf{a}^i
   $$
   
 - $\mathbf{v}$: information to be extracted 
+
 	$$
 	\mathbf{v}^i = \mathbf{W}^v \mathbf{a}^i
 	$$
 
-Like in figure 1, in order to generate the first output, we attend first query $\mathbf{q}^1$ for every key $\mathbf{k}^i$ and we could obtain attention score $e_{1i}$ via the scaled dot-product attention:
+Like in Figure 1, in order to generate the first output, we attend first query $\mathbf{q}^1$ for every key $\mathbf{k}^i$ and we could obtain attention score $e_{1i}$ via the scaled dot-product attention:
 
 
 $$
@@ -128,14 +131,14 @@ One thing missing so far is, self-attention layer introduced above does not cons
 
 **Encoder**: 
 
-- a stack of N identical layers, each of which has two sub-layers
-- the first sub-layer is multi-head attention mechanism; the second sub-layer is simple position wise fully connected feed-forward network
+- a stack of N identical layers, each of which has two sub-layers.
+- the first sub-layer is multi-head attention mechanism; the second sub-layer is simple position wise fully connected feed-forward network.
 -  a residual connection around each of the two sub-layers, followed by layer normalization. 
 
 **Decoder**: 
 
-- a stack of N identical layers, each of which has three sub-layers
-- the output of encoder is also attended in decoder
+- a stack of N identical layers, each of which has three sub-layers.
+- the output of encoder is also attended in decoder.
 - the output embeddings are offset by one position to ensure that the predictions for position $i$ can depend only on the known outputs at positions less than $i$. 
 
 

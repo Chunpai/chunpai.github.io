@@ -1,5 +1,5 @@
 ---
-title: "Thompson Sampling [1]: the General Algorithm"
+title: "Multi-armed Bandits: Thompson Sampling"
 layout: post
 author: Chunpai
 tags: [reinforcement-learning]
@@ -207,7 +207,7 @@ The greedy algorithm estimate $\hat{\theta}$ to be the expectation of $\theta$ w
 
 An agent commutes from home to work every morning. She would like to commute along the path that requires the least average travel time, but she is uncertain of the travel time along different routes. How can she *learn* efficiently and minimize the total travel time over *a large number of trips*  ? 
 
-| ![shorrtest_path_problem](/../assets/img/shortest_path_problem.png) |
+| ![shortest_path_problem](/../assets/img/shortest_path_problem.png) |
 | :----------------------------------------------------------: |
 |               Figure 2. Shortest Path Problem                |
 

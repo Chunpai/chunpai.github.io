@@ -78,7 +78,6 @@ y_{t}=W^{\mathrm{yh}} h_{t}
 \end{array}
 $$
 
-
 **How to train a NMT system ?**[1]  Given a pair of source sentence and target sentence, we feed the source sentence into the neural network and output a sequence of probabilities of next word (which is represented by a sequence of vectors). In other word, each $P(y_t \mid v, y_1, \cdots, y_{t-1})$ distribution in (3) is represented with a softmax over all words in the vocabulary. The ground truth word is also represented by one-hot encoding, then then we could compute the loss for each word and then average them. 
 
 
@@ -209,7 +208,6 @@ However, attention always involves 3 steps:
    $$
    \alpha=\operatorname{softmax}(\boldsymbol{e}) \in \mathbb{R}^{T}
    $$
-   
    
 3. Using attention distribution to take weighted sum of values:
 

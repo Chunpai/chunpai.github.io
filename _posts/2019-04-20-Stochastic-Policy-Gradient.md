@@ -22,7 +22,7 @@ $$
 $$
 
 
-We can view the policy $$\pi$$ as a neural network which parameterized by $$\theta$$, which are denoted by $ \pi(a \mid s, \theta) $ or $\pi_{\theta} (a \mid  s)$.  The goal of reinforcement learning is to find a policy $$\pi$$ that achieve a lot reward over the long run. For example, in episodic tasks, the probability of occurrence of one specific episode $\tau$ under policy $\pi$ is 
+We can view the policy $$\pi$$ as a neural network which parameterized by $$\theta$$, which are denoted by $ \pi(a \mid s, \theta) $ or $\pi_{\theta} (a \mid  s)$.  The goal of reinforcement learning is to find a policy $$\pi$$ that achieve a lot reward over the long run. For example, in episodic tasks, the probability of occurrence of one specific episode $\tau$ **under policy** $\pi$ is 
 
 
 $$
@@ -122,7 +122,7 @@ $$
 
 where $$ \nabla \bar{R}_{\theta}$$ is *a stochastic estimate whose expectation approximates the gradient of the performance measure with respect to its argument* $\theta$ . 
 
-![REINFORCE algorithm, a on-policy policy gradient method](/assets/img/REINFOCE_algo.png)
+![REINFORCE algorithm, a on-policy policy gradient method](../assets/img/REINFOCE_algo.png)
 
 
 
@@ -195,7 +195,7 @@ $$
 b \approx E[R(\tau)] = \frac{1}{N} \sum_{n=1}^{N} R(\tau)
 $$
 
-during we sample the trajectories. But, are we allowed to do that ? We will see that subtracting a baseline is *unbiased in expectation*, that is 
+during we sample the trajectories. But, are we allowed to do that? We will see that subtracting a baseline is *unbiased in expectation*, that is 
 
 
 $$
@@ -270,7 +270,7 @@ We can see that these two policy gradients with discount factor are slightly dif
 
 
 
-![](/assets/img/discount-factor.png)
+![](../assets/img/discount-factor.png)
 
 
 
