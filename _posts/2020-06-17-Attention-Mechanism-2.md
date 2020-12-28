@@ -17,7 +17,7 @@ All seq2seq models that leverage the RNN related architecture require previous h
 
 Self-attention means attention is placed on different position of same sentence to learn the correlation between the current words and the different part of the sentence. 
 
-|     ![self-attention](../assets/img/self-attention.png)      |
+|      ![self-attention](/assets/img/self-attention.png)       |
 | :----------------------------------------------------------: |
 | Figure 1. Self-attention Layer Illustration for Generating First Output [5] |
 
