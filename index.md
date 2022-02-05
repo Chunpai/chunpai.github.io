@@ -28,10 +28,10 @@ title: About
               <h2>Research</h2>
               <p>
                 Currently, I am mainly working on user modeling and sequential recommendation with applications where users' inherent states are not observable from partially observed data.
-                My working thesis title is <em>"Sequential User Modeling and Recommendation Under Partially Obeservable Environment"</em>. 
+                The title of my working thesis is <em>"Sequential User Modeling and Recommendation Under Partially Obeservable Environment"</em>. 
                 I am also working on counterfactual evaluation and model-based reinforcement learning that are related to offline evaluation of long-term and delayed rewards of sequential recommendation policies.
                 Besides, I am also interested in and have been working on anomaly pattern detection in images and large-scale graphs. 
-                Overall, I have 6 years hand-on experience on doing research, including identifing the nature of a problem, conducting literurature reviews, statistical model design, rigorous experimental design and result analysis independently and collaboratively. 
+                Overall, I have 6 years hand-on experience on doing research, including identifing the nature of a problem, conducting literurature reviews, statistical modeling, rigorous experimental design and result analysis independently and collaboratively. 
                 Following is a list of my publications.
               </p>
             </td>
