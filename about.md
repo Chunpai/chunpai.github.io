@@ -9,7 +9,7 @@ permalink: /about/
         <tbody>
             <tr style="padding:0px">
             <td style="padding:2.5%;width:63%;vertical-align:middle">
-                <p>My name is Chunpai Wang. I am a PhD candidate in Computer Science at State University of New York at Albany, where I work on user modeling and sequential recommendation in the education and health domains. My thesis advisor is Dr. Sherry Sahebi. During my PhD, I am also fortunate to be advised by Dr. Feng Chen from UT-Dallas and Dr. Daniel Neill from NYU on anomaly pattern detection on large-scale graphs. I received a B.S. degree in Computer Science and a B.A. degree in Statistics from the University of Rochester and I was fortunate to be advised by Dr. Jiebo Luo on graph mining research during my undergraduate studies.</p>
+                <p>My name is Chunpai Wang. I am a PhD candidate in Computer Science at State University of New York at Albany, where I work on user modeling and sequential recommendation. My thesis advisor is Dr. Sherry Sahebi. During my PhD, I am also fortunate to be advised by Dr. Feng Chen from UT-Dallas and Dr. Daniel Neill from NYU on anomaly pattern detection on large-scale graphs. I received a B.S. degree in Computer Science and a B.A. degree in Statistics from the University of Rochester and I was fortunate to be advised by Dr. Jiebo Luo on graph mining research during my undergraduate studies.</p>
                 <p style="text-align:center">
                 <a href="mailto:chunpaiwang@gmail.com">Email</a>  |
                 <a href="https://scholar.google.com/citations?user=CYW5008AAAAJ&hl=en&oi=ao">Google Scholar</a> |
@@ -28,7 +28,11 @@ permalink: /about/
             <td style="padding:20px;width:100%;vertical-align:middle">
               <h2>Research</h2>
               <p>
-                I'm interested in user modeling, personalization, sequential recommendation, counterfactual evaluation, model-based reinforcement learning, graph anomaly detection, and optimization. Following is a list of my publications.
+                I am mainly working on user modeling and sequential recommendation with applications where users' inherent states are not observable from partially observed data.
+                My working thesis title is <em>"Sequential User Modeling and Recommendation Under Partially Obeservable Environment"</em>. 
+                I am also interested in counterfactual evaluation that could evaluate the performance of sequential recommendation policies offline.
+                
+                counterfactual evaluation, model-based reinforcement learning, graph anomaly detection, and optimization. Following is a list of my publications.
               </p>
             </td>
           </tr>
