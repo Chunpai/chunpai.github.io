@@ -1,11 +1,122 @@
 ---
-layout: page
+layout: default
 title: About
 permalink: /about/
 ---
 
-![](../assets/img/profile.jpeg)
-
-Welcome to my blog ! My name is Chunpai Wang, and I am a Ph.D. student in Computer Science at State University of New York - Albany. I am interested in finding insights and patterns from data using math and statistics tools. I get used to write notes of my interested papers which typically contains some mathematic derivation in latex, and the blog post would be useful to write a quick summary. This blog is a work in progress, please leave a comment if you have any question, and I look forward to seeing your any feedback as well. It is always good to share your ideas with others. Keep Simple and Meliora !    
-
+<div class="about">
+    <table>
+        <tbody>
+            <tr style="padding:0px">
+            <td style="padding:2.5%;width:63%;vertical-align:middle">
+                <p>My name is Chunpai Wang. I am a PhD candidate in Computer Science at State University of New York at Albany, where I work on user modeling and sequential recommendation in the education and health domains. My thesis advisor is Dr. Sherry Sahebi. During my PhD, I am also fortunate to be advised by Dr. Feng Chen from UT-Dallas and Dr. Daniel Neill from NYU on anomaly pattern detection on large-scale graphs. I received a B.S. degree in Computer Science and a B.A. degree in Statistics from the University of Rochester and I was fortunate to be advised by Dr. Jiebo Luo on graph mining research during my undergraduate studies.</p>
+                <p style="text-align:center">
+                <a href="mailto:chunpaiwang@gmail.com">Email</a>  |
+                <a href="https://scholar.google.com/citations?user=CYW5008AAAAJ&hl=en&oi=ao">Google Scholar</a> |
+                <a href="https://www.linkedin.com/in/chunpai-wang-70975477/">Linkedin</a> 
+                </p>
+            </td>
+            <td style="padding:2.5%;width:40%;max-width:40%">
+                <a href="../assets/img/profile.jpeg"><img style="width:100%;max-width:100%" alt="profile photo" src="../assets/img/profile-circle.png" class="hoverZoomLink"></a>
+                <!-- <img src="../assets/img/profile-circle.png" width="200" height="200" />  -->
+            </td>
+            </tr>
+        </tbody>
+    </table>
+    <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+            <td style="padding:20px;width:100%;vertical-align:middle">
+              <h2>Research</h2>
+              <p>
+                I'm interested in user modeling, personalization, sequential recommendation, counterfactual evaluation, model-based reinforcement learning, graph anomaly detection, and optimization. Following is a list of my publications.
+              </p>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+    <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+        <tbody>
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
+                    <img src='../assets/paper/cnss.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <a href="">
+                    <papertitle>Calibrated Nonparametric Scan Statistics for Anomalous Pattern Detection on Graphs</papertitle>
+                    </a>
+                    <br>
+                    <strong>Chunpai Wang</strong>,
+                    <a href="https://cs.nyu.edu/~neill/">Daniel Neill</a>,
+                    <a href="https://personal.utdallas.edu/~fxc190007/">Feng Chen</a>
+                    <br>
+                                <em>36th AAAI Conference on Artificial Intelligence (AAAI)</em>, 2022 
+                    <br>
+                    Acceptance Rate: 15%
+                    <br>
+                    <a href="">paper</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">video</a>
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
+                    <img src='../assets/paper/stretch.jpg' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <a href="">
+                    <papertitle>STRETCH: Stress and Behavior Modeling with Tensor Decomposition of Heterogeneous Data</papertitle>
+                    </a>
+                    <br>
+                    <strong>Chunpai Wang</strong>,
+                    <a href="">Shaghayegh Sahebi</a>,
+                    <a href="">Helma Torkamaan</a>
+                    <br>
+                                <em>30th IEEE/WIC/ACM International Joint Conference on Web Intelligence and Intelligent Agent Technology (WI-IAT)</em>, 2021
+                    <br>
+                    <a href="">paper</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">video</a>
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
+                    <img src='../assets/paper/mochi.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <a href="">
+                    <papertitle>MOCHI: an Offline Evaluation Framework for Educational Recommendations</papertitle>
+                    </a>
+                    <br>
+                    <strong>Chunpai Wang</strong>,
+                    <a href="">Shaghayegh Sahebi</a>,
+                    <a href="">Peter Brusilovsky</a>
+                    <br>
+                                <em>Perspectives at 15th ACM Conference on Recommender Systems (RecSys)</em>, 2021
+                    <br>
+                    <a href="">paper</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">video</a>
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+        </tbody>
+    </table>
+</div>
 ![](../assets/img/header.png)

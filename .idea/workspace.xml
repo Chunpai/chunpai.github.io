@@ -19,13 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e84d6650-1e7a-48f8-8a47-4192994bb5ae" name="Default Changelist" comment="">
+    <list default="true" id="e84d6650-1e7a-48f8-8a47-4192994bb5ae" name="Default Changelist" comment="new post">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/2019-04-20-Stochastic-Policy-Gradient.md" beforeDir="false" afterPath="$PROJECT_DIR$/_posts/2019-04-20-Stochastic-Policy-Gradient.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/2020-05-06-Thompson-Sampling.md" beforeDir="false" afterPath="$PROJECT_DIR$/_posts/2020-05-06-Thompson-Sampling.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/2020-06-15-Attention-Mechanism-1.md" beforeDir="false" afterPath="$PROJECT_DIR$/_posts/2020-06-15-Attention-Mechanism-1.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_posts/2020-06-17-Attention-Mechanism-2.md" beforeDir="false" afterPath="$PROJECT_DIR$/_posts/2020-06-17-Attention-Mechanism-2.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tags/bayesian-inference" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +38,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="JupyterTrust" id="9a398a1b-8f0a-44d0-879e-2828c410e73b" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectFrameBounds" fullScreen="true">
     <option name="width" value="1440" />
     <option name="height" value="900" />
@@ -60,7 +58,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -96,6 +94,8 @@
       <workItem from="1605016184756" duration="577000" />
       <workItem from="1605017234134" duration="25000" />
       <workItem from="1605052295553" duration="9000" />
+      <workItem from="1644037779733" duration="344000" />
+      <workItem from="1644038127009" duration="9000" />
     </task>
     <task id="LOCAL-00001" summary="new post">
       <created>1604985200305</created>
@@ -134,19 +134,9 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="new post" />
     <option name="LAST_COMMIT_MESSAGE" value="new post" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="917" y="469" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1605017249572">
-      <screen x="85" y="27" width="2475" height="1413" />
-    </state>
-    <state x="917" y="469" width="800" height="535" key="Vcs.Push.Dialog.v2/85.27.2475.1413@85.27.2475.1413" timestamp="1605017249572" />
   </component>
 </project>

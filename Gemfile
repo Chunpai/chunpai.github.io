@@ -5,3 +5,4 @@ gemspec
 
 gem 'jekyll-feed'
 gem 'jekyll-admin', group: :jekyll_plugins
+gem 'kramdown-parser-gfm'
