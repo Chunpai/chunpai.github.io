@@ -1,9 +1,9 @@
-title: Chunpai's Blog 
+title: Chunpai's Blog
 description: > # this means to ignore newlines until "show_exerpts:"
    Keep It Simple and Meliora.
 
 copyright: >
-   Copyright &copy 2020.
+   Thanks, <a href="https://jonbarron.info/">Jon Barron</a> and <a href="https://lilianweng.github.io/lil-log/">Lilian</a>.
 
 show_excerpts: true # set to true to show excerpts on the homepage
 #disqus.shortname: true
