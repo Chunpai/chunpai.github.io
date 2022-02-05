@@ -30,7 +30,7 @@ permalink: /about/
               <p>
                 Currently, I am mainly working on user modeling and sequential recommendation with applications where users' inherent states are not observable from partially observed data.
                 My working thesis title is <em>"Sequential User Modeling and Recommendation Under Partially Obeservable Environment"</em>. 
-                I am also working on counterfactual evaluation and model-based reinforcement learning that are related to offline evaluation of long-term rewards of sequential recommendation policies.
+                I am also working on counterfactual evaluation and model-based reinforcement learning that are related to offline evaluation of long-term and delayed rewards of sequential recommendation policies.
                 Besides, I am also interested in and have been working on anomaly pattern detection in images and large-scale graphs. 
                 Overall, I have 6 years hand-on experience on doing research, including identifing the nature of a problem, conducting literurature reviews, statistical model design, rigorous experimental design and result analysis independently and collaboratively. 
                 Following is a list of my publications.
@@ -53,7 +53,7 @@ permalink: /about/
                     </a>
                     <br>
                     <strong>Chunpai Wang</strong>,
-                    <a href="https://cs.nyu.edu/~neill/">Daniel Neill</a>,
+                    <a href="https://cs.nyu.edu/~neill/">Daniel Neill</a>, and
                     <a href="https://personal.utdallas.edu/~fxc190007/">Feng Chen</a>
                     <br>
                                 <em>36th AAAI Conference on Artificial Intelligence (AAAI)</em>, 2022 
@@ -81,7 +81,7 @@ permalink: /about/
                     </a>
                     <br>
                     <strong>Chunpai Wang</strong>,
-                    <a href="">Shaghayegh Sahebi</a>,
+                    <a href="">Shaghayegh Sahebi</a>, and
                     <a href="">Helma Torkamaan</a>
                     <br>
                                 <em>30th IEEE/WIC/ACM International Joint Conference on Web Intelligence and Intelligent Agent Technology (WI-IAT)</em>, 2021
@@ -107,10 +107,182 @@ permalink: /about/
                     </a>
                     <br>
                     <strong>Chunpai Wang</strong>,
-                    <a href="">Shaghayegh Sahebi</a>,
+                    <a href="">Shaghayegh Sahebi</a>, and
                     <a href="">Peter Brusilovsky</a>
                     <br>
                                 <em>Perspectives at 15th ACM Conference on Recommender Systems (RecSys)</em>, 2021
+                    <br>
+                    <a href="">paper</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">video</a>
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
+                    <img src='../assets/paper/dmkt.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <a href="">
+                    <papertitle>Learning from Non-Assessed Resources: Deep Multi-Type Knowledge Tracing</papertitle>
+                    </a>
+                    <br>
+                    <strong>Chunpai Wang</strong>,
+                    <a href="">Siqian Zhao</a>, and
+                    <a href="">Shaghayegh Sahebi</a>,
+                    <br>
+                                <em>14th International Conference on Educational Data Mining (EDM)</em>, 2021
+                    <br>
+                    Acceptance Rate: 20%
+                    <br>
+                    <a href="">paper</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">video</a>
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
+                    <img src='../assets/paper/grate.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <a href="">
+                    <papertitle>Knowledge Tracing for Complex Problem Solving: Granular Rank-based Tensor Factorization</papertitle>
+                    </a>
+                    <br>
+                    <strong>Chunpai Wang</strong>,
+                    <a href="">Shaghayegh Sahebi</a>,
+                    <a href="">Siqian Zhao</a>,
+                    <a href="">Peter Brusilovsky</a>, and
+                    <a href="">Laura O. Moraes</a>
+                    <br>
+                                <em>29th ACM Conference on User Modeling, Adaptation and Personalization (UMAP)</em>, 2021
+                    <br>
+                    Acceptance Rate: 23%
+                    <br>
+                    <a href="">paper</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">video</a>
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr>  
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
+                    <img src='../assets/paper/gb-ghtp.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <a href="">
+                    <papertitle>A Framework for Subgraph Detection in Interdependent Networks via Graph Block-Structured Optimization</papertitle>
+                    </a>
+                    <br>
+                    <a href="">Fei Jie</a>,
+                    <strong>Chunpai Wang</strong>,
+                    <a href="">Feng Chen</a>,
+                    <a href="">Lei Li</a>, and
+                    <a href="">Xindong Wu</a>,
+                    <br>
+                                <em>IEEE Access</em>, 2020
+                    <br>
+                    <a href="">paper</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">video</a>
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
+                    <img src='../assets/paper/mvkm.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <a href="">
+                    <papertitle>Modeling Knowledge Acquisition from Multiple Learning Resource Types</papertitle>
+                    </a>
+                    <br>
+                    <a href="">Siqian Zhao*</a>,
+                    <strong>Chunpai Wang*</strong>, and
+                    <a href="">Shaghayegh Sahebi</a>
+                    <br>
+                                <em>13th International Conference on Educational Data Mining (EDM)</em>, 2020
+                    <br>
+                    (* Equal Contribution)
+                    <br>
+                    <a href="">paper</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">video</a>
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
+                    <img src='../assets/paper/gbgp.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <a href="">
+                    <papertitle>Block-Structured Optimization for Anomalous Pattern Detection in Interdependent Networks</papertitle>
+                    </a>
+                    <br>
+                    <a href="">Fei Jie*</a>,
+                    <strong>Chunpai Wang*</strong>,
+                    <a href="">Feng Chen</a>,
+                    <a href="">Lei Li</a>, and
+                    <a href="">Xindong Wu</a>,
+                    <br>
+                                <em>IEEE International Conference on Data Mining (ICDM)</em>, 2019
+                    <br>
+                    (* Equal Contribution, Acceptance Rate: 18.5%)
+                    <br>
+                    <a href="">paper</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">video</a>
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
+                    <img src='../assets/paper/csl.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <a href="">
+                    <papertitle>Collective subjective logic: Scalable uncertainty-based opinion inference</papertitle>
+                    </a>
+                    <br>
+                    <a href="">Feng Chen</a>,
+                    <strong>Chunpai Wang</strong>, and
+                    <a href="">Jin-Hee Cho</a>,
+                    <br>
+                                <em>IEEE International Conference on Big Data (BigData)</em>, 2019
+                    <br>
+                    Acceptance Rate: 18%
                     <br>
                     <a href="">paper</a>
                     /
