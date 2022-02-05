@@ -28,11 +28,12 @@ permalink: /about/
             <td style="padding:20px;width:100%;vertical-align:middle">
               <h2>Research</h2>
               <p>
-                I am mainly working on user modeling and sequential recommendation with applications where users' inherent states are not observable from partially observed data.
+                Currently, I am mainly working on user modeling and sequential recommendation with applications where users' inherent states are not observable from partially observed data.
                 My working thesis title is <em>"Sequential User Modeling and Recommendation Under Partially Obeservable Environment"</em>. 
-                I am also interested in counterfactual evaluation that could evaluate the performance of sequential recommendation policies offline.
-                
-                counterfactual evaluation, model-based reinforcement learning, graph anomaly detection, and optimization. Following is a list of my publications.
+                I am also working on counterfactual evaluation and model-based reinforcement learning that are related to offline evaluation of long-term rewards of sequential recommendation policies.
+                Besides, I am also interested in and have been working on anomaly pattern detection in images and large-scale graphs. 
+                Overall, I have 6 years hand-on experience on doing research, including identifing the nature of a problem, conducting literurature reviews, statistical model design, rigorous experimental design and result analysis independently and collaboratively. 
+                Following is a list of my publications.
               </p>
             </td>
           </tr>
