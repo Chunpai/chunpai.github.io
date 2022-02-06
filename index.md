@@ -279,7 +279,7 @@ title: About
                     <strong>Chunpai Wang</strong>, and
                     <a href="">Jin-Hee Cho</a>,
                     <br>
-                                <em>IEEE International Conference on Big Data (BigData)</em>, 2019
+                                <em>IEEE International Conference on Big Data (BigData)</em>, 2017
                     <br>
                     Acceptance Rate: 18%
                     <br>
