@@ -8,7 +8,7 @@ title: About
         <tbody>
             <tr style="padding:0px">
             <td style="padding:2.5%;width:63%;vertical-align:middle">
-                <p>My name is Chunpai Wang (王春派). I am a PhD candidate in Computer Science at <a href="https://www.albany.edu/">State University of New York at Albany</a>, where I work on user modeling and sequential recommendation. My thesis advisor is Dr. <a href="http://www.cs.albany.edu/~sherry/">Sherry Sahebi</a>. During my PhD, I am also fortunate to be advised by Dr. <a href="https://personal.utdallas.edu/~fxc190007/">Feng Chen</a> from UT-Dallas and Dr. <a href="https://cs.nyu.edu/~neill/">Daniel Neill</a> from NYU on anomaly pattern detection on large-scale graphs. I received a B.S. degree in Computer Science and a B.A. degree in Statistics from the <a href="https://www.rochester.edu/">University of Rochester</a> and I was fortunate to be advised by Dr. <a href="https://www.cs.rochester.edu/u/jluo/">Jiebo Luo</a> on graph mining research during my undergraduate studies.</p>
+                <p>My name is Chunpai Wang (王春派). I am a PhD candidate in Computer Science at <a href="https://www.albany.edu/">State University of New York at Albany</a>, where I work on user modeling and sequential recommendation. My thesis advisor is Dr. <a href="http://www.cs.albany.edu/~sherry/">Sherry Sahebi</a>. During my PhD, I am also fortunate to be advised by Dr. <a href="https://personal.utdallas.edu/~fxc190007/">Feng Chen</a> from UT-Dallas and Dr. <a href="https://cs.nyu.edu/~neill/">Daniel B. Neill</a> from NYU on anomaly pattern detection on large-scale graphs. I received a B.S. degree in Computer Science and a B.A. degree in Statistics from the <a href="https://www.rochester.edu/">University of Rochester</a> and I was fortunate to be advised by Dr. <a href="https://www.cs.rochester.edu/u/jluo/">Jiebo Luo</a> on graph mining research during my undergraduate studies.</p>
                 <p style="text-align:center">
                 <a href="mailto:chunpaiwang@gmail.com">Email</a>  |
                 <a href="https://scholar.google.com/citations?user=CYW5008AAAAJ&hl=en&oi=ao">Google Scholar</a> |
@@ -30,8 +30,8 @@ title: About
                 Currently, I am mainly working on user modeling and sequential recommendation with applications where users' inherent states are not observable from partially observed data.
                 The title of my working thesis is <em>"Sequential User Modeling and Recommendation Under Partially Obeservable Environment"</em>. 
                 I am also working on counterfactual evaluation and model-based reinforcement learning that are related to offline evaluation of long-term and delayed rewards of sequential recommendation policies.
-                Besides, I am also interested in and have been working on anomaly pattern detection in images and large-scale graphs. 
-                Overall, I have 6 years hand-on experience on doing research, including identifing the nature of a problem, conducting literurature reviews, statistical modeling, rigorous experimental design and result analysis independently and collaboratively. 
+                Besides, I am also interested in and have been working on anomaly pattern detection in images and graphs. 
+                Overall, I have 6 years hand-on experience on doing research independently and collaboratively, including identifing the nature of a problem, conducting literurature reviews, statistical modeling, rigorous experimental design and result analysis. 
                 Following is a list of my publications.
               </p>
             </td>
@@ -52,7 +52,7 @@ title: About
                     </a>
                     <br>
                     <strong>Chunpai Wang</strong>,
-                    <a href="https://cs.nyu.edu/~neill/">Daniel Neill</a>, and
+                    <a href="https://cs.nyu.edu/~neill/">Daniel B. Neill</a>, and
                     <a href="https://personal.utdallas.edu/~fxc190007/">Feng Chen</a>
                     <br>
                                 <em>36th AAAI Conference on Artificial Intelligence (AAAI)</em>, 2022 
@@ -64,6 +64,8 @@ title: About
                     <a href="">slides</a>
                     /
                     <a href="">video</a>
+                    /
+                    <a href="">Code</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -90,6 +92,8 @@ title: About
                     <a href="">slides</a>
                     /
                     <a href="">video</a>
+                    /
+                    <a href="">Code</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -116,6 +120,8 @@ title: About
                     <a href="">slides</a>
                     /
                     <a href="">video</a>
+                    /
+                    <a href="">Code</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -144,6 +150,8 @@ title: About
                     <a href="">slides</a>
                     /
                     <a href="">video</a>
+                    /
+                    <a href="">Code</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -174,6 +182,8 @@ title: About
                     <a href="">slides</a>
                     /
                     <a href="">video</a>
+                    /
+                    <a href="">Code</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -202,6 +212,8 @@ title: About
                     <a href="">slides</a>
                     /
                     <a href="">video</a>
+                    /
+                    <a href="">Code</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -230,6 +242,8 @@ title: About
                     <a href="">slides</a>
                     /
                     <a href="">video</a>
+                    /
+                    <a href="">Code</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -260,6 +274,8 @@ title: About
                     <a href="">slides</a>
                     /
                     <a href="">video</a>
+                    /
+                    <a href="">Code</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -288,6 +304,8 @@ title: About
                     <a href="">slides</a>
                     /
                     <a href="">video</a>
+                    /
+                    <a href="">Code</a>
                     <p></p>
                     <p></p>
                 </td>
