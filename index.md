@@ -57,7 +57,7 @@ title: About
                     <br>
                                 <em>36th AAAI Conference on Artificial Intelligence (AAAI)</em>, 2022 
                     <br>
-                    Acceptance Rate: 15%
+                    Acceptance Rate: 15%, and Selected as Oral Presentation.
                     <br>
                     <a href="">paper</a>
                     /
