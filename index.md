@@ -272,7 +272,7 @@ title: About
                 </td>
                 <td style="padding:20px;width:75%;vertical-align:middle">
                     <a href="">
-                    <papertitle>Collective subjective logic: Scalable uncertainty-based opinion inference</papertitle>
+                    <papertitle>Collective Subjective Logic: Scalable Uncertainty-based Opinion Inference</papertitle>
                     </a>
                     <br>
                     <a href="">Feng Chen</a>,
