@@ -69,8 +69,20 @@ $$
 The probit function is sometimes used in place of logit function because for certain applications (e.g. Bayesian statistics) the implementation is easier, because in Bayesian, the conjugate-prior of normal distribution is normal distribution. 
 
 
+## Derivative of Logistic Function
+
+$$
+\begin{aligned}
+\sigma^{'}(x) &= \frac{d}{dx}\frac{1}{1+e^{-x}} \\
+&= \frac{1}{(1+e^{-x})^2}\cdot e^{-x}\\
+&= \frac{1}{1+e^{-x}}\cdot \frac{e^{-x}}{1+e^{-x}}\\
+&= \sigma(x) (1-\sigma(x))
+\end{aligned}
+$$
+
+
 # Binomial Logistic Regression
-The binomial loigsitic regression is a discriminative classification model, 
+The binomial loigsitic regression is a discriminative classification model with conditional probability, 
 $p(y\mid \mathbf{x}, \bm{\theta})$, that is 
 
 $$
@@ -91,10 +103,19 @@ $$
 with 
 $$\sigma(-(\mathbf{w}^\top\mathbf{x}+b)) = 1 - \sigma(\mathbf{w}^\top\mathbf{x}+b)
 $$
+
+When we use label $y\in \{0,1\}$, the probability of each label is 
+$$
+p(y\mid \mathbf{x}, \bm{\theta}) = (\sigma(\mathbf{w}^\top\mathbf{x}+b))^{y}(1-\sigma(\mathbf{w}^\top\mathbf{x}+b))^{(1-y)}
+$$
+
+
+
 Based on the previous section, we found that the input of standard logistic function is the log-odds. Therefore, the quantity $a=\mathbf{w}^\top\mathbf{x}+b$ is the log-odds (also called the logit or the pre-activation in ML). 
 
 Notice that, despite logistic function provides non-linear mapping from $(-\infty, \infty)$ to $(0,1)$, the logistic regression is still considered as a generalized linear model, because the predicted probability is always depends on the sum of the inputs and parameters (e.g. $w_1x_1 + w_2x_2 +\cdots$ ). 
 In other words, the predicted probability does not depend on interaction between the features (e.g. $w_1x_1x_2 + w_2x_2x_3$).
+
 
 
 
