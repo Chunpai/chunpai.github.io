@@ -1,6 +1,7 @@
 ---
+title: "Probabilistic Interpretation of Ridge Regression and LASSO"
 layout: post
-tags: approximate-inference
+tags: probabilistic-machine-learning generalized-linear-model
 author: Chunpai
 ---
 
@@ -106,8 +107,9 @@ The objective of ridge regression is
 
 
 $$
-\arg\min_{\mathbb{\theta}} \frac{1}{2} \|\mathbb{y} - \mathbb{\theta}^\top\mathbb{X}\|^2_2 + \lambda \|\mathbb{\theta}\|_2^2
+\arg\min_{ \mathbb{\theta} } \frac{1}{2} \| \mathbb{y} - \mathbb{\theta}^\top\mathbb{X} \|^2_2 + \lambda \| \mathbb{\theta} \|_2^2
 $$
+
 and the objective of the least absolute shrinkage and selection operator (LASSO)  is 
 
 
@@ -164,7 +166,7 @@ where $\lambda = \frac{\sigma^2}{2\tau^2}$.
 
 ### Probabilistic Interpretation of LASSO
 
-**Laplace Distribution: ** if random variable $Z \sim Laplace(\mu, b)$, then we have 
+**Laplace Distribution:** if random variable $Z \sim Laplace(\mu, b)$, then we have 
 
 
 $$
@@ -222,7 +224,7 @@ P(\mathbb{\theta}\mid \mathcal{D}) &= \frac{P(\mathbb{\theta})P(\mathcal{D}\mid 
 $$
 
 
-For Bayesian linear regression, the input is a testing data $\mathbb{x}^*$, but the output is a probability distribution over $y^*$ instead of a numerical value: 
+For Bayesian linear regression, the input is a testing data $ \mathbb{x}^* $, but the output is a probability distribution over $y^*$ instead of a numerical value: 
 
 
 $$

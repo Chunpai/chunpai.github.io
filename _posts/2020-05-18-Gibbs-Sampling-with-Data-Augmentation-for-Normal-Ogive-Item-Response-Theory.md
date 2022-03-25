@@ -1,7 +1,7 @@
 ---
 title: "Gibbs Sampling with Data Augmentation for Normal Ogive Item Response Theory"
 layout: post
-tags: [bayesian-inference]
+tags: [approximate-inference]
 author: Chunpai
 ---
 

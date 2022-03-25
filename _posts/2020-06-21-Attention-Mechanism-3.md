@@ -1,7 +1,7 @@
 ---
 title: "Attention Mechanism [3]: Memory Networks"
 layout: post
-tags: [deep-learning, attention]
+tags: [deep-learning]
 author: Chunpai
 ---
 
@@ -9,7 +9,8 @@ This is my third note on attention mechanism in deep learning. In this post, I w
 
 * TOC
 {: toc}
-# Neural Turing Machine: Attention + Memory
+
+## Neural Turing Machine: Attention + Memory
 
 Neural Turing Machine (NTM) is proposed in [1] to mimic the Turing Machine by coupling the neural network to external memory resources. Psychologist and neuroscientists have studied working memory process for a long time. Unlike the previous existing work employed the memory mechanism, such as vanilla RNN and LSTM, which only utilize hidden states (internal memory) for memorization that may lose information. NTM represents the external memory as a $N \times M $ matrix, which could be read from and wrote into selectively using self-attention mechanism. 
 
@@ -27,12 +28,14 @@ In addition to interacting to external input and output, the controller will als
 
 
 
-## Reading 
+### Reading 
 
 **For each read head**, the reading process will read a vector $\mathbf{r}_t$ from the memory $\mathbf{M}_t$ with selective weight $w_t(i)$ on each memory location
+
 $$
 \mathbf{r}_t \leftarrow \sum_{i}^{N} w_t(i) \mathbf{M}_t(i)
 $$
+
 where $w_t(i)$ is the $i$-th element in $\mathbf{w}_t$ and $\mathbf{M}_t(i)$ is the $i$-th row vector in the memory, and 
 
 
@@ -45,15 +48,19 @@ which could be understood as the usual attention distribution. The read process 
 
 
 
-## Writing 
+### Writing 
 
-**For each write head**, the writing process contains two steps: erasing step and adding step. When writing into the memory at time $t$, a write head first wipes off some old content according to an *erase vector* $\mathbf{e}_t \in (0,1)^M$ and then adds new information by an add vector $\mathbf{a}_t$ :
+**For each write head**, the writing process contains two steps: erasing step and adding step. When writing into the memory at time $t$, a write head first wipes off some old content according to an *erase vector* $\mathbf{e}_t \in (0,1)^M$ and then adds new information by an add vector $\mathbf{a}_t$:
+
 $$
+
 \begin{align}
 \tilde{\mathbf{M}}_{t}(i) &=\mathbf{M}_{t-1}(i)\odot \left[\mathbf{1}-w_{t}(i) \mathbf{e}_{t}\right] \\
 \mathbf{M}_{t}(i) &=\tilde{\mathbf{M}}_{t}(i)+w_{t}(i) \mathbf{a}_{t}
 \end{align}
+
 $$
+
 where the first equation is erasing step, the second is adding step, and $\odot$ denotes the element-wise multiplication. Since we cannot perform reading and writing at the same time, we can use the same addressing vector $\mathbf{w}_t$ for both operations. 
 
 There are something worthing noting: 
@@ -65,13 +72,13 @@ There are something worthing noting:
 
 How to obtain the $\mathbf{e}_t$ and $\mathbf{a}_t$ ?
 
-## Addressing Mechanisms
+### Addressing Mechanisms
 
 *The remaining question is where does the attention distribution $\mathbf{w}_t$ come from ?*  The attention distribution will be derived from two concurrent addressing mechanisms: content-based addressing and location based addressing. 
 
 **How is addressing being used?** For example, we want to perform a copy task tests whether NTM can store and recall a long sequence of arbitrary information. The input is an arbitrary sequence of random binary vectors followed by a delimiter flag. The write process will write the input sequence into the memory matrix beginning with the first input to the last input by modifying the initial memory matrix from  $\mathbf{M}_1$ to $\mathbf{M}_T$ .  For example, for addressing in this copy task, typically we would like the addressing vector be like $\mathbf{w}_1 = [1, 0, 0, \cdots]$ and write first input into $\mathbf{M}_1(1)$ and the addressing vector $\mathbf{w}_2 = [0,1,0,\cdots]$ and write the second input into $\mathbf{M}_2(2)$ (or next row of first input in memory matrix).  To ensure $\mathbf{w}_2$ is a rotational shift of $\mathbf{w}_1$, we need to use the location-based addressing. Once we write the whole input sequence into memory matrix and start the reading step, the machine will use the content-based addressing to find the first stored input and location-based addressing to read the next stored input. The target output is simply a copy of the input sequence (without the delimiter flag).  
 
-### Content-based Addressing 
+#### Content-based Addressing 
 
 
 
@@ -82,11 +89,11 @@ $$
 
 where $\beta_t$ is a positive key strength, which can *amplify or attenuate the precision of the focus*, $\mathbf{k}_t$ is a length $M$ **key vector** produced by each head, and $K[\cdot, \cdot]$ is a similarity measure. Note that key vectors will be learned via training. 
 
-### Location-based Addressing 
+#### Location-based Addressing 
 
 *The location based addressing mechanism is designed to facilitate both simple iteration across the locations of the memory and random-access jumps. It does so by implementing a rotational shift of a weighting* [1]. Think about the situation that we would like $\mathbf{w}_{t-1} = [1, 0, 0, \cdots]$ becomes $\mathbf{w}_t = [0, 1, 0, 0, \cdots ]$, how could be achieve this ?
 
-**Gated Weighting**: we need to consider both (or either one of) the content system at the current time-step $$\mathbf{w}_t^c$$ and the location system at the previous time-step $\mathbf{w}_{t-1}$ : 
+**Gated Weighting**: we need to consider both (or either one of) the content system at the current time-step $\mathbf{w}\_t^{c}$ and the location system at the previous time-step $\mathbf{w}_{t-1}$: 
 
 
 $$
@@ -99,7 +106,9 @@ where $g_t \in (0,1)$ can be viewed as interpolation gate which is emit by each 
 
 
 
-**Shift Weighting**: After interpolation (or gated weighting), each head emits a shift weighting $$\mathbf{s}_t$$ that defines a normalized distribution *over the allowed integer shifts*.  For example, let $$\mathbf{w}_{t-1} = [1, 0, 0]$$ and $$g_t = 0$$, if we would like the system shifts the focus to next memory location, that is $$\mathbf{w}_t = [0,1,0]$$, how can we do that ? Recall the image shifting in CNN, we could also apply 1-D circular convolution, where $$\mathbf{s}_t$$ is the filter, a function of the position offset:
+**Shift Weighting**: 
+After interpolation (or gated weighting), each head emits a shift weighting $\mathbf{s}\_t$ that defines a normalized distribution *over the allowed integer shifts*.  For example, let $\mathbf{w}_{t-1} = [1, 0, 0]$ and $g_t = 0$, if we would like the system shifts the focus to next memory location, that is $\mathbf{w}_t = [0,1,0]$, how can we do that ? Recall the image shifting in CNN, we could also apply 1-D circular convolution, where $\mathbf{s}_t$ is the filter, a function of the position offset:
+
 $$
 \tilde{w}_{t}(i) \longleftarrow \sum_{j=0}^{N-1} w_{t}^{g}(j) s_{t}(i-j)
 $$
@@ -129,13 +138,13 @@ In summary, the flow diagram shows the overall addressing mechanism:
 
 
 
-# Dynamic Key-value Memory Networks
+## Dynamic Key-value Memory Networks
 
 **Knowledge Tracing Problem**: given a student's past exercise interaction $$\mathcal{X} = \{\mathbf{x}_1, \cdots, \mathbf{x}_{t-1}\}$$, where $$\mathbf{x}_i = (q_i, r_i)$$,  predicts the probability that the student will answer a new exercise correctly, i.e. $$p(r_t = 1 \mid q_t, \mathcal{X})$$, where $$q_i \in Q$$ and $$r_i \in \{0, 1\}$$.  
 
 Dynamic Key-value Memory Networks (DKVMN) is a variant of Memory-Augmented Neural Networks. It is proposed to not only handle the knowledge tracing task but also exploit the relationship between underlying concepts and directly output a student's mastery level of each concept. It leverages the augmented memory neural network with static matrix for storing the knowledge concept and dynamic matrix for storing and updating the mastery levels of corresponding concepts. The storing and updating processes utilize the self-attention mechanism. 
 
-## Potential Way to Address Knowledge Tracing with MANN
+### Potential Way to Address Knowledge Tracing with MANN
 
 The advantages of MANN over the internal memory architecture, such as DKT with LSTM:
 
@@ -156,7 +165,7 @@ As you can see in Figure 4.,  the input of MANN is a joint embedding $\mathbf{v}
 
 
 
-## DKVMN: Address the Limitations of MANN on KT. 
+### DKVMN: Address the Limitations of MANN on KT. 
 
 
 
@@ -168,9 +177,7 @@ As you can see in Figure 4.,  the input of MANN is a joint embedding $\mathbf{v}
 
 As you can see in the figure 5, the input of DKVMN is still $(q_t, r_t)$, but it will separately generate embeddings $\mathbf{k}_t$ (purely based on $q_t$) and $\mathbf{v}_t$ (based on ($q_t, r_t$ )).   In order to model the underlying concepts of each exercise, DKVMN utilizes a static matrix $\mathbf{M}^k \in \mathbb{R}^{N \times d_k}$ (key matrix) to represent the $N$ latent concepts$$ \{c^1, c^2, \cdots, c^N \}$$, each of which is represented by $d_k$ dimensional vector. In order to tracing student's mastery levels of each concept, DKVMN employs a matrix $\mathbf{M}^{v}_t \in \mathbb{R}^{N \times d_v}$ (value matrix) to store concept states $$ \{\mathbf{s}_t^1, \mathbf{s}_t^2, \cdots, \mathbf{s}_t^N \}$$ at time $t$ . 
 
-### Reading 
-
-
+#### Reading 
 
 The intuition is, when we want to predict a student's performance on exercise $q_t$, we need to find the correlation between the exercise $q_t$ and the $N$ latent concepts. Similar to the content-based addressing in Neural Turing Machine, we could compute the correlation by 
 
@@ -198,7 +205,7 @@ The reason to concatenate the $\mathbf{r}_t$ with $\mathbf{k}_t$ is that it is b
 
 
 
-### Writing 
+#### Writing 
 
 The writing process will update student's knowledge state $\mathbf{M}^v_t$ based on $(q_t, r_t)$. The intuition is, if student answers the question correctly, we would like to update the $\mathbf{M}_t^v$ based on the correlation between question and concepts, that is $\mathbf{w}_t$. The $\mathbf{v}_t \in \mathbb{R}^{2Q\times d_v}$joint embedding of $(q_t, r_t)$ could be viewed as the *knowledge gain* of the student after working on this exercise. 
 
@@ -226,7 +233,7 @@ $$
 
 
 
-# Reference 
+## Reference 
 
 [1] Graves, Alex, Greg Wayne, and Ivo Danihelka. "Neural turing machines." *arXiv preprint arXiv:1410.5401* (2014).
 

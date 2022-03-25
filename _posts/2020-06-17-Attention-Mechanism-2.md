@@ -1,7 +1,7 @@
 ---
 title: "Attention Mechanism [2]: Transformer and Graph Attention Networks"
 layout: post
-tags: [deep-learning, attention]
+tags: [deep-learning]
 author: Chunpai
 ---
 
@@ -9,11 +9,11 @@ This is the second note on attention mechanism in deep learning. Two application
 
 * TOC
 {: toc}
-# Fully Self-Attention: Transformer
+## Fully Self-Attention: Transformer
 
 All seq2seq models that leverage the RNN related architecture require previous hidden state as input, which precludes parallelization within training examples. There are some existing work to replace RNN with CNN to parallelize the processing [4]. However, the paper [1] proposes a new network architecture, the Transformer, based solely on attention mechanisms, dispensing with  recurrence and convolutions entirely. 
 
-## Self-Attention 
+### Self-Attention 
 
 Self-attention means attention is placed on different position of same sentence to learn the correlation between the current words and the different part of the sentence. 
 
@@ -80,7 +80,7 @@ $$
 
 **Why using scaled dot-product rather than dot-product attention function ?** For large values of $n$ (the dimension of embedding) , the value of dot products grow large in magnitude, pushing the softmax function into regions where it has extremely small gradients. To counteract this effect, it would be better to scale the dot products by $\frac{1}{\sqrt{n}}$. 
 
-## Multi-head Self-attention 
+### Multi-head Self-attention 
 
 
 
@@ -117,11 +117,11 @@ where the projections are parameter matrices $W_i^Q \in \mathbb{R}^{p\times n}, 
 
 
 
-## Positional Encoding 
+### Positional Encoding 
 
 One thing missing so far is, self-attention layer introduced above does not consider position information of the sequence.  The most intuitive way is to add the hand crafted position encoding into the input embedding. Also, the position encoding could be learned [4]. 
 
-## Transformer 
+### Transformer 
 
 
 
@@ -143,13 +143,13 @@ One thing missing so far is, self-attention layer introduced above does not cons
 
 
 
-# Graph Attention Networks 
+## Graph Attention Networks 
 
 Graph attention networks (GAT) is also inspired by attention mechanism. In this post, I will only cover the GAT architecture instead of comparison with other graph neural networks. 
 
 
 
-## Graph Attention Layer 
+### Graph Attention Layer 
 
 Given a graph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, )$ with a set of node features:
 
@@ -232,7 +232,7 @@ $$
 	
 
 
-# Reference 
+## Reference 
 
 [1] Vaswani, Ashish, et al. "Attention is all you need." *Advances in neural information processing systems*. 2017.
 

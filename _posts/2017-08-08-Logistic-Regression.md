@@ -1,6 +1,6 @@
 ---
 layout: post
-tags: structured-prediction
+tags: [probabilistic-machine-learning, generalized-linear-model]
 author: Chunpai
 ---
 
@@ -113,8 +113,14 @@ $$
 
 Based on the previous section, we found that the input of standard logistic function is the log-odds. Therefore, the quantity $a=\mathbf{w}^\top\mathbf{x}+b$ is the log-odds (also called the logit or the pre-activation in ML). 
 
-Notice that, despite logistic function provides non-linear mapping from $(-\infty, \infty)$ to $(0,1)$, the logistic regression is still considered as a generalized linear model, because the predicted probability is always depends on the sum of the inputs and parameters (e.g. $w_1x_1 + w_2x_2 +\cdots$ ). 
+Notice that, despite logistic function provides non-linear mapping from $(-\infty, \infty)$ to $(0,1)$, the logistic regression is still considered as a **generalized linear model (GLM)**, because the predicted probability always depends on the sum of the inputs and parameters (e.g. $w_1x_1 + w_2x_2 +\cdots$ ). 
 In other words, the predicted probability does not depend on interaction between the features (e.g. $w_1x_1x_2 + w_2x_2x_3$).
+This makes the decision boundary of logistic regression as a hyperplane $\mathbf{w}^\top\mathbf{x}+b=0$, and we could view it as linear from the perspective of decision boundary.
+In addition, the log-odds of the predicted probability is a linear function. 
+
+
+## Maximum Likelihood Estimation
+
 
 
 

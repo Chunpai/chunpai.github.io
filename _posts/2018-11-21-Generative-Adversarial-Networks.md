@@ -1,6 +1,6 @@
 ---
 layout: post
-tags: generative-model
+tags: [deep-learning]
 author: Chunpai
 ---
 

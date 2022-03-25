@@ -1,6 +1,7 @@
 ---
+title: "First Order and Second Order Methods for Convex Optimization"
 layout: post
-tags: optimization
+tags: [optimization]
 author: Chunpai
 ---
 

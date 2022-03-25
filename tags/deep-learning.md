@@ -1,4 +1,4 @@
 ---
 layout: tagpage
-tag: math
+tag: deep-learning
 ---

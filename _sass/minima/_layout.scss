@@ -224,7 +224,8 @@
   > li {
     //border-radius: 5px;
     //border: 1px dotted $grey-color;
-    margin-bottom: $spacing-unit ;
+    // margin-bottom: $spacing-unit ;
+    margin-bottom: 0;
   }
 }
 
@@ -250,6 +251,7 @@
   display: block;
   @include relative-font-size(1.5);
   font-weight: 600;
+  font-size: 14pt;
   border-bottom: 0 dotted #bbb;
   padding-bottom: 0;
   margin-bottom: 0;
@@ -258,20 +260,22 @@
     text-decoration: none;
     cursor: pointer;
   }
-  &:visited {
-    //color: darken($brand-color, 15%);
-    color: #2a7ae2;
-  }
+  // &:visited {
+  //   //color: darken($brand-color, 15%);
+  //   color: #2a7ae2;
+  //   // color: blue;
+  // }
 }
 
 .post-excerpt {
-  font-size: 16px;
+  font-weight: 100;
+  font-size: 15px;
   //font-family: Vemana2000;
   color: $grey-color-dark;
-  margin-top: $spacing-unit * -0.3;
+  margin-top: $spacing-unit * -0.5;
   //margin-bottom: $spacing-unit * -0.5;
   a.post-excerpt {
-    color: $grey-color-dark;
+    color: $grey-color;
   }
   &:hover {
     text-decoration: none;
@@ -289,12 +293,13 @@
 
 .post-title,
 .post-content h1 {
-  @include relative-font-size(2.5);
+  @include relative-font-size(1.6);
   letter-spacing: -1px;
   line-height: 1;
+  font-weight: 600;
 
   @media screen and (min-width: $on-large) {
-    @include relative-font-size(2.5);
+    @include relative-font-size(1.6);
   }
 }
 
@@ -302,27 +307,31 @@
   margin-bottom: $spacing-unit;
 
   h2 {
-    @include relative-font-size(1.75);
+    @include relative-font-size(1.5);
 
     @media screen and (min-width: $on-large) {
-      @include relative-font-size(1.75);
+      @include relative-font-size(1.5);
     }
+    text-decoration: red underline;
+    text-align: center;
   }
 
   h3 {
-    @include relative-font-size(1.375);
+    @include relative-font-size(1.3);
 
     @media screen and (min-width: $on-large) {
-      @include relative-font-size(1.375);
+      @include relative-font-size(1.3);
     }
+    text-decoration: underline;
   }
 
   h4 {
-    @include relative-font-size(1.125);
+    @include relative-font-size(1.1);
 
     @media screen and (min-width: $on-large) {
-      @include relative-font-size(1.25);
+      @include relative-font-size(1.1);
     }
+    text-decoration: underline;
   }
 }
 

@@ -5,6 +5,7 @@ layout: default
 <!--<header class="post-header">-->
   <!--<h1 class="post-title">{{ page.title | escape }}</h1>-->
 <!--</header>-->
+
 {%- if page.title -%}
 <h1 class="page-heading">{{ page.title }}</h1>
 {%- endif -%}
@@ -20,5 +21,33 @@ layout: default
   {% assign tagitems = temptag | split: '#' %}
   {% capture tagname %}{{ tagitems[1] }}{% endcapture %}
   <span class="post-meta">
-    <a class="post-tag" href="/tags/{{ tagname }}"><nobr>{{ tagname }}</nobr></a></span>
+    <a class="post-tag" href="/tags/{{ tagname }}"><nobr>{{ tagname }}</nobr></a>
+  </span></br>
+
+  <div class="post">
+    <ul>
+      {% for post in site.tags[tagname] %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date_to_string }})<br>
+        {{ post.description }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
 {% endfor %}
+
+
+<!-- <div class="home other-pages">
+  <h1 class="page-heading">Tags</h1>
+  {% capture temp_tags %}
+    {% for tag in site.tags %}
+      {{ tag[1].size | plus: 1000 }}#{{ tag[0] }}#{{ tag[1].size }}
+    {% endfor %}
+  {% endcapture %}
+  {% assign sorted_temp_tags = temp_tags | split:' ' | sort | reverse%}
+  {% for temp_tag in sorted_temp_tags %}
+    {% assign tag_items = temp_tag | split: '#' %}
+    <span class="post-meta">
+      <a class="post-tag" href="/tag/{{ tagname }}">{{ tag_items[1]}} ({{ tag_items[2] }})</a>
+    </span><br/><br/>
+  {% endfor %}
+</div> -->
