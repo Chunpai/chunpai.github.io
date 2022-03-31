@@ -193,7 +193,7 @@ title: About
                     <br>
                                 <em>IEEE Access</em>, 2020
                     <br>
-                    <a href="https://ieeexplore.ieee.org/document/9173671">paper</a>
+                    <a href="../assets/paper/ieee-acces s.pdf">paper</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -218,6 +218,8 @@ title: About
                     (* Equal Contribution)
                     <br>
                     <a href="https://files.eric.ed.gov/fulltext/ED608013.pdf">paper</a>
+                    /
+                    <a href="https://github.com/persai-lab/EDM2020-MVKM-Multiview-Tensor">code</a>
                     <p></p>
                     <p></p>
                 </td>
