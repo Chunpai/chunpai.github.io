@@ -57,13 +57,13 @@ title: About
                     <br>
                                 <em>36th AAAI Conference on Artificial Intelligence (AAAI)</em>, 2022 
                     <br>
-                    Acceptance Rate: 15%, and Selected as Oral Presentation.
+                    Acceptance Rate: 15%, and Selected for Oral Presentation.
                     <br>
-                    <a href="">paper</a>
+                    <a href="../assets/paper/aaai2022.pdf">paper</a>
                     /
-                    <a href="">slides</a>
+                    <a href="../assets/paper/aaai2022-appendix.pdf">appendix</a>
                     /
-                    <a href="">video</a>
+                    <a href="../assets/paper/aaai2022-slides.pdf">slides</a>
                     /
                     <a href="">code</a>
                     <p></p>
@@ -87,13 +87,7 @@ title: About
                     <br>
                                 <em>30th IEEE/WIC/ACM International Joint Conference on Web Intelligence and Intelligent Agent Technology (WI-IAT)</em>, 2021
                     <br>
-                    <a href="">paper</a>
-                    /
-                    <a href="">slides</a>
-                    /
-                    <a href="">video</a>
-                    /
-                    <a href="">code</a>
+                    <a href="../assets/paper/wiiat2021.pdf">paper</a>
                     <p></p>
                     <p></p>
                 </td>
