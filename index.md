@@ -109,11 +109,7 @@ title: About
                     <br>
                                 <em>Perspectives at 15th ACM Conference on Recommender Systems (RecSys)</em>, 2021
                     <br>
-                    <a href="">paper</a>
-                    /
-                    <a href="">slides</a>
-                    /
-                    <a href="">video</a>
+                    <a href="../assets/paper/mochi.pdf">paper</a>
                     /
                     <a href="">code</a>
                     <p></p>
@@ -139,13 +135,11 @@ title: About
                     <br>
                     Acceptance Rate: 20%
                     <br>
-                    <a href="">paper</a>
+                    <a href="../assets/paper/edm2021.pdf">paper</a>
                     /
-                    <a href="">slides</a>
+                    <a href="https://educationaldatamining.org/EDM2021/virtual/poster_HJgJtT4tvB.html">video</a>
                     /
-                    <a href="">video</a>
-                    /
-                    <a href="">code</a>
+                    <a href="https://github.com/persai-lab/EDM2021-DMKT">code</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -171,11 +165,9 @@ title: About
                     <br>
                     Acceptance Rate: 23%
                     <br>
-                    <a href="">paper</a>
+                    <a href="../assets/paper/umap2021.pdf">paper</a>
                     /
-                    <a href="">slides</a>
-                    /
-                    <a href="">video</a>
+                    <a href="https://dl.acm.org/doi/10.1145/3450613.3456831">video</a>
                     /
                     <a href="">code</a>
                     <p></p>
@@ -201,13 +193,7 @@ title: About
                     <br>
                                 <em>IEEE Access</em>, 2020
                     <br>
-                    <a href="">paper</a>
-                    /
-                    <a href="">slides</a>
-                    /
-                    <a href="">video</a>
-                    /
-                    <a href="">code</a>
+                    <a href="https://ieeexplore.ieee.org/document/9173671">paper</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -231,13 +217,7 @@ title: About
                     <br>
                     (* Equal Contribution)
                     <br>
-                    <a href="">paper</a>
-                    /
-                    <a href="">slides</a>
-                    /
-                    <a href="">video</a>
-                    /
-                    <a href="">code</a>
+                    <a href="https://files.eric.ed.gov/fulltext/ED608013.pdf">paper</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -263,13 +243,7 @@ title: About
                     <br>
                     (* Equal Contribution, Acceptance Rate: 18.5%)
                     <br>
-                    <a href="">paper</a>
-                    /
-                    <a href="">slides</a>
-                    /
-                    <a href="">video</a>
-                    /
-                    <a href="">code</a>
+                    <a href="../assets/paper/icdm2019.pdf">paper</a>
                     <p></p>
                     <p></p>
                 </td>
@@ -293,13 +267,7 @@ title: About
                     <br>
                     Acceptance Rate: 18%
                     <br>
-                    <a href="">paper</a>
-                    /
-                    <a href="">slides</a>
-                    /
-                    <a href="">video</a>
-                    /
-                    <a href="">code</a>
+                    <a href="https://ieeexplore.ieee.org/document/8257906">paper</a>
                     <p></p>
                     <p></p>
                 </td>
