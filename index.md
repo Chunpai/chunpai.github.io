@@ -51,9 +51,7 @@ title: About
                     <papertitle>Calibrated Nonparametric Scan Statistics for Anomalous Pattern Detection on Graphs</papertitle>
                     </a>
                     <br>
-                    <strong>Chunpai Wang</strong>,
-                    <a href="https://cs.nyu.edu/~neill/">Daniel B. Neill</a>, and
-                    <a href="https://personal.utdallas.edu/~fxc190007/">Feng Chen</a>
+                    <strong>Chunpai Wang</strong>, Daniel B. Neill, and Feng Chen
                     <br>
                                 <em>36th AAAI Conference on Artificial Intelligence (AAAI)</em>, 2022 
                     <br>
@@ -81,9 +79,7 @@ title: About
                     <papertitle>STRETCH: Stress and Behavior Modeling with Tensor Decomposition of Heterogeneous Data</papertitle>
                     </a>
                     <br>
-                    <strong>Chunpai Wang</strong>,
-                    <a href="">Shaghayegh Sahebi</a>, and
-                    <a href="">Helma Torkamaan</a>
+                    <strong>Chunpai Wang</strong>, Shaghayegh Sahebi, and Helma Torkamaan
                     <br>
                                 <em>30th IEEE/WIC/ACM International Joint Conference on Web Intelligence and Intelligent Agent Technology (WI-IAT)</em>, 2021
                     <br>
@@ -103,9 +99,7 @@ title: About
                     <papertitle>MOCHI: an Offline Evaluation Framework for Educational Recommendations</papertitle>
                     </a>
                     <br>
-                    <strong>Chunpai Wang</strong>,
-                    <a href="">Shaghayegh Sahebi</a>, and
-                    <a href="">Peter Brusilovsky</a>
+                    <strong>Chunpai Wang</strong>, Shaghayegh Sahebi, and Peter Brusilovsky
                     <br>
                                 <em>Perspectives at 15th ACM Conference on Recommender Systems (RecSys)</em>, 2021
                     <br>
@@ -127,9 +121,7 @@ title: About
                     <papertitle>Learning from Non-Assessed Resources: Deep Multi-Type Knowledge Tracing</papertitle>
                     </a>
                     <br>
-                    <strong>Chunpai Wang</strong>,
-                    <a href="">Siqian Zhao</a>, and
-                    <a href="">Shaghayegh Sahebi</a>,
+                    <strong>Chunpai Wang</strong>, Siqian Zhao, and Shaghayegh Sahebi
                     <br>
                                 <em>14th International Conference on Educational Data Mining (EDM)</em>, 2021
                     <br>
@@ -155,11 +147,7 @@ title: About
                     <papertitle>Knowledge Tracing for Complex Problem Solving: Granular Rank-based Tensor Factorization</papertitle>
                     </a>
                     <br>
-                    <strong>Chunpai Wang</strong>,
-                    <a href="">Shaghayegh Sahebi</a>,
-                    <a href="">Siqian Zhao</a>,
-                    <a href="">Peter Brusilovsky</a>, and
-                    <a href="">Laura O. Moraes</a>
+                    <strong>Chunpai Wang</strong>, Shaghayegh Sahebi, Siqian Zhao, Peter Brusilovsky, and Laura O. Moraes
                     <br>
                                 <em>29th ACM Conference on User Modeling, Adaptation and Personalization (UMAP)</em>, 2021
                     <br>
@@ -185,11 +173,7 @@ title: About
                     <papertitle>A Framework for Subgraph Detection in Interdependent Networks via Graph Block-Structured Optimization</papertitle>
                     </a>
                     <br>
-                    <a href="">Fei Jie</a>,
-                    <strong>Chunpai Wang</strong>,
-                    <a href="">Feng Chen</a>,
-                    <a href="">Lei Li</a>, and
-                    <a href="">Xindong Wu</a>,
+                    Fei Jie, <strong>Chunpai Wang</strong>, Feng Chen, Lei Li, and Xindong Wu,
                     <br>
                                 <em>IEEE Access</em>, 2020
                     <br>
@@ -209,9 +193,7 @@ title: About
                     <papertitle>Modeling Knowledge Acquisition from Multiple Learning Resource Types</papertitle>
                     </a>
                     <br>
-                    <a href="">Siqian Zhao*</a>,
-                    <strong>Chunpai Wang*</strong>, and
-                    <a href="">Shaghayegh Sahebi</a>
+                    Siqian Zhao*, <strong>Chunpai Wang*</strong>, and Shaghayegh Sahebi
                     <br>
                                 <em>13th International Conference on Educational Data Mining (EDM)</em>, 2020
                     <br>
@@ -235,11 +217,7 @@ title: About
                     <papertitle>Block-Structured Optimization for Anomalous Pattern Detection in Interdependent Networks</papertitle>
                     </a>
                     <br>
-                    <a href="">Fei Jie*</a>,
-                    <strong>Chunpai Wang*</strong>,
-                    <a href="">Feng Chen</a>,
-                    <a href="">Lei Li</a>, and
-                    <a href="">Xindong Wu</a>,
+                    Fei Jie*, <strong>Chunpai Wang*</strong>, Feng Chen, Lei Li, and Xindong Wu,
                     <br>
                                 <em>IEEE International Conference on Data Mining (ICDM)</em>, 2019
                     <br>
@@ -261,9 +239,7 @@ title: About
                     <papertitle>Collective Subjective Logic: Scalable Uncertainty-based Opinion Inference</papertitle>
                     </a>
                     <br>
-                    <a href="">Feng Chen</a>,
-                    <strong>Chunpai Wang</strong>, and
-                    <a href="">Jin-Hee Cho</a>,
+                    Feng Chen, <strong>Chunpai Wang</strong>, and Jin-Hee Cho
                     <br>
                                 <em>IEEE International Conference on Big Data (BigData)</em>, 2017
                     <br>
