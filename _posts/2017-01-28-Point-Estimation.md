@@ -1,7 +1,7 @@
 ---
 title: "Point Estimation, MLE, and MAP"
 layout: post
-tags: [statistics, ]
+tags: [statistics, probabilistic-machine-learning]
 author: Chunpai
 ---
 
