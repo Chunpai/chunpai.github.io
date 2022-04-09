@@ -76,7 +76,7 @@ $$
   \end{aligned}
 $$
 
-Now, since the true distribution $p_{data}$ is unknown, instead of minimizing the dissimilarity between the $p_{data}$ and $p_{model}$, we could try to minimize the dissimilarity between $\hat{p}_{data}$ and $p_{model}$ using KL-Divergence:
+Now, since the true distribution $p_{data}$ is unknown, instead of minimizing the dissimilarity between the $p_{data}$ and $p_{model}$, we could try to minimize the dissimilarity between $\hat{p}\_{data}$ and $p\_{model}$ using KL-Divergence:
 
 $$
 \begin{aligned}
