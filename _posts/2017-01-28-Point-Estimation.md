@@ -4,8 +4,10 @@ layout: post
 tags: [statistics, probabilistic-machine-learning]
 author: Chunpai
 ---
+
+
 * TOC
-  {: toc}
+{: toc}
 
 ## Model Fitting or Point Estimation
 
@@ -17,7 +19,7 @@ $$
 
 One common principle of parameter estimation or (point estimation) is the maximum likelihood principle.
 
-### Maximum Likelihood Estimation -Frequentist Perspective
+### Maximum Likelihood Estimation - Frequentist Perspective
 
 MLE is to pick the parameters $\hat{\theta}$ that assign the highest probability to the sampled training data $\mathcal{D} = \\\{ (\mathbf{x}\_i, y\_i) \\\}_{i=1}^{N}$
 
