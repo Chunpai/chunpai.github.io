@@ -4,9 +4,8 @@ layout: post
 tags: [statistics, probabilistic-machine-learning]
 author: Chunpai
 ---
-
 * TOC
-{: toc}
+  {: toc}
 
 ## Model Fitting or Point Estimation
 
@@ -275,10 +274,16 @@ Two factors determine how well a model fitting algorithm is:
 1. Empirical risk minimization: make the training error small.
 2. Generalized risk minimization: make the gap between training and test error small.
 
-*Underfitting*: occurs when the model is not able to obtain a sufficiently low error value on the training set.
+*Underfitting*: occurs when the model is not able to obtain a sufficiently low error value on the training set. The remedies could be:
+  * use more complex model
+  * add features
+  * boosting
 
-*Overfitting*: occurs when the gap between the training error and the test error is too large.
-
+*Overfitting*: occurs when the gap between the training error and the test error is too large. The remedies could be:
+  * add more training data
+  * reduce model complexity
+  * bagging
+  
 *Model's Capacity*: defines its ability to fit a wide variety of functions. We could control the capacity of a learning algorithm by choosing it *hypothesis space*. For example, polynomial regression has higher capacity than linear regression.
 
 *Occam's Razor*: states that among competing hypothesess that explain known observation equally well, one should choose the 'simplest' one.
@@ -322,3 +327,9 @@ where the last objective is known as MAP estimation.
 ## Reference
 
 [1] Goodfellow, Ian, Yoshua Bengio, and Aaron Courville. Deep learning. MIT press, 2016.
+
+[2] Murphy, Kevin P. Probabilistic Machine Learning. MIT press, 2022.
+
+[3] Hastie, Trevor, et al. The elements of statistical learning: data mining, inference, and prediction. Vol. 2. New York: springer, 2009.
+
+[4] https://www.cs.cornell.edu/courses/cs4780/2018fa/lectures/lecturenote12.html
