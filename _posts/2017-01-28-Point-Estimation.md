@@ -5,7 +5,6 @@ tags: [statistics, probabilistic-machine-learning]
 author: Chunpai
 ---
 
-
 * TOC
 {: toc}
 
@@ -277,15 +276,17 @@ Two factors determine how well a model fitting algorithm is:
 2. Generalized risk minimization: make the gap between training and test error small.
 
 *Underfitting*: occurs when the model is not able to obtain a sufficiently low error value on the training set. The remedies could be:
-  * use more complex model
-  * add features
-  * boosting
+
+* use more complex model
+* add features
+* boosting
 
 *Overfitting*: occurs when the gap between the training error and the test error is too large. The remedies could be:
-  * add more training data
-  * reduce model complexity
-  * bagging
-  
+
+* add more training data
+* reduce model complexity
+* bagging
+
 *Model's Capacity*: defines its ability to fit a wide variety of functions. We could control the capacity of a learning algorithm by choosing it *hypothesis space*. For example, polynomial regression has higher capacity than linear regression.
 
 *Occam's Razor*: states that among competing hypothesess that explain known observation equally well, one should choose the 'simplest' one.
@@ -294,7 +295,7 @@ Two factors determine how well a model fitting algorithm is:
 
 *The No Free Lunch Theorem*: no machine learning algorithms is universally any better than any other. Formally, averaged over all possible data generating distributions, every classification algorithm has the same error rate when classifying previously unobserved points.
 
-### Regularization and Maximum A Posterior (MAP) Estimation - Bayesian Perspective
+### Regularization and Maximum A Posterior Estimation - Bayesian Perspective
 
 *Regularization*: is any modification we make to a learning algorithm that is intended to reduce its generalization error but not its training error.
 
