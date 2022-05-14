@@ -47,9 +47,7 @@ title: About
                     </div>
                 </td>
                 <td style="padding:20px;width:75%;vertical-align:middle">
-                    <a href="">
-                    <papertitle>Calibrated Nonparametric Scan Statistics for Anomalous Pattern Detection on Graphs</papertitle>
-                    </a>
+                    <strong>Calibrated Nonparametric Scan Statistics for Anomalous Pattern Detection on Graphs</strong>
                     <br>
                     <strong>Chunpai Wang</strong>, Daniel B. Neill, and Feng Chen
                     <br>
@@ -75,9 +73,7 @@ title: About
                     </div>
                 </td>
                 <td style="padding:20px;width:75%;vertical-align:middle">
-                    <a href="">
-                    <papertitle>STRETCH: Stress and Behavior Modeling with Tensor Decomposition of Heterogeneous Data</papertitle>
-                    </a>
+                    <strong>STRETCH: Stress and Behavior Modeling with Tensor Decomposition of Heterogeneous Data</strong>
                     <br>
                     <strong>Chunpai Wang</strong>, Shaghayegh Sahebi, and Helma Torkamaan
                     <br>
@@ -95,9 +91,7 @@ title: About
                     </div>
                 </td>
                 <td style="padding:20px;width:75%;vertical-align:middle">
-                    <a href="">
-                    <papertitle>MOCHI: an Offline Evaluation Framework for Educational Recommendations</papertitle>
-                    </a>
+                    <strong>MOCHI: an Offline Evaluation Framework for Educational Recommendations</strong>
                     <br>
                     <strong>Chunpai Wang</strong>, Shaghayegh Sahebi, and Peter Brusilovsky
                     <br>
@@ -117,9 +111,7 @@ title: About
                     </div>
                 </td>
                 <td style="padding:20px;width:75%;vertical-align:middle">
-                    <a href="">
-                    <papertitle>Learning from Non-Assessed Resources: Deep Multi-Type Knowledge Tracing</papertitle>
-                    </a>
+                    <strong>Learning from Non-Assessed Resources: Deep Multi-Type Knowledge Tracing</strong>
                     <br>
                     <strong>Chunpai Wang</strong>, Siqian Zhao, and Shaghayegh Sahebi
                     <br>
@@ -143,9 +135,7 @@ title: About
                     </div>
                 </td>
                 <td style="padding:20px;width:75%;vertical-align:middle">
-                    <a href="">
-                    <papertitle>Knowledge Tracing for Complex Problem Solving: Granular Rank-based Tensor Factorization</papertitle>
-                    </a>
+                    <strong>Knowledge Tracing for Complex Problem Solving: Granular Rank-based Tensor Factorization</strong>
                     <br>
                     <strong>Chunpai Wang</strong>, Shaghayegh Sahebi, Siqian Zhao, Peter Brusilovsky, and Laura O. Moraes
                     <br>
@@ -169,9 +159,7 @@ title: About
                     </div>
                 </td>
                 <td style="padding:20px;width:75%;vertical-align:middle">
-                    <a href="">
-                    <papertitle>A Framework for Subgraph Detection in Interdependent Networks via Graph Block-Structured Optimization</papertitle>
-                    </a>
+                    <strong>A Framework for Subgraph Detection in Interdependent Networks via Graph Block-Structured Optimization</strong>
                     <br>
                     Fei Jie, <strong>Chunpai Wang</strong>, Feng Chen, Lei Li, and Xindong Wu,
                     <br>
@@ -189,9 +177,7 @@ title: About
                     </div>
                 </td>
                 <td style="padding:20px;width:75%;vertical-align:middle">
-                    <a href="">
-                    <papertitle>Modeling Knowledge Acquisition from Multiple Learning Resource Types</papertitle>
-                    </a>
+                    <strong>Modeling Knowledge Acquisition from Multiple Learning Resource Types</strong>
                     <br>
                     Siqian Zhao*, <strong>Chunpai Wang*</strong>, and Shaghayegh Sahebi
                     <br>
@@ -213,9 +199,7 @@ title: About
                     </div>
                 </td>
                 <td style="padding:20px;width:75%;vertical-align:middle">
-                    <a href="">
-                    <papertitle>Block-Structured Optimization for Anomalous Pattern Detection in Interdependent Networks</papertitle>
-                    </a>
+                    <strong>Block-Structured Optimization for Anomalous Pattern Detection in Interdependent Networks</strong>
                     <br>
                     Fei Jie*, <strong>Chunpai Wang*</strong>, Feng Chen, Lei Li, and Xindong Wu,
                     <br>
@@ -235,9 +219,7 @@ title: About
                     </div>
                 </td>
                 <td style="padding:20px;width:75%;vertical-align:middle">
-                    <a href="">
-                    <papertitle>Collective Subjective Logic: Scalable Uncertainty-based Opinion Inference</papertitle>
-                    </a>
+                    <strong>Collective Subjective Logic: Scalable Uncertainty-based Opinion Inference</strong>
                     <br>
                     Feng Chen, <strong>Chunpai Wang</strong>, and Jin-Hee Cho
                     <br>
