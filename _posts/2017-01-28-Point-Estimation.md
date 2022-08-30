@@ -1,9 +1,10 @@
 ---
-title: "Point Estimation, MLE, and MAP"
+title: "Point Estimation and Statistical Inference"
 layout: post
 tags: [statistics, probabilistic-machine-learning]
 author: Chunpai
 ---
+
 
 * TOC
 {: toc}
@@ -326,6 +327,18 @@ $$
 $$
 
 where the last objective is known as MAP estimation.
+
+## Frequentist Inference
+
+### Hypothesis Testing
+
+### Significance Tests and P-Values
+
+### Type I and Type II Error
+
+### Multiple Hypothesis Testing
+
+## Bayesian Inference
 
 ## Reference
 

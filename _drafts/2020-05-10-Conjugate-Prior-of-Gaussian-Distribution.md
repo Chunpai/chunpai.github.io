@@ -20,6 +20,7 @@ author: Chunpai
 
 
 Likelihood of normal distribution could be written as 
+
 $$
 \begin{align}
 f\left(x_{1},\cdots, x_{n} \mid \mu, \sigma^{2}\right) &= f\left(x_{n} \mid \mu, \sigma^{2}\right)=\prod_{i=1}^{n} \frac{1}{\sqrt{2 \pi^{2}}} \exp \left\{-\frac{\left(x_{i}-\mu\right)^{2}}{2 \sigma^{2}}\right\} \\
@@ -28,7 +29,7 @@ f\left(x_{1},\cdots, x_{n} \mid \mu, \sigma^{2}\right) &= f\left(x_{n} \mid \mu,
 $$
 
 
-### Random Mean ($$\mu$$), but Fixed Variance $$(\sigma^2)$$  : *Normal Distribution*
+### Random Mean ($\mu$), but Fixed Variance $(\sigma^2)$  : *Normal Distribution*
 
 
 
