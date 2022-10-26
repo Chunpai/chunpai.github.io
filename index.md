@@ -78,6 +78,7 @@ title: About
                     <strong><u>Chunpai Wang</u></strong>, Shaghayegh Sahebi, and Peter Brusilovsky
                     <br>
                                 <em>MORS Workshop at 16th ACM Conference on Recommender Systems (RecSys)</em>, 2022 
+                    <br>
                     <a href="../assets/paper/mors2022.pdf">paper</a>
                     <p></p>
                     <p></p>
