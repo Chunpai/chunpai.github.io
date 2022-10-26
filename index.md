@@ -43,6 +43,49 @@ title: About
             <tr>
                 <td style="padding:20px;width:25%;vertical-align:middle">
                     <div class="one">
+                    <img src='../assets/paper/mdtkt.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <strong>Transition-Aware Multi-Activity Knowledge Tracing</strong>
+                    <br>
+                    Siqian, Zhao, <strong><u>Chunpai Wang</u></strong>, and Shaghayegh Sahebi
+                    <br>
+                                <em>IEEE International Conference on Big Data (BigData)</em>, 2022 
+                    <br>
+                    Acceptance Rate: 19.2%.
+                    <br>
+                    <!-- <a href="">paper</a>
+                    /
+                    <a href="">appendix</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">code</a> -->
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
+                    <img src='../assets/paper/pear.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <strong>Proximity-Based Educational Recommendations: A Multi-Objective Framework</strong>
+                    <br>
+                    <strong><u>Chunpai Wang</u></strong>, Shaghayegh Sahebi, and Peter Brusilovsky
+                    <br>
+                                <em>MORS Workshop at 16th ACM Conference on Recommender Systems (RecSys)</em>, 2022 
+                    <a href="../assets/paper/mors2022.pdf">paper</a>
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
                     <img src='../assets/paper/cnss.png' width="160">
                     </div>
                 </td>
@@ -53,7 +96,7 @@ title: About
                     <br>
                                 <em>36th AAAI Conference on Artificial Intelligence (AAAI)</em>, 2022 
                     <br>
-                    Acceptance Rate: 15%, and Selected for Oral Presentation.
+                    Acceptance Rate: 15%, and <strong>Selected for Oral Presentation</strong>.
                     <br>
                     <a href="../assets/paper/aaai2022.pdf">paper</a>
                     /
