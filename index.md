@@ -82,7 +82,7 @@ title: About
                     <br>
                                 <em>IEEE International Conference on Big Data (BigData)</em>, 2022 
                     <br>
-                    Acceptance Rate: 19.2%. <em>Student Travel Award Recipient.</em>
+                    Acceptance Rate: 19.2%. <strong>Student Travel Award Recipient</strong>.
                     <br>
                     <!-- <a href="">paper</a>
                     /
