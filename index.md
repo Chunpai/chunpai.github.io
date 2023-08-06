@@ -46,6 +46,32 @@ title: About
             <tr>
                 <td style="padding:20px;width:25%;vertical-align:middle">
                     <div class="one">
+                    <img src='../assets/paper/cpkt.png' width="160">
+                    </div>
+                </td>
+                <td style="padding:20px;width:75%;vertical-align:middle">
+                    <strong> Continuous Personalized Knowledge Tracing: Modeling Long-Term Learning in Online Environments </strong>
+                    <br>
+                    <strong><u>Chunpai Wang</u></strong>, Shaghayegh Sahebi
+                    <br>
+                                <em>32nd ACM International Conference on Information and Knowledge Management (CIKM)</em>, 2023 
+                    <br>
+                    Acceptance Rate: 24%. (Research Track, Long Paper).
+                    <br>
+                    <!-- <a href="">paper</a>
+                    /
+                    <a href="">appendix</a>
+                    /
+                    <a href="">slides</a>
+                    /
+                    <a href="">code</a> -->
+                    <p></p>
+                    <p></p>
+                </td>
+            </tr> 
+            <tr>
+                <td style="padding:20px;width:25%;vertical-align:middle">
+                    <div class="one">
                     <img src='../assets/paper/mdtkt.png' width="160">
                     </div>
                 </td>
@@ -56,7 +82,7 @@ title: About
                     <br>
                                 <em>IEEE International Conference on Big Data (BigData)</em>, 2022 
                     <br>
-                    Acceptance Rate: 19.2%.
+                    Acceptance Rate: 19.2%. <em>Student Travel Award Recipient.</em>
                     <br>
                     <!-- <a href="">paper</a>
                     /
